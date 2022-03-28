@@ -121,6 +121,30 @@ load_files.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv){
     obs = Data$obs, unitobs = Data$unitobs, refesp = Data$refesp,
     filePathes = filePathes, baseEnv = baseEnv)
 
+  # Export of species table
+  # Exportation de la table des especes
+  code_esp_obs <- Data$obs[,"species.code"]
+  table_especes <- Data$refesp[which(Data$refesp$species.code %in% code_esp_obs),
+    c('family', 'genus', 'scient.name')]
+  table_especes <- table_especes[order(table_especes$family),]
+
+  fileNm <- paste(filePathes["results"], "TableEspeces",
+#    ifelse(getOption("P.selection"), "_selection", ""),
+     ".csv", sep = "")
+  tryCatch(write.csv(table_especes,
+    file = fileNm,
+    quote = TRUE, row.names = FALSE),
+    error = function(e){
+#      infoLoading.f(msg = paste(
+#        "Impossible d'écrire le fichier ", fileNm,
+#        ".\nIl est possible qu'il soit ouvert par une autre application",
+#        sep = ""), icon = "warning")
+      warning(paste("Impossible d'écrire le fichier ", fileNm,
+        ".\nIl est possible qu'il soit ouvert par une autre application", sep = ""),
+        call. = FALSE, immediate. = TRUE)
+#      errorLog.f(error = e, niv = -4)
+    })
+
   return(data)
 }
 
