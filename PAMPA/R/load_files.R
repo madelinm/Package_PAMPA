@@ -82,10 +82,46 @@ load_files.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv){
   ##         - unit : table agrégée /unitobs.
   ## ---------------------------------------------------------------------------
 
-  data <- loadData.f(filePathes, dminMax, dataEnv, baseEnv = baseEnv)
-  data_with_weight <- calcWeight.f(data)
+  # Faire plus de vérifications ?
 
-  return(data_with_weight)
+  if (is.na(filePathes["results"])){
+    filePathes["results"] <- ifelse(as.logical(length(grep("Data/$", filePathes["ws"]))),
+      sub("Data/$", "Results/", filePathes["ws"]),
+      paste(filePathes["ws"], "Results/", sep = ""))
+  }
+  assign("filePathes", filePathes, envir = dataEnv)
+
+  Data <- loadData.f(filePathes, dminMax, dataEnv, baseEnv = baseEnv)
+  if (!is.benthos.f()){
+    Data <- calcWeight.f(Data)
+  }
+
+  listInEnv.f(list = Data, env = dataEnv)
+
+  # Calculation of metric tables :
+  # Calcul des tables de metriques :
+  metrics <- calcTables.f(obs = Data$obs, unitobs = Data$unitobs, refesp = Data$refesp, dataEnv = dataEnv)
+
+  # Assigment of metric tables in the corresponding environment :
+  # Assignement des tables de metriques dans l'environnement adequat :
+  listInEnv.f(list = metrics, env = dataEnv)
+
+  # Backup for restoration :
+  # Sauvegarde pour restauration ulterieure :
+  assign("backup", c(metrics,
+    list(obs = Data$obs),
+    tryCatch(list(".NombresSVR" = get(".NombresSVR", envir = dataEnv),
+      ".DensitesSVR" = get(".DensitesSVR", envir = dataEnv)),
+      error = function(e){NULL})),
+    envir = dataEnv)
+
+  # Export of metric tables
+  # Export des tables de metriques
+  exportMetrics.f(unitSpSz = metrics$unitSpSz, unitSp = metrics$unitSp, unit = metrics$unit,
+    obs = Data$obs, unitobs = Data$unitobs, refesp = Data$refesp,
+    filePathes = filePathes, baseEnv = baseEnv)
+
+  return(data)
 }
 
 
@@ -222,30 +258,54 @@ loadData.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv = .GlobalEnv){
 
   Data <- list(obs = tabObs, unitobs = refUnitobs, refesp = refEspeces, refspa = refSpatial)
 
-  assign("obs", tabObs, envir = .dataEnv)
-  assign("unitobs", refUnitobs, envir = .dataEnv)
-  assign("refesp", refEspeces, envir = .dataEnv)
-
-  # Calcul des tables de métriques :
-  metrics <- calcTables.f(obs = Data$obs, unitobs = Data$unitobs, refesp = Data$refesp, dataEnv = dataEnv)
-
-  # Assignement des tables de métriques dans l'environnement adéquat :
-  listInEnv.f(list = metrics, env = dataEnv)
-
-  # Sauvegarde pour restauration ultérieure :
-  assign("backup", c(metrics,
-    list(obs = Data$obs),
-    tryCatch(list(".NombresSVR" = get(".NombresSVR", envir = dataEnv),
-      ".DensitesSVR" = get(".DensitesSVR", envir = dataEnv)),
-      error = function(e){NULL})),
-    envir = dataEnv)
-
-  exportMetrics.f(unitSpSz = metrics$unitSpSz, unitSp = metrics$unitSp, unit = metrics$unit,
-    obs = Data$obs, unitobs = Data$unitobs, refesp = Data$refesp,
-    filePathes = filePathes, baseEnv = baseEnv)
+#  assign("obs", tabObs, envir = .dataEnv)
+#  assign("unitobs", refUnitobs, envir = .dataEnv)
+#  assign("refesp", refEspeces, envir = .dataEnv)
+#  assign("refspa", refSpatial, envir = .dataEnv)
+#   listInEnv.f(list = Data, env = dataEnv)
+#
+#   # Calcul des tables de métriques :
+#   metrics <- calcTables.f(obs = Data$obs, unitobs = Data$unitobs, refesp = Data$refesp, dataEnv = dataEnv)
+#
+#   # Assignement des tables de métriques dans l'environnement adéquat :
+#   listInEnv.f(list = metrics, env = dataEnv)
+#
+#   # Sauvegarde pour restauration ultérieure :
+#   assign("backup", c(metrics,
+#     list(obs = Data$obs),
+#     tryCatch(list(".NombresSVR" = get(".NombresSVR", envir = dataEnv),
+#       ".DensitesSVR" = get(".DensitesSVR", envir = dataEnv)),
+#       error = function(e){NULL})),
+#     envir = dataEnv)
+#
+#   exportMetrics.f(unitSpSz = metrics$unitSpSz, unitSp = metrics$unitSp, unit = metrics$unit,
+#     obs = Data$obs, unitobs = Data$unitobs, refesp = Data$refesp,
+#     filePathes = filePathes, baseEnv = baseEnv)
+#
+#   # Exportation de la table des espèces
+#   code_esp_obs <- tabObs[,"species.code"]
+#   table_especes <- refEspeces[which(refEspeces$species.code %in% code_esp_obs),
+#     c('family', 'genus', 'scient.name')]
+#   table_especes <- table_especes[order(table_especes$family),]
+#
+#   fileNm <- paste(filePathes["results"], "TableEspeces",
+# #    ifelse(getOption("P.selection"), "_selection", ""),
+#      ".csv", sep = "")
+#   tryCatch(write.csv(table_especes,
+#     file = fileNm,
+#     quote = TRUE, row.names = FALSE),
+#     error = function(e){
+# #      infoLoading.f(msg = paste(
+# #        "Impossible d'écrire le fichier ", fileNm,
+# #        ".\nIl est possible qu'il soit ouvert par une autre application",
+# #        sep = ""), icon = "warning")
+#       warning(paste("Impossible d'écrire le fichier ", fileNm,
+#         ".\nIl est possible qu'il soit ouvert par une autre application", sep = ""),
+#         call. = FALSE, immediate. = TRUE)
+# #      errorLog.f(error = e, niv = -4)
+#     })
 
   return(Data)
-
 }
 
 
@@ -4038,53 +4098,59 @@ exportMetrics.f <- function(unitSpSz, unitSp, unit, obs, unitobs, refesp,
   if ( ! is.null(unitSpSz) &&
     prod(dim(unitSpSz))){            # i.e. nrow et ncol > 0.
     # Table unitSpSz si elle existe :
+    fileNm <- paste(filePathes["results"],
+      "UnitobsEspeceClassetailleMetriques",
+      ifelse(getOption("P.selection"), "_selection", ""),
+      ".csv", sep = "")
     tryCatch(write.csv(unitSpSz,
-      file = (fileNm <- paste(filePathes["results"],
-        "UnitobsEspeceClassetailleMetriques",
-        ifelse(getOption("P.selection"), "_selection", ""),
-        ".csv", sep = "")),
+      file = fileNm,
       row.names = FALSE),
       error = function(e){
 #        infoLoading.f(msg = paste(
 #          "Impossible d'écrire le fichier ", fileNm,
 #          ".\nIl est possible qu'il soit ouvert par une autre application",
 #          sep = ""), icon = "warning")
-       print(paste("Impossible d'écrire le fichier ", fileNm,
-         ".\nIl est possible qu'il soit ouvert par une autre application", sep = ""))
-#       errorLog.f(error = e, niv = -4)
+        warning(paste("Impossible d'écrire le fichier ", fileNm,
+          ".\nIl est possible qu'il soit ouvert par une autre application", sep = ""),
+          call. = FALSE, immediate. = TRUE)
+#      errorLog.f(error = e, niv = -4)
 
     })
   }else{}                             # Sinon rien !
 
   # Table unitSp :
+  fileNm <- paste(filePathes["results"],
+    "UnitobsEspeceMetriques",
+    ifelse(getOption("P.selection"), "_selection", ""),
+    ".csv", sep = "")
   tryCatch(write.csv(unitSp,
-    file = (fileNm <- paste(filePathes["results"],
-      "UnitobsEspeceMetriques",
-      ifelse(getOption("P.selection"), "_selection", ""),
-      ".csv", sep = "")),
+    file = fileNm,
     row.names = FALSE),
     error = function(e){
 #      infoLoading.f(msg = paste("Impossible d'écrire le fichier ", fileNm,
 #        ".\nIl est possible qu'il soit ouvert par une autre application",
 #        sep = ""), icon = "warning")
-      print(paste("Impossible d'écrire le fichier ", fileNm,
-        ".\nIl est possible qu'il soit ouvert par une autre application", sep = ""))
+      warning(paste("Impossible d'écrire le fichier ", fileNm,
+        ".\nIl est possible qu'il soit ouvert par une autre application", sep = ""),
+        call. = FALSE, immediate. = TRUE)
 #      errorLog.f(error = e, niv = -4)
   })
 
   # Table unit :
+  fileNm <- paste(filePathes["results"],
+    "UnitobsMetriques",
+    ifelse(getOption("P.selection"), "_selection", ""),
+    ".csv", sep = "")
   tryCatch(write.csv(unit,
-    file = (fileNm <- paste(filePathes["results"],
-      "UnitobsMetriques",
-      ifelse(getOption("P.selection"), "_selection", ""),
-      ".csv", sep = "")),
+    file = fileNm,
     row.names = FALSE),
     error = function(e){
 #      infoLoading.f(msg = paste(mltext("infoExport.6"), fileNm,
 #        mltext("infoExport.7"),
 #        sep = ""), icon = "warning")
-      print(paste(mltext("infoExport.6"), fileNm,
-        mltext("infoExport.7"), sep = ""))
+      warning(paste("Impossible d'écrire le fichier ", fileNm,
+        ".\nIl est possible qu'il soit ouvert par une autre application", sep = ""),
+        call. = FALSE, immediate. = TRUE)
 #      errorLog.f(error = e, niv = -4)
   })
 }
