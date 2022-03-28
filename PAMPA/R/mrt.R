@@ -1,28 +1,28 @@
-#' Fonction pour creer des arbres de regression multivariee pour des donnees agregees par especes.
+#' Fonction pour creer des arbres de regression multivariee.
 #'
-#' agregation peut prendre la valeur 'espece' ou 'unitobs'. Si 'espece', l'agregation se fera
+#' \code{agregation} peut prendre la valeur 'espece' ou 'unitobs'. Si 'espece', l'agregation se fera
 #' par especes, si unitobs, elle se fera par groupe d'especes.
 #'
-#' tableMetrique peut prendre les valeurs 'unitSp' (/station /especes /classe de taille),
-#' 'unitSpSz' (/station /especes) ou 'unit' (de biodiversite (/station)). Ce dernier cas n'est
-#' possible uniquement lorsque agregation == 'unitobs'.
+#' \code{tableMetrique} peut prendre les valeurs 'unitSpSz' (/station /especes /classe de taille),
+#' 'unitSp' (/station /especes) ou 'unit' (de biodiversite (/station)). Ce dernier cas n'est
+#' possible uniquement lorsque \code{agregation == 'unitobs'}. La table de metriques 'unitSpSz'
+#' n'est pas disponible si le jeu de donnees est un jeu de donnees de benthos.
 #'
-#' metrique peut prendre differentes valeur en fonction de celle de tableMetrique. Elle peut prendre
-#' les valeurs 'density', 'max.density', 'max.number', 'number', 'sd.density', 'sd.number' lorsque
-#' tableMetrique == 'unitSp'. Lorsque tableMetrique == 'unitSpSz', metrique peut prendre ces memes
-#' valeurs ainsi que la valeur 'abundance.propo.SC'. Lorsque tableMetrique == 'unit', metrique peut
-#' prendre les valeurs suivantes : 'species.richness', 'simpson', 'simpson.l', 'pielou', 'hill',
-#' 'Delta', 'DeltaStar', 'LambdaPlus', 'DeltaPlus', 'SDeltaPlus', 'relative.SR.site',
-#' 'relative.SR.site.phylum', 'relative.SR.data', 'relative.SR.region', 'relative.SR.region.phylum'.
+#' \code{metrique} peut prendre differentes valeurs en fonction de celle de \code{tableMetrique} et
+#' du jeu de donnees.
 #'
-#' factGraphSel peut prendre differentes valeurs en fonction de celle de factGraph. Ce parametre
-#' est facultatif. S'il est egal a NA, toutes les modalites du facteur seront selectionnees.
+#' \code{factGraphSel} peut prendre differentes valeurs en fonction de celle de \code{factGraph}. Ce
+#' parametre est facultatif. S'il est egal a NA, toutes les modalites du facteur seront
+#' selectionnees.
 #'
-#' L'ordre des facteurs de listFact n'est pas important.
+#' L'ordre des facteurs de \code{listFact} n'est pas important.
 #'
-#' listFactSel peut prendre differentes valeurs en fonction de celle de listFact. Ce parametre est
-#' facultatif. S'il est egal a NA, alors toutes les modalites du ou des facteur(s) de regroupement
-#' selectionne(s) seront prises en compte.
+#' \code{listFactSel} peut prendre differentes valeurs en fonction de celle de \code{listFact}. Ce
+#' parametre est facultatif. S'il est egal a NA, alors toutes les modalites du ou des facteur(s) de
+#' regroupement selectionne(s) seront prises en compte.
+
+
+#' @import rpart
 
 
 #' @title Arbres de regression multivariee
@@ -40,8 +40,8 @@
 #' @param baseEnv environnement parent
 #'
 #' @examples
-#' mrt.f(agregation = "espece", metrique = c("density"), factGraph = c("scient.name"),
-#'   factGraphSel = c("Chromis_chromis"), listFact = c("year", "protection.status"),
+#' mrt.f(agregation = "espece", metrique = "density", factGraph = "scient.name",
+#'   factGraphSel = "Chromis_chromis", listFact = c("year", "protection.status"),
 #'   listFactSel = list(c("2011", "2019"), NA), tableMetrique = "unitSp",
 #'   dataEnv = .dataEnv, baseEnv = .baseEnv)
 #'

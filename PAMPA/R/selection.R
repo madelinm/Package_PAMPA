@@ -12,8 +12,8 @@
 #' Elle ne retourne rien, les donnees sont stockees dans l'environnement .dataEnv
 #' (pas forcement tres pratique, a changer plus tard ?)
 #'
-#' A changer plus tard pour supprimer les lignes de code en doublon dans selectionOnRefesp.f (et
-#' dependaces) et selectionOnUnitobs.f (et dependances) ?
+#' A changer plus tard pour supprimer les lignes de code en doublon dans \code{selectionOnRefesp.f}
+#' (et dependances) et \code{selectionOnUnitobs.f} (et dependances) ?
 
 
 #' @importFrom svDialogs dlg_list

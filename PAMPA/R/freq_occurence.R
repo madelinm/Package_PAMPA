@@ -1,16 +1,17 @@
-#' Fonction pour tracer un barplot de frequences d'occurrence pour des donnees agregees par especes.
+#' Fonction pour tracer un barplot de frequences d'occurrence.
 #'
-#' agregation peut prendre la valeur 'espece' ou 'unitobs'. Si 'espece', l'agregation se fera
+#' \code{agregation} peut prendre la valeur 'espece' ou 'unitobs'. Si 'espece', l'agregation se fera
 #' par especes, si unitobs, elle se fera par groupe d'especes.
 #'
-#' factGraphSel peut prendre differentes valeurs en fonction de celle de factGraph. Ce parametre
-#' est facultatif. S'il est egal a NA, toutes les modalites du facteur seront selectionnees.
+#' \code{factGraphSel} peut prendre differentes valeurs en fonction de celle de \code{factGraph}. Ce
+#' parametre est facultatif. S'il est egal a NA, toutes les modalites du facteur seront
+#' selectionnees.
 #'
-#' listFact ne peut pas avoir plus de 2 facteurs.
+#' \code{listFact} ne peut pas avoir plus de 2 facteurs.
 #'
-#' listFactSel peut prendre differentes valeurs en fonction de celle de listFact. Ce parametre est
-#' facultatif. S'il est egal a NA, alors toutes les modalites du ou des facteur(s) de regroupement
-#' selectionne(s) seront prises en compte.
+#' \code{listFactSel} peut prendre differentes valeurs en fonction de celle de \code{listFact}. Ce
+#' parametre est facultatif. S'il est egal a NA, alors toutes les modalites du ou des facteur(s) de
+#' regroupement selectionne(s) seront prises en compte.
 
 
 #' @title Frequences d'occurrence
@@ -26,8 +27,8 @@
 #' @param baseEnv environnement parent
 #'
 #' @examples
-#' freq_occurrences.f(agregation = "espece", factGraph = c("scient.name"),
-#'   factGraphSel = c("Chromis_chromis"), listFact = c("year", "protection.status"),
+#' freq_occurrences.f(agregation = "espece", factGraph = "scient.name",
+#'   factGraphSel = "Chromis_chromis", listFact = c("year", "protection.status"),
 #'   listFactSel = list(c("2011", "2019"), NA), dataEnv = .dataEnv, baseEnv = .baseEnv)
 #'
 #' @export
