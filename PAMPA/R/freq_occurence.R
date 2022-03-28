@@ -203,7 +203,7 @@ barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, 
   # Concaténation
   facteurs <- c(factGraph, unlist(listFact)) # Concaténation des facteurs
 
-  selections <- c(list(factGraphSel), listFactSel) # Concaténation des leurs listes de modalités sélectionnées
+  selections <- c(list(factGraphSel), listFactSel) # Concaténation de leurs listes de modalités sélectionnées
 
   # Données pour la série de boxplots :
   tmpData <- subsetToutesTables.f(metrique = "pres.abs", facteurs = facteurs, selections = selections,
@@ -211,11 +211,9 @@ barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, 
 
   # Identification des différents graphiques à générer:
   if (factGraph == ""){               # Pas de facteur de séparation des graphiques.
-
     iFactGraphSel <- ""
   }else{
     if (is.na(factGraphSel[1])){      # Toutes les modalités.
-
       iFactGraphSel <- unique(as.character(sort(tmpData[ , factGraph])))
     }else{                    # Modalités sélectionnées (et présentes parmi les données retenues).
       iFactGraphSel <- factGraphSel[is.element(factGraphSel, tmpData[ , factGraph])]
@@ -240,7 +238,7 @@ barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, 
       tmpDataMod <- subset(tmpData, tmpData[ , factGraph] == modGraphSel) # Subset des données pour la modalité.
     }
 
-    # Passage au graphique suivant si le nombre d'observations  < au minimum défini dans les options.
+    # Passage au graphique suivant si le nombre d'observations < au minimum défini dans les options.
     if (dim(tmpDataMod)[1] < getOption("P.MinNbObs")){
       warning(mltext("WP2boxplot.W.n.1"), modGraphSel, " < ", getOption("P.MinNbObs"),
         mltext("WP2boxplot.W.n.2"))
@@ -257,8 +255,7 @@ barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, 
     graphFileTmp <- openDevice.f(noGraph = which(modGraphSel == iFactGraphSel),
       metrique = metrique,
       factGraph = factGraph,
-      modSel = if (getOption("P.plusieursGraphPage"))
-      {
+      modSel = if (getOption("P.plusieursGraphPage")){
         iFactGraphSel      # toutes les modalités.
       }else{
         modGraphSel        # la modalité courante uniquement.
@@ -292,14 +289,14 @@ barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, 
 
     # Paramètres graphiques :
     # Marge dynamiques (adaptation à la longueur des labels) :
-    optim(par = unlist(par("mai")),   # Le rapport inch/ligne est modifié en changeant les marges => besoin
-      # de l'optimiser.
+    optim(par = unlist(par("mai")),   # Le rapport inch/ligne est modifié en changeant les marges
+      # => besoin de l'optimiser.
       fn = function(x){
         par(mai = c(
           # Marge du bas :
           lineInchConvert.f()$V * cex * unlist(par("lheight")) * 4.5,
           # Marge de gauche dynamique :
-          tmp2 <- ifelse((tmp <- lineInchConvert.f()$H * cex * unlist(par("lheight")) * (1.4 +0.4 + 0.9) + # marge
+          tmp2 <- ifelse((tmp <- lineInchConvert.f()$H * cex * unlist(par("lheight")) * (1.4 + 0.4 + 0.9) + # marge
             # supplémentaire.
             max(strDimRotation.f(as.graphicsAnnot(pretty(range(heights, na.rm = TRUE))),
               srt = 0,
@@ -1548,7 +1545,7 @@ barplotOccurrence.unitobs.f <- function(factGraph, factGraphSel, listFact, listF
       mtext(nbObs, side = 3, at = barPlotTmp, las = 2, col = getOption("P.NbObsCol"), adj = -0.2)
 
       legend(x = "topleft",
-        legend = expression(mltext("barplotOccurrence.unitobs.leg", language = getOption("P.lang"))),
+        legend = mltext("barplotOccurrence.unitobs.leg", language = getOption("P.lang")),
           cex = 0.9, col = getOption("P.NbObsCol"),
           text.col = getOption("P.NbObsCol"), merge = FALSE)
 

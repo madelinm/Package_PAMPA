@@ -1780,8 +1780,8 @@ summary.fr <- function(object, digits = max(3, getOption("digits") - 3), ...){
 }
 
 
-selectModalites.f <- function(factor, tableMetrique, facts = NULL, selections = NULL,
-  MetriqueChoisie = NULL, ChoixMetriques = NULL, env, nextStep, dataEnv, level = 0){
+selectModalites.f <- function(tableMetrique, facts = NULL, selections = NULL,
+  metrique = NULL, nextStep, dataEnv, level = 0){
 
   ## Purpose: Sélection et stockage des modalités d'un facteur
   ## ----------------------------------------------------------------------
@@ -1820,11 +1820,10 @@ selectModalites.f <- function(factor, tableMetrique, facts = NULL, selections = 
 
   # Table réduite :
 #  metricsAliases <- get("metricsAliases" , envir = env)
-  metricsAliases <- ChoixMetriques
+#  metricsAliases <- ChoixMetriques
 #  metrique <- ifelse(nchar(tcltk::tclvalue(get("MetriqueChoisie" , envir = env))),
 #    metricsAliases[tcltk::tclvalue(get("MetriqueChoisie" , envir = env))],
 #    "")
-  metrique <- MetriqueChoisie
 
   # Pour les indices de biodiversité recalculés, il faut utiliser "unitSp" et une métrique adaptée.
   if (is.element(nextStep, c("boxplot.unitobs", "modele_lineaire.unitobs",
