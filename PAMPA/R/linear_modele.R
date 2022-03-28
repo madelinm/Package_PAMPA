@@ -54,88 +54,97 @@
 lm.f <- function(agregation, metrique, factAna, factAnaSel = NA, listFact, listFactSel = NA,
   tableMetrique, dataEnv, baseEnv = .GlobalEnv){
 
+  tableMetrique_possible <- c("unit", "unitSp", "unitSpSz")
+  nextStep <- switch(agregation,
+    "espece" = "modele_lineaire",
+    "unitobs" = "modele_lineaire.unitobs",
+    stop(
+      "Veuillez choisir une valeur de 'agregation' parmi 'espece' et 'unitobs' (groupe d'especes)."
+    )
+  )
+ if (is.null(factAna)){
+   factAna <- ""
+ }
+
   # Verification des parametres :
   # ...de la metrique et de la table de metrique
-  if (tableMetrique == "unitSp"){
-    metriques_possibles <- c("density", "max.density", "max.number", "number", "sd.density",
-      "sd.number")
-  }
-  else if (tableMetrique == "unitSpSz"){
-    metriques_possibles <- c("abundance.propo.SC", "density", "max.density", "max.number",
-      "number", "sd.density", "sd.number")
-  }
-  else if (tableMetrique == "unit"){
-    if(agregation == "unitobs"){
-      metriques_possibles <- c("species.richness", "simpson", "simpson.l", "pielou", "hill", "Delta",
-        "DeltaStar", "LambdaPlus", "DeltaPlus", "SDeltaPlus", "relative.SR.site", "relative.SR.site.phylum",
-        "relative.SR.data", "relative.SR.region", "relative.SR.region.phylum")
-    }
-    else{
-      stop(
-        paste("La valeur de 'tableMetrique' ne peut pas etre 'unit' quand 'agregation' == 'espece'.")
-      )
-    }
-  }
-  else{
-    stop("Veuillez choisir une valeur de 'tableMetrique' entre 'unitSp' (/station /especes /classe de taille),
-      'unitSpSz' (/station /especes) et 'unit' (de biodiversite (/station)).")
+  if (!is.element(tableMetrique, tableMetrique_possible)){
+    stop("Veuillez choisir une valeur de 'tableMetrique' entre 'unitSp' (/station /especes),
+      'unitSpSz' (/station /especes /classe de taille) et 'unit' (de biodiversite (/station)).")
   }
 
-  if (!is.element(metrique, metriques_possibles)){
-    stop(paste("Veuillez choisir une metrique parmi :",
-      paste(metriques_possibles, collapse = ", ")))
-  }
-
-  # ...du facteur de separation des graphiques
-  if (agregation == 'espece'){
-    factAna_possible_refesp <- spRefFields.aliases(site = getOption("P.MPA"), dataEnv = dataEnv,
-      ordered = FALSE, tableMetrique = tableMetrique)
-    factAna_possible_unitobs <- UnitobsFields.aliases(ordered = FALSE, dataEnv = dataEnv,
-      tableMetrique = tableMetrique)
-
-    if (!is.element(factAna, factAna_possible_refesp) & !is.element(factAna, factAna_possible_unitobs)){
-      stop(
-        paste("La valeur '", factAna, "' du paramètre 'factAna' n'est pas valide.\n", sep = ""),
-        paste("Veuillez choisir parmi :\n"),
-        paste(factAna_possible_refesp, collapse = ", "),
-        paste ("\n ou :\n"),
-        paste(factAna_possible_unitobs, collapse = ", ")
-      )
-    }
-  }
-  else if (agregation == 'unitobs'){
-    factAna_possible_refesp <- spRefFields.aliases(site = getOption("P.MPA"), dataEnv = dataEnv,
-      ordered = FALSE, tableMetrique = tableMetrique)
-
-    if (!is.element(factAna, factAna_possible_refesp)){
-      stop(
-        paste("La valeur '", factAna, "' du paramètre 'factAna' n'est pas valide.\n", sep = ""),
-        paste("Veuillez choisir parmi :\n"),
-        paste(factAna_possible_refesp, collapse = ", ")
-      )
-    }
-  }
-  else{
-    stop("Veuillez choisir une valeur de 'agregation' parmi 'espece' ou 'unitobs' (groupe d'especes).")
-  }
-
-  # ...des modalites du facteur de separation des graphiques
-  factAnaSel_possible <- unique(selectModalites.f(factor = factAna,
-    tableMetrique = tableMetrique, facts = factAna, selections = append(list(NA), NA),
-    MetriqueChoisie = metrique, ChoixMetriques = metriques_possibles,
-    env, nextStep = ifelse(agregation == "espece", "modele_lineaire", "modele_lineaire.unitobs"),
-    dataEnv, level = 0)[, factAna])
-  if (!is.na(factAnaSel) & !is.element(factAnaSel, factAnaSel_possible)){
+  # S'il s'agit d'un jeu de données benthos, ou qu'il n'y a pas de classes tailles disponibles
+  if ((is.benthos.f() | nrow(get("unitSpSz", envir = dataEnv)) == 0) & tableMetrique == "unitSpSz"){
     stop(
-      paste("La valeur '", factAnaSel, "' du paramètre 'factAnaSel' n'est pas valide.\n", sep = ""),
-      paste("Veillez choisir parmi :\n"),
-      paste(factAnaSel_possible, collapse = ", ")
+      paste("La table de métrique 'unitSpSz' n'est pas disponible pour ce jeu de données")
     )
   }
 
+  if (tableMetrique == "unit" & agregation == "espece"){
+    stop(
+      paste("La valeur de 'tableMetrique' ne peut pas etre 'unit' quand 'agregation' == 'espece'.")
+    )
+  }
+
+  metriques_possibles <- MetricsField.aliases(tableMetrique, "boxplot", dataEnv)
+  if (!is.element(metrique, metriques_possibles)){
+    stop(
+      paste("La valeur de 'metrique' n'est pas valide.\n"),
+      paste("Veuillez choisir une metrique parmi :\n"),
+      paste(metriques_possibles, collapse = ", ")
+    )
+  }
+
+  # ...du facteur de separation des graphiques
+  if (factAna != ""){
+    if (agregation == 'espece'){
+      factAna_possible_refesp <- spRefFields.aliases(site = getOption("P.MPA"), dataEnv = dataEnv,
+        ordered = FALSE, tableMetrique = tableMetrique)
+      factAna_possible_unitobs <- UnitobsFields.aliases(ordered = FALSE, dataEnv = dataEnv,
+        tableMetrique = tableMetrique)
+
+      if (!is.element(factAna, factAna_possible_refesp) & !is.element(factAna, factAna_possible_unitobs)){
+        stop(
+          paste("La valeur '", factAna, "' du paramètre 'factAna' n'est pas valide.\n", sep = ""),
+          paste("Veuillez choisir parmi :\n"),
+          paste(factAna_possible_refesp, collapse = ", "),
+          paste ("\n ou :\n"),
+          paste(factAna_possible_unitobs, collapse = ", ")
+        )
+      }
+    }
+    else{
+      factAna_possible_refesp <- spRefFields.aliases(site = getOption("P.MPA"), dataEnv = dataEnv,
+        ordered = FALSE, tableMetrique = tableMetrique)
+      if (!is.element(factAna, factAna_possible_refesp)){
+        stop(
+          paste("La valeur '", factAna, "' du paramètre 'factAna' n'est pas valide.\n", sep = ""),
+          paste("Veuillez choisir parmi :\n"),
+          paste(factAna_possible_refesp, collapse = ", ")
+        )
+      }
+    }
+  }
+
+  # ...des modalites du facteur de separation des graphiques
+  if (factAna != ""){
+    factAnaSel_possible <- unique(selectModalites.f(tableMetrique = tableMetrique,
+      facts = factAna, selections = append(list(NA), NA), metrique = metrique,
+      nextStep = nextStep, dataEnv, level = 0)[, factAna])
+    if (!is.na(factAnaSel) & !is.element(factAnaSel, factAnaSel_possible)){
+      stop(
+        paste("La valeur '", factAnaSel, "' du paramètre 'factAnaSel' n'est pas valide.\n", sep = ""),
+        paste("Veillez choisir parmi :\n"),
+        paste(factAnaSel_possible, collapse = ", ")
+      )
+    }
+  }
+
+  # ...des facteurs explicatifs
+  listFact_possible <- refTablesFields.aliases(nomTable = tableMetrique, dataEnv = dataEnv)
   if (length(listFact) == 3){
-    print("A partir de 3 facteurs de regroupement, les résultats deviennent difficiles à exploiter.")
-    print("Préférez les analyses à 1 ou 2 facteur(s).")
+    warning("A partir de 3 facteurs de regroupement, les résultats deviennent difficiles à exploiter.",
+      "Préférez les analyses à 1 ou 2 facteur(s).", immediate. = TRUE)
   }
   else if (length(listFact) > 3){
     stop(
@@ -143,9 +152,6 @@ lm.f <- function(agregation, metrique, factAna, factAnaSel = NA, listFact, listF
       "Veuillez ne sélectionner que 3 facteurs de regroupement au maximum."
     )
   }
-
-  # ...des facteurs explicatifs
-  listFact_possible <- refTablesFields.aliases(nomTable = tableMetrique, dataEnv = dataEnv)
   for (i in seq(length(listFact))){
     if (!is.element(listFact[i], listFact_possible)){
       stop(
@@ -169,11 +175,9 @@ lm.f <- function(agregation, metrique, factAna, factAnaSel = NA, listFact, listF
   }
 
   for (i in seq(length(listFact))){
-    listFactSel_possible <- unique(selectModalites.f(factor = factAna,
-      tableMetrique = tableMetrique, facts = listFact[i], selections = append(list(NA), NA),
-      MetriqueChoisie = metrique, ChoixMetriques = metriques_possibles,
-      env, nextStep = ifelse(agregation == "espece", "modele_lineaire", "modele_lineaire.unitobs"),
-      dataEnv, level = 1)[, listFact[i]])
+    listFactSel_possible <- unique(selectModalites.f(tableMetrique = tableMetrique,
+      facts = listFact[i], selections = append(list(NA), NA), metrique = metrique,
+      nextStep = nextStep, dataEnv, level = 1)[, listFact[i]])
     for (j in seq(length(listFactSel[[i]]))){
       if (!is.na(listFactSel[[i]][j]) & !is.element(listFactSel[[i]][j], listFactSel_possible)){
         stop(
@@ -187,11 +191,9 @@ lm.f <- function(agregation, metrique, factAna, factAnaSel = NA, listFact, listF
   }
 
   # Verification que les parametres sont "compatibles" et correspondent a des donnees :
-  modalites_trouvees <- selectModalites.f(factor = factAna, tableMetrique = tableMetrique,
+  modalites_trouvees <- selectModalites.f(tableMetrique = tableMetrique,
     facts = c(factAna, listFact), selections = append(list(factAnaSel), listFactSel),
-    MetriqueChoisie = metrique, ChoixMetriques = metriques_possibles,
-    env, nextStep = ifelse(agregation == "espece", "modele_lineaire", "modele_lineaire.unitobs"),
-    dataEnv, level = length(listFact))
+    metrique = metrique, nextStep = nextStep, dataEnv, level = length(listFact))
   if (nrow(modalites_trouvees) == 0){
     stop("Aucune donnee trouvee avec ces parametres.")
   }

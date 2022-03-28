@@ -50,36 +50,42 @@
 mrt.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact, listFactSel = NA,
   tableMetrique, dataEnv, baseEnv = .GlobalEnv){
 
+  tableMetrique_possible <- c("unit", "unitSp", "unitSpSz")
+  nextStep <- switch(agregation,
+    "espece" = "boxplot.esp",
+    "unitobs" = "boxplot.unitobs",
+    stop(
+      "Veuillez choisir une valeur de 'agregation' parmi 'espece' ou 'unitobs' (groupe d'especes)."
+    )
+  )
+
   # Verification des parametres :
   # ...de la metrique et de la table de metrique
-  if (tableMetrique == "unitSp"){
-    metriques_possibles <- c("density", "max.density", "max.number", "number", "sd.density",
-      "sd.number")
-  }
-  else if (tableMetrique == "unitSpSz"){
-    metriques_possibles <- c("abundance.propo.SC", "density", "max.density", "max.number",
-      "number", "sd.density", "sd.number")
-  }
-  else if (tableMetrique == "unit"){
-    if(agregation == "unitobs"){
-      metriques_possibles <- c("species.richness", "simpson", "simpson.l", "pielou", "hill", "Delta",
-        "DeltaStar", "LambdaPlus", "DeltaPlus", "SDeltaPlus", "relative.SR.site", "relative.SR.site.phylum",
-        "relative.SR.data", "relative.SR.region", "relative.SR.region.phylum")
-    }
-    else{
-      stop(
-        paste("La valeur de 'tableMetrique' ne peut pas etre 'unit' quand 'agregation' == 'espece'.")
-      )
-    }
-  }
-  else{
-    stop("Veuillez choisir une valeur de 'tableMetrique' entre 'unitSp' (/station /especes /classe de taille),
-      'unitSpSz' (/station /especes) et 'unit' (de biodiversite (/station)).")
+  if (!is.element(tableMetrique, tableMetrique_possible)){
+    stop("Veuillez choisir une valeur de 'tableMetrique' entre 'unitSp' (/station /especes),
+      'unitSpSz' (/station /especes /classe de taille) et 'unit' (de biodiversite (/station)).")
   }
 
+  # S'il s'agit d'un jeu de données benthos, ou qu'il n'y a pas de classes tailles disponibles
+  if ((is.benthos.f() | nrow(get("unitSpSz", envir = dataEnv)) == 0) & tableMetrique == "unitSpSz"){
+    stop(
+      paste("La table de métrique 'unitSpSz' n'est pas disponible pour ce jeu de données")
+    )
+  }
+
+  if (tableMetrique == "unit" & agregation == "espece"){
+    stop(
+      paste("La valeur de 'tableMetrique' ne peut pas etre 'unit' quand 'agregation' == 'espece'.")
+    )
+  }
+
+  metriques_possibles <- MetricsField.aliases(tableMetrique, "boxplot", dataEnv)
   if (!is.element(metrique, metriques_possibles)){
-    stop(paste("Veuillez choisir une metrique parmi :",
-      paste(metriques_possibles, collapse = ", ")))
+    stop(
+      paste("La valeur de 'metrique' n'est pas valide.\n"),
+      paste("Veuillez choisir une metrique parmi :\n"),
+      paste(metriques_possibles, collapse = ", ")
+    )
   }
 
   # ...du facteur de separation des graphiques
@@ -99,10 +105,9 @@ mrt.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact, 
       )
     }
   }
-  else if (agregation == 'unitobs'){
+  else{
     factGraph_possible_refesp <- spRefFields.aliases(site = getOption("P.MPA"), dataEnv = dataEnv,
       ordered = FALSE, tableMetrique = tableMetrique)
-
     if (!is.element(factGraph, factGraph_possible_refesp)){
       stop(
         paste("La valeur '", factGraph, "' du paramètre 'factGraph' n'est pas valide.\n", sep = ""),
@@ -111,16 +116,12 @@ mrt.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact, 
       )
     }
   }
-  else{
-    stop("Veuillez choisir une valeur de 'agregation' parmi 'espece' ou 'unitobs' (groupe d'especes).")
-  }
+
 
   # ...des modalites du facteur de separation des graphiques
-  factGraphSel_possible <- unique(selectModalites.f(factor = factGraph,
-    tableMetrique = tableMetrique, facts = factGraph, selections = append(list(NA), NA),
-    MetriqueChoisie = metrique, ChoixMetriques = metriques_possibles,
-    env, nextStep = ifelse(agregation == "espece", "MRT.esp", "MRT.unitobs"),
-    dataEnv, level = 0)[, factGraph])
+  factGraphSel_possible <- unique(selectModalites.f(tableMetrique = tableMetrique,
+    facts = factGraph, selections = append(list(NA), NA), metrique = metrique,
+    nextStep = nextStep, dataEnv, level = 0)[, factGraph])
   if (!is.na(factGraphSel) & !is.element(factGraphSel, factGraphSel_possible)){
     stop(
       paste("La valeur '", factGraphSel,
@@ -156,11 +157,9 @@ mrt.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact, 
   }
 
   for (i in seq(length(listFact))){
-    listFactSel_possible <- unique(selectModalites.f(factor = factGraph,
-      tableMetrique = tableMetrique, facts = listFact[i], selections = append(list(NA), NA),
-      MetriqueChoisie = metrique, ChoixMetriques = metriques_possibles,
-      env, nextStep = ifelse(agregation == "espece", "MRT.esp", "MRT.unitobs"),
-      dataEnv, level = 1)[, listFact[i]])
+    listFactSel_possible <- unique(selectModalites.f(tableMetrique = tableMetrique,
+      facts = listFact[i], selections = append(list(NA), NA), metrique = metrique,
+      nextStep = nextStep, dataEnv, level = 1)[, listFact[i]])
     for (j in seq(length(listFactSel[[i]]))){
       if (!is.na(listFactSel[[i]][j]) & !is.element(listFactSel[[i]][j], listFactSel_possible)){
         stop(
@@ -174,11 +173,9 @@ mrt.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact, 
   }
 
   # Verification que les parametres sont "compatibles" et correspondent a des donnees :
-  modalites_trouvees <- selectModalites.f(factor = factGraph, tableMetrique = tableMetrique,
+  modalites_trouvees <- selectModalites.f(tableMetrique = tableMetrique,
     facts = c(factGraph, listFact), selections = append(list(factGraphSel), listFactSel),
-    MetriqueChoisie = metrique, ChoixMetriques = metriques_possibles,
-    env, nextStep = ifelse(agregation == "espece", "MRT.esp", "MRT.unitobs"),
-    dataEnv, level = length(listFact))
+    metrique = metrique, nextStep = nextStep, dataEnv, level = length(listFact))
 
   if (nrow(modalites_trouvees) == 0){
     stop("Aucune donnee trouvee avec ces parametres.")

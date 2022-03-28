@@ -33,69 +33,77 @@
 #'
 #' @export
 
-freq_occurrence.f <- function(agregation, factGraph, factGraphSel = NA, listFact, listFactSel = NA,
-  dataEnv, baseEnv = .GlobalEnv){
+freq_occurrence.f <- function(agregation, factGraph = NULL, factGraphSel = NA, listFact,
+  listFactSel = NA, dataEnv, baseEnv = .GlobalEnv){
+
+  nextStep <- switch(agregation,
+    "espece" = "boxplot.esp",
+    "unitobs" = "boxplot.unitobs",
+    stop(
+      "Veuillez choisir une valeur de 'agregation' parmi 'espece' ou 'unitobs' (groupe d'especes)."
+    )
+  )
+  if (is.null(factGraph)){
+    factGraph <- ""
+  }
 
   # Verification des parametres :
   tableMetrique = "TablePresAbs"
   metrique = "pres.abs"
 
   # ...du facteur de separation des graphiques
-  if (agregation == 'espece'){
-    factGraph_possible_refesp <- spRefFields.aliases(site = getOption("P.MPA"), dataEnv = dataEnv,
-      ordered = FALSE, tableMetrique = tableMetrique)
-    factGraph_possible_unitobs <- UnitobsFields.aliases(ordered = FALSE, dataEnv = dataEnv,
-      tableMetrique = tableMetrique)
+  if (factGraph != ""){
+    if (agregation == 'espece'){
+      factGraph_possible_refesp <- spRefFields.aliases(site = getOption("P.MPA"), dataEnv = dataEnv,
+        ordered = FALSE, tableMetrique = tableMetrique)
+      factGraph_possible_unitobs <- UnitobsFields.aliases(ordered = FALSE, dataEnv = dataEnv,
+        tableMetrique = tableMetrique)
 
-    if (!is.element(factGraph, factGraph_possible_refesp) & !is.element(factGraph, factGraph_possible_unitobs)){
-      stop(
-        paste("La valeur '", factGraph, "' du paramètre 'factGraph' n'est pas valide.\n", sep = ""),
-        paste("Veuillez choisir parmi :\n"),
-        paste(factGraph_possible_refesp, collapse = ", "),
-        paste ("\n ou :\n"),
-        paste(factGraph_possible_unitobs, collapse = ", ")
-      )
+      if (!is.element(factGraph, factGraph_possible_refesp) & !is.element(factGraph, factGraph_possible_unitobs)){
+        stop(
+          paste("La valeur '", factGraph, "' du paramètre 'factGraph' n'est pas valide.\n", sep = ""),
+          paste("Veuillez choisir parmi :\n"),
+          paste(factGraph_possible_refesp, collapse = ", "),
+          paste ("\n ou :\n"),
+          paste(factGraph_possible_unitobs, collapse = ", ")
+        )
+      }
     }
-  }
-  else if (agregation == 'unitobs'){
-    factGraph_possible_refesp <- spRefFields.aliases(site = getOption("P.MPA"), dataEnv = dataEnv,
-      ordered = FALSE, tableMetrique = tableMetrique)
-
-    if (!is.element(factGraph, factGraph_possible_refesp)){
-      stop(
-        paste("La valeur '", factGraph, "' du paramètre 'factGraph' n'est pas valide.\n", sep = ""),
-        paste("Veuillez choisir parmi :\n"),
-        paste(factGraph_possible_refesp, collapse = ", ")
-      )
+    else{
+      factGraph_possible_refesp <- spRefFields.aliases(site = getOption("P.MPA"), dataEnv = dataEnv,
+        ordered = FALSE, tableMetrique = tableMetrique)
+      if (!is.element(factGraph, factGraph_possible_refesp)){
+        stop(
+          paste("La valeur '", factGraph, "' du paramètre 'factGraph' n'est pas valide.\n", sep = ""),
+          paste("Veuillez choisir parmi :\n"),
+          paste(factGraph_possible_refesp, collapse = ", ")
+        )
+      }
     }
-  }
-  else{
-    stop("Veuillez choisir une valeur de 'agregation' parmi 'espece' ou 'unitobs' (groupe d'especes).")
   }
 
   # ...des modalites du facteur de separation des graphiques
-  factGraphSel_possible <- unique(selectModalites.f(factor = factGraph,
-    tableMetrique = tableMetrique, facts = factGraph, selections = append(list(NA), NA),
-    MetriqueChoisie = metrique, ChoixMetriques = metrique,
-    env, nextStep = ifelse(agregation == "espece", "freq_occurrence", "freq_occurrence.unitobs"),
-    dataEnv, level = 0)[, factGraph])
+  if (factGraph != ""){
+    factGraphSel_possible <- unique(selectModalites.f(tableMetrique = tableMetrique,
+      facts = factGraph, selections = append(list(NA), NA), metrique = metrique,
+      nextStep = nextStep, dataEnv, level = 0)[, factGraph])
 
-  if (!is.na(factGraphSel) & !is.element(factGraphSel, factGraphSel_possible)){
-    stop(
-      paste("La valeur '", factGraphSel,
-        "' du paramètre 'factGraphSel' n'est pas valide.\n", sep = ""),
-      paste("Veillez choisir parmi :\n"),
-      paste(factGraphSel_possible, collapse = ", ")
-    )
+    if (!is.na(factGraphSel) & !is.element(factGraphSel, factGraphSel_possible)){
+      stop(
+        paste("La valeur '", factGraphSel,
+          "' du paramètre 'factGraphSel' n'est pas valide.\n", sep = ""),
+        paste("Veillez choisir parmi :\n"),
+        paste(factGraphSel_possible, collapse = ", ")
+      )
+    }
   }
 
+  # ...des facteurs explicatifs
   if (length(listFact) > 2){
     stop(
       "Veuillez ne sélectionner que 2 facteurs au maximum pour le paramètre 'listFact'."
     )
   }
-
-  # ...des facteurs explicatifs
   listFact_possible <- refTablesFields.aliases(nomTable = tableMetrique, dataEnv = dataEnv)
   for (i in seq(length(listFact))){
     if (!is.element(listFact[i], listFact_possible)){
@@ -120,10 +128,9 @@ freq_occurrence.f <- function(agregation, factGraph, factGraphSel = NA, listFact
   }
 
   for (i in seq(length(listFact))){
-    listFactSel_possible <- unique(selectModalites.f(factor = factGraph,
-      tableMetrique = tableMetrique, facts = listFact[i], selections = append(list(NA), NA),
-      MetriqueChoisie = metrique, ChoixMetriques = metrique,
-      env, nextStep = ifelse(agregation == "espece", "freq_occurrence", "freq_occurrence.unitobs"),
+    listFactSel_possible <- unique(selectModalites.f(tableMetrique = tableMetrique,
+      facts = listFact[i], selections = append(list(NA), NA), metrique = metrique,
+      nextStep = ifelse(agregation == "espece", "freq_occurrence", "freq_occurrence.unitobs"),
       dataEnv, level = 1)[, listFact[i]])
     for (j in seq(length(listFactSel[[i]]))){
       if (!is.na(listFactSel[[i]][j]) & !is.element(listFactSel[[i]][j], listFactSel_possible)){
@@ -138,11 +145,9 @@ freq_occurrence.f <- function(agregation, factGraph, factGraphSel = NA, listFact
   }
 
   # Verification que les parametres sont "compatibles" et correspondent a des donnees :
-  modalites_trouvees <- selectModalites.f(factor = factGraph, tableMetrique = tableMetrique,
+  modalites_trouvees <- selectModalites.f(tableMetrique = tableMetrique,
     facts = c(factGraph, listFact), selections = append(list(factGraphSel), listFactSel),
-    MetriqueChoisie = metrique, ChoixMetriques = metrique,
-    env, nextStep = ifelse(agregation == "espece", "freq_occurrence", "freq_occurrence.unitobs"),
-    dataEnv, level = length(listFact))
+    metrique = metrique, nextStep = nextStep, dataEnv, level = length(listFact))
   if (nrow(modalites_trouvees) == 0){
     stop("Aucune donnee trouvee avec ces parametres.")
   }

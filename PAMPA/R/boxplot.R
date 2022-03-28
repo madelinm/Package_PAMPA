@@ -48,85 +48,96 @@
 #'
 #' @export
 
-boxplot_pampa.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact,
+boxplot_pampa.f <- function(agregation, metrique, factGraph =  NULL, factGraphSel = NA, listFact,
   listFactSel = NA, tableMetrique, dataEnv, baseEnv = .GlobalEnv){
+
+  tableMetrique_possible <- c("unit", "unitSp", "unitSpSz")
+  nextStep <- switch(agregation,
+    "espece" = "boxplot.esp",
+    "unitobs" = "boxplot.unitobs",
+    stop(
+      "Veuillez choisir une valeur de 'agregation' parmi 'espece' ou 'unitobs' (groupe d'especes)."
+    )
+  )
+  if (is.null(factGraph)) {
+    factGraph <- ""
+  }
+
 
   # Verification des parametres :
   # ...de la metrique et de la table de metrique
-  if (tableMetrique == "unitSp"){
-    metriques_possibles <- c("density", "max.density", "max.number", "number", "sd.density",
-      "sd.number")
+  if (!is.element(tableMetrique, tableMetrique_possible)){
+    stop("Veuillez choisir une valeur de 'tableMetrique' entre 'unitSp' (/station /especes),
+      'unitSpSz' (/station /especes /classe de taille) et 'unit' (de biodiversite (/station)).")
   }
-  else if (tableMetrique == "unitSpSz"){
-    metriques_possibles <- c("abundance.propo.SC", "density", "max.density", "max.number",
-      "number", "sd.density", "sd.number")
+
+  # S'il s'agit d'un jeu de données benthos, ou qu'il n'y a pas de classes tailles disponibles
+  if ((is.benthos.f() | nrow(get("unitSpSz", envir = dataEnv)) == 0) & tableMetrique == "unitSpSz"){
+    stop(
+      paste("La table de métrique 'unitSpSz' n'est pas disponible pour ce jeu de données")
+    )
   }
-  else if (tableMetrique == "unit"){
-    if(agregation == "unitobs"){
-      metriques_possibles <- c("species.richness", "simpson", "simpson.l", "pielou", "hill", "Delta",
-        "DeltaStar", "LambdaPlus", "DeltaPlus", "SDeltaPlus", "relative.SR.site", "relative.SR.site.phylum",
-        "relative.SR.data", "relative.SR.region", "relative.SR.region.phylum")
-    }
-    else{
-      stop(
-        paste("La valeur de 'tableMetrique' ne peut pas etre 'unit' quand 'agregation' == 'espece'.")
-      )
-    }
+
+  if (tableMetrique == "unit" & agregation == "espece"){
+    stop(
+      paste("La valeur de 'tableMetrique' ne peut pas etre 'unit' quand 'agregation' == 'espece'.")
+    )
   }
-  else{
-    stop("Veuillez choisir une valeur de 'tableMetrique' entre 'unitSp' (/station /especes /classe de taille),
-      'unitSpSz' (/station /especes) et 'unit' (de biodiversite (/station)).")
-  }
+
+  metriques_possibles <- MetricsField.aliases(tableMetrique, "boxplot", dataEnv)
   if (!is.element(metrique, metriques_possibles)){
-    stop(paste("Veuillez choisir une metrique parmi :",
-      paste(metriques_possibles, collapse = ", ")))
+    stop(
+      paste("La valeur de 'metrique' n'est pas valide.\n"),
+      paste("Veuillez choisir une metrique parmi :\n"),
+      paste(metriques_possibles, collapse = ", ")
+    )
   }
 
   # ...du facteur de separation des graphiques
-  if (agregation == 'espece'){
-    factGraph_possible_refesp <- spRefFields.aliases(site = getOption("P.MPA"), dataEnv = dataEnv,
-      ordered = FALSE, tableMetrique = tableMetrique)
-    factGraph_possible_unitobs <- UnitobsFields.aliases(ordered = FALSE, dataEnv = dataEnv,
-      tableMetrique = tableMetrique)
+  if (factGraph != ""){
+    if (agregation == 'espece'){
+      factGraph_possible_refesp <- spRefFields.aliases(site = getOption("P.MPA"), dataEnv = dataEnv,
+        ordered = FALSE, tableMetrique = tableMetrique)
+      factGraph_possible_unitobs <- UnitobsFields.aliases(ordered = FALSE, dataEnv = dataEnv,
+        tableMetrique = tableMetrique)
 
-    if (!is.element(factGraph, factGraph_possible_refesp) & !is.element(factGraph, factGraph_possible_unitobs)){
-      stop(
-        paste("La valeur '", factGraph, "' du paramètre 'factGraph' n'est pas valide.\n", sep = ""),
-        paste("Veuillez choisir parmi :\n"),
-        paste(factGraph_possible_refesp, collapse = ", "),
-        paste ("\n ou :\n"),
-        paste(factGraph_possible_unitobs, collapse = ", ")
-      )
+      if (!is.element(factGraph, factGraph_possible_refesp) & !is.element(factGraph, factGraph_possible_unitobs)){
+        stop(
+          paste("La valeur '", factGraph, "' du paramètre 'factGraph' n'est pas valide.\n", sep = ""),
+          paste("Veuillez choisir parmi :\n"),
+          paste(factGraph_possible_refesp, collapse = ", "),
+          paste ("\n ou :\n"),
+          paste(factGraph_possible_unitobs, collapse = ", ")
+        )
+      }
+    }
+    else{
+      factGraph_possible_refesp <- spRefFields.aliases(site = getOption("P.MPA"), dataEnv = dataEnv,
+        ordered = FALSE, tableMetrique = tableMetrique)
+      if (!is.element(factGraph, factGraph_possible_refesp)){
+        stop(
+          paste("La valeur '", factGraph, "' du paramètre 'factGraph' n'est pas valide.\n", sep = ""),
+          paste("Veuillez choisir parmi :\n"),
+          paste(factGraph_possible_refesp, collapse = ", ")
+        )
+      }
     }
   }
-  else if (agregation == 'unitobs'){
-    factGraph_possible_refesp <- spRefFields.aliases(site = getOption("P.MPA"), dataEnv = dataEnv,
-      ordered = FALSE, tableMetrique = tableMetrique)
-    if (!is.element(factGraph, factGraph_possible_refesp)){
-      stop(
-        paste("La valeur '", factGraph, "' du paramètre 'factGraph' n'est pas valide.\n", sep = ""),
-        paste("Veuillez choisir parmi :\n"),
-        paste(factGraph_possible_refesp, collapse = ", ")
-      )
-    }
-  }
-  else{
-    stop("Veuillez choisir une valeur de 'agregation' parmi 'espece' ou 'unitobs' (groupe d'especes).")
-  }
+
 
   # ...des modalites du facteur de separation des graphiques
-  factGraphSel_possible <- unique(selectModalites.f(factor = factGraph,
-    tableMetrique = tableMetrique, facts = factGraph, selections = append(list(NA), NA),
-    MetriqueChoisie = metrique, ChoixMetriques = metriques_possibles,
-    env, nextStep = ifelse(agregation == "espece", "boxplot.esp", "boxplot.unitobs"),
-    dataEnv, level = 0)[, factGraph])
-  if (!is.na(factGraphSel) & !is.element(factGraphSel, factGraphSel_possible)){
-    stop(
-      paste("La valeur '", factGraphSel,
-        "' du paramètre 'factGraphSel' n'est pas valide.\n", sep = ""),
-      paste("Veillez choisir parmi :\n"),
-      paste(factGraphSel_possible, collapse = ", ")
-    )
+  if (factGraph != ""){
+    factGraphSel_possible <- unique(selectModalites.f(tableMetrique = tableMetrique,
+      facts = factGraph, selections = append(list(NA), NA), metrique = metrique,
+      nextStep = nextStep, dataEnv, level = 0)[, factGraph])
+    if (!is.na(factGraphSel) & !is.element(factGraphSel, factGraphSel_possible)){
+      stop(
+        paste("La valeur '", factGraphSel,
+          "' du paramètre 'factGraphSel' n'est pas valide.\n", sep = ""),
+        paste("Veillez choisir parmi :\n"),
+        paste(factGraphSel_possible, collapse = ", ")
+      )
+    }
   }
 
   # ...des facteurs explicatifs
@@ -154,11 +165,9 @@ boxplot_pampa.f <- function(agregation, metrique, factGraph, factGraphSel = NA, 
   }
 
   for (i in seq(length(listFact))){
-    listFactSel_possible <- unique(selectModalites.f(factor = factGraph,
-      tableMetrique = tableMetrique, facts = listFact[i], selections = append(list(NA), NA),
-      MetriqueChoisie = metrique, ChoixMetriques = metriques_possibles,
-      env, nextStep = ifelse(agregation == "espece", "boxplot.esp", "boxplot.unitobs"),
-      dataEnv, level = 1)[, listFact[i]])
+    listFactSel_possible <- unique(selectModalites.f(tableMetrique = tableMetrique,
+      facts = listFact[i], selections = append(list(NA), NA), metrique = metrique,
+      nextStep = nextStep, dataEnv, level = 1)[, listFact[i]])
     for (j in seq(length(listFactSel[[i]]))){
       if (!is.na(listFactSel[[i]][j]) & !is.element(listFactSel[[i]][j], listFactSel_possible)){
         stop(
@@ -172,11 +181,9 @@ boxplot_pampa.f <- function(agregation, metrique, factGraph, factGraphSel = NA, 
   }
 
   # Verification que les parametres sont "compatibles" et correspondent a des donnees :
-  modalites_trouvees <- selectModalites.f(factor = factGraph, tableMetrique = tableMetrique,
+  modalites_trouvees <- selectModalites.f(tableMetrique = tableMetrique,
     facts = c(factGraph, listFact), selections = append(list(factGraphSel), listFactSel),
-    MetriqueChoisie = metrique, ChoixMetriques = metriques_possibles,
-    env, nextStep = ifelse(agregation == "espece", "boxplot.esp", "boxplot.unitobs"),
-    dataEnv, level = length(listFact))
+    metrique = metrique, nextStep = nextStep, dataEnv, level = length(listFact))
   if (nrow(modalites_trouvees) == 0){
     stop("Aucune donnée trouvée avec ces paramètres.")
   }
@@ -3162,3 +3169,88 @@ agregationTableParCritere.f <- function(Data, metrique, facteurs, dataEnv, listF
 #     }
 #   }
 # }
+
+
+MetricsField.aliases <- function(nomTable, nextStep, dataEnv){
+
+  ## Purpose: Retourne la liste des champs pouvant être utilisés comme
+  ##          métriques en fonction du nom de table
+  ## ----------------------------------------------------------------------
+  ## Arguments: nomTable : nom de la table dans laquelle doivent être
+  ##                       cherchées les métriques disponibles (chaine de
+  ##                       caractères).
+  ##            nextStep : identifiant de l'étape suivante.
+  ##            dataEnv : l'environnement des données.
+  ## ----------------------------------------------------------------------
+  ## Author: Yves Reecht, Date: 11 ao?t 2010, 16:14
+
+  # On récupère la table de données :
+  assign(nomTable, get(nomTable, envir = dataEnv), envir = environment())
+
+  unitobs <- get("unitobs", envir = dataEnv)
+  refesp <- get("refesp", envir = dataEnv)
+
+  if (!is.character(nomTable)){
+    stop("'nomTable' must be a character string!")
+  }else{
+    switch(nomTable,
+      # Table unitSp (métriques d'observation) :
+      unitSp = {
+        res <- aliases(colnames(unitSp)[
+          sapply(unitSp, function(x){
+            is.numeric(x) & !all(is.na(x))
+          }) &
+          !is.element(colnames(unitSp), c("year",
+            has.no.pres.abs(nextStep, nomTable, dataEnv = dataEnv),
+            ifelse(is.benthos.f(),
+              "number",
+              "")))],
+          reverse = TRUE)
+
+        res <- res[order(names(res))]
+      },
+      # Table unitSpSz (métriques d'observation par classes de taille) :
+      unitSpSz = {
+        res <- aliases(colnames(unitSpSz)[
+          sapply(unitSpSz, function(x){
+            is.numeric(x) & !all(is.na(x))
+          }) &
+          !is.element(colnames(unitSpSz), c("year",
+            has.no.pres.abs(nextStep, nomTable, dataEnv = dataEnv),
+            "longitude", "latitude"))],
+          reverse = TRUE)
+
+        res <- res[order(names(res))]
+      },
+      # Table unit (indices de biodiversité) :
+      unit = {
+        columns <- c("species.richness", "simpson", "simpson.l", "pielou", "hill",
+          "Delta", "DeltaStar", "LambdaPlus", "DeltaPlus", "SDeltaPlus",
+          grep("relative.SR", colnames(eval(parse(text = nomTable))), value = TRUE))
+
+        columnsAls <- aliases(columns, reverse = TRUE) # with aliases as names
+
+        validCols <- colnames(unit)[
+          sapply(unit, function(x){
+            is.numeric(x) & !all(is.na(x))
+          }) &
+          is.element(colnames(unit), columns)]
+
+        res <- columnsAls[columnsAls %in% validCols]
+
+      },
+      # Autres cas :
+      {
+        res <- aliases(colnames(eval(parse(text = nomTable)))[
+          sapply(eval(parse(text = nomTable)), function(x){
+            is.numeric(x) & !all(is.na(x))
+          }) &
+          colnames(unitSp) != "year"],
+          reverse = TRUE)
+
+        res <- res[order(names(res))]
+      }
+    )
+    return(res[!is.element(res, c(colnames(refesp), colnames(unitobs)))])
+  }
+}
