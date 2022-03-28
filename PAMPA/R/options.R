@@ -106,13 +106,13 @@ options(
   P.saveStats = TRUE,                     # Sauvegarde des informations sur les données (stats incluses)?
   P.axesLabels = TRUE,                    # Affichage des noms d'axes ?
   P.title = TRUE,                         # Affichage des titres ?
-#  # Carto :
-#  P.colorLegendCarto = TRUE,              # Afficher la légende des couleurs (facteur de second niveau).
-#  P.zonesPalette = "carto1",              # Palette de couleurs pour différentier les zones.
-#  P.symbMaxIn = 0.5,                      # Taille maximale des symboles de taille variable (inches).
-#  P.symbColor = "red",                    # Couleur des symboles de taille variable.
-#  P.symbScale = TRUE,                     # Affichage de l'échelle des symboles.
-#  # ############################################################################################
+  # Carto :
+  P.colorLegendCarto = TRUE,              # Afficher la légende des couleurs (facteur de second niveau).
+  P.zonesPalette = "carto1",              # Palette de couleurs pour différentier les zones.
+  P.symbMaxIn = 0.5,                      # Taille maximale des symboles de taille variable (inches).
+  P.symbColor = "red",                    # Couleur des symboles de taille variable.
+  P.symbScale = TRUE,                     # Affichage de l'échelle des symboles.
+  # ############################################################################################
  # Classe des options (pour conversion depuis les variables tcl) :
  P.optionsClass = c(P.maxExclu = "logical", P.NbObs = "logical", P.NbObsCol = "character",
    P.pointMoyenne = "logical", P.pointMoyenneCol = "character",
@@ -149,10 +149,16 @@ options(
 
 # Options du référentiel spatial :
 options(P.linkUnitobs = "site",
-#  P.linkRefspa = "CODE.SITE",
-#  P.shapefileEncoding = "latin1",
-#  P.landField = "HABITAT1",               # Champs du référentiel spatial permettant d'identifier la terre...
-#  P.landMods = c("terre", "ilot"),        # ...modalités de ce champs correspondant à la terre.
-#  P.landCols = c(terre = "chocolate3",  mer = "powderblue"), # couleurs terre/mer.
+  P.linkRefspa = "CODE.SITE",
+#  P.shapefileEncoding = "latin1",         # changé pour UTF-8... utilisé pour chargement shapefile
+  P.shapefileEncoding = "UTF-8",
+  P.landField = "HABITAT1",               # Champs du référentiel spatial permettant d'identifier la terre...
+  P.landMods = c("terre", "ilot"),        # ...modalités de ce champs correspondant à la terre.
+  P.landCols = c(terre = "chocolate3",  mer = "powderblue"), # couleurs terre/mer.
   P.pinSubplot = c(2.0, 1.8)               # dimensions (en pouces/inches) des sous-graphiques pour représentation
 )
+
+
+# load_files.R / selectLink.interface.f
+.fileimageLink <- system.file("img/tableLink.GIF", package = "PAMPA")
+assign(".fileimageLink", .fileimageLink, envir=.GlobalEnv)

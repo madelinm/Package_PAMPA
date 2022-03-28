@@ -744,7 +744,8 @@ loadRefspa.f <- function(pathRefspa, baseEnv = .GlobalEnv){
       }else{}
 
       # ...Sinon, chargement sous forme de fichier texte :
-      refSpatial <- read.table(pathRefspa, sep = "\t", dec = ".", header = TRUE, encoding = "latin1")
+      refSpatial <- read.table(pathRefspa, sep = "\t", dec = ".", header = TRUE,
+        encoding = "latin1")
 
       # Renommage des champs pour l'ancien format : [???]
       if (ncol(refSpatial) == 15){     # [!!!] à vérifier  [yr: 7/12/2011]
@@ -779,16 +780,16 @@ loadShapefile.f <- function(directory, layer){
 
   # Read the shapefile :
   refspa <- rgdal::readOGR(dsn = directory, layer = layer,
-    encoding = getOption("P.shapefileEncoding"), verbose = FALSE)
+    use_iconv = TRUE, encoding = getOption("P.shapefileEncoding"), verbose = FALSE)
 
   colnames(refspa@data) <- gsub("_", ".", colnames(refspa@data), fixed = TRUE)
   colnames(refspa@data)[1] <- "OBJECTID"
 
   # Define the coordinate (without projection) for surface area processing :
-  crsArea <- sp:CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+  crsArea <- sp::CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 
   refspa <- maptools::spCbind(refspa,
-    data.frame("SITE.SURFACE" = areaPolygon(
+    data.frame("SITE.SURFACE" = geosphere::areaPolygon(
       sp::spTransform(x = refspa, CRSobj = crsArea)) / (10^6), # en km² !
         row.names = row.names(refspa@data)))
 
@@ -865,8 +866,9 @@ overlayUnitobs.f <- function(unitobs, refspa){
   ## Author: Yves Reecht, Date: 20 nov. 2012, 17:35
 
   # Georefences unitobs :
-  spaUnitobs <- SpatialPointsDataFrame(
-    coords = cbind(x = unitobs$longitude, y = unitobs$latitude),
+  spaUnitobs <- sp::SpatialPointsDataFrame(
+    coords = cbind(x = as.numeric(sub(",", ".", unitobs$longitude, fixed = TRUE)),
+      y = as.numeric(sub(",", ".", unitobs$latitude, fixed = TRUE))),
     data = unitobs,
     proj4string = refspa@proj4string,
     match.ID = TRUE)
@@ -954,7 +956,8 @@ mergeSpaUnitobs.f <- function(unitobs, refspa, type = "auto"){
   ## Author: Yves Reecht, Date:  7 déc. 2011, 17:23
 
   # Si issu d'un shapefile
-  if (isPoly <- is.element("SpatialPolygonsDataFrame", class(refspa))){
+  isPoly <- is.element("SpatialPolygonsDataFrame", class(refspa))
+  if (isPoly){
     if (is.element("OBJECTID", colnames(slot(refspa, "data")))){
       slot(refspa, "data")[ , "OBJECTID"] <- as.character(slot(refspa, "data")[ , "OBJECTID"])
     }else{}
@@ -1118,7 +1121,7 @@ selectLink.interface.f <- function(unitobs, refspa,
 
   #### définition des éléments de l'interface :
   # Frame d'aide :
-  F.help <- tcltk::tkWidget(WinLink, "labelframe",
+  F.help <- tcltk::tkwidget(WinLink, "labelframe",
     text = "Aide", padx = 4, pady = 2,
     height = 30,
     borderwidth = 2, relief = "groove",
@@ -1308,7 +1311,7 @@ loadObservations.f <- function(pathObs, dminMax = 5){
 
     obs$rotation <- as.numeric(obs$rotation)
 
-#    dminMax <- dist_min
+#    dminMax <- NULL
 #    while (is.null(dminMax)){
 #      dminMax <- selectionObs.SVR.f()
 #    }
@@ -1515,6 +1518,9 @@ obsFormatting.TRATO.f <- function(obs){
 #
 #   tcltk::tkdestroy(WinSVR)
 # }
+
+
+
 
 
 checkUnitobs.in.obs.f <- function(obs, unitobs){
