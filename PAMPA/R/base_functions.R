@@ -48,6 +48,26 @@ aliases <- function(fieldID, language = tolower(getOption("P.GUIlang")), reverse
 #assign(".aliases", .aliases, envir = .GlobalEnv)
 
 
+Capitalize.f <- function(x, words = FALSE){
+
+  ## Purpose: Mettre en majuscule la première lettre de chaque mot
+  ## ----------------------------------------------------------------------
+  ## Arguments: x : une chaîne de caractères
+  ##            words : tous les mots (TRUE), ou juste le premier.
+  ## ----------------------------------------------------------------------
+  ## Author: Yves Reecht, Date:  9 août 2010, 21:08
+
+  if (words){
+    s <- strsplit(x, " ")[[1]]
+  }else{
+    s <- x
+  }
+
+  return(paste(toupper(substring(s, 1,1)), substring(s, 2),
+    sep = "", collapse = " "))
+}
+
+
 dropLevels.f <- function(df, which = NULL){
 
   ## Purpose: Supprimer les 'levels' non utilisés des facteurs d'une
@@ -198,6 +218,14 @@ assign("varNames",
     fileEncoding = "latin1", quote = "\""),
   envir = .GlobalEnv)
 
+#assign("varNames",
+#  read.csv(system.file(
+#    paste("file_translation/VariableNames_", "fr", ".csv", sep = ""),
+#    package = "PAMPA"),
+#    header = TRUE, row.names = 1, stringsAsFactors = FALSE,
+#    fileEncoding = "latin1", quote = "\""),
+#  envir = .GlobalEnv)
+
 varNames.f <- function(fields, info = "name", quote = TRUE){
 
   ## Purpose: revoyer les informations (en particulier nom) sur le nom
@@ -234,26 +262,6 @@ varNames.f <- function(fields, info = "name", quote = TRUE){
   }
 
   return(res)
-}
-
-
-Capitalize.f <- function(x, words = FALSE){
-
-  ## Purpose: Mettre en majuscule la première lettre de chaque mot
-  ## ----------------------------------------------------------------------
-  ## Arguments: x : une chaîne de caractères
-  ##            words : tous les mots (TRUE), ou juste le premier.
-  ## ----------------------------------------------------------------------
-  ## Author: Yves Reecht, Date:  9 août 2010, 21:08
-
-  if (words){
-    s <- strsplit(x, " ")[[1]]
-  }else{
-    s <- x
-  }
-
-  return(paste(toupper(substring(s, 1,1)), substring(s, 2),
-    sep = "", collapse = " "))
 }
 
 
