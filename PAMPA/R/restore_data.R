@@ -43,6 +43,7 @@ restoreData.f <- function(baseEnv, dataEnv){
 #    ))
 
   print(mltext("restoreData.info"))
+  return(get("backup", envir = dataEnv))
 
 #  gestionMSGaide.f("SelectionOuTraitement", env = baseEnv
 

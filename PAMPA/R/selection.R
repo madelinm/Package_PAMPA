@@ -81,7 +81,7 @@ selectionOnRefesp.f <- function(dataEnv, baseEnv){
   unitobs <- get("unitobs", envir = dataEnv)
   refesp <- get("refesp", envir = dataEnv)
 
-  filePathes <- get("filePathes", envir = dataEnv)
+#  filePathes <- get("filePathes", envir = dataEnv)
 
   if (exists(".NombresSVR", envir = dataEnv)){ # SVR !
     .NombresSVR <- get(".NombresSVR", envir = dataEnv)
@@ -115,7 +115,7 @@ selectionOnRefesp.f <- function(dataEnv, baseEnv){
       selection[["selection"]]),
       "species.code"])
 
-    # Réduction des tables de données (au espèces sélectionnées) :
+    # Réduction des tables de données (aux espèces sélectionnées) :
     if (exists(".NombresSVR")){
       species <- dimnames(.NombresSVR)[["species.code"]]
 
@@ -538,8 +538,7 @@ selectModWindow.f <- function(champ, data, selectmode = "multiple", sort = TRUE,
 #}
 
 
-#exportMetrics.f <- function(unitSpSz, unitSp, unit, obs, unitobs, refesp,
-#  filePathes, baseEnv){
+#exportMetrics.f <- function(unitSpSz, unitSp, unit, obs, unitobs, refesp, filePathes, baseEnv){
 #
 #  ## Purpose: Exporter
 #  ##            * les tables de métriques avec des colonnes supplémentaires
