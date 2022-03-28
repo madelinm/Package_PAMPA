@@ -372,3 +372,180 @@ map_station_year.f <- function(data, dataEnv, baseEnv = .GlobalEnv){
 #   }else{}
 }
 
+
+#' @title Moyenne année visite
+#'
+#' @description Nombre moyen d'année de visite pour chaque site
+#'
+#' @param site selection des sites a etudier, si NA, tous les sites seront selectionnes
+#' @param year selection des annees a etudier, si NA toutes les annees seront selectionnees
+#' @param dataEnv environnement de stockage des données
+#' @param baseEnv environnement parent
+#'
+#' @examples
+#' PAMPA::moyenne_annee_visite.f(site = NA, year = NA, .dataEnv, .baseEnv)
+#'
+#' @export
+moyenne_annee_visite.f <- function(site = NA, year = NA, dataEnv, baseEnv = .GlobalEnv){
+  # Récupération des données
+  # Data recovery
+  unitobsData <- get("unitobs", envir = dataEnv)
+  if (is.na(site[1])){
+    site <- unique(unitobsData[["site"]])
+  }
+  if (is.na(year[1])){
+    year <- unique(unitobsData[["year"]])
+  }
+
+  # Création de la table de données
+  # creation of the data table
+  station_data <- unitobsData[which(is.element(unitobsData[["site"]], site) &
+    is.element(unitobsData[["year"]], year)), "site"]
+  year_data <- unitobsData[which(is.element(unitobsData[["year"]], year) &
+    is.element(unitobsData[["site"]], site)), "year"]
+
+  station_year_table <- table(as.character(station_data), as.character(year_data))
+
+  moyenne_annee_visite <- sapply(seq(nrow(station_year_table)), function(x){
+    mean(station_year_table[x,] > 0)
+  })
+  moyenne_annee_visite_table <- as.matrix(moyenne_annee_visite)
+  row.names(moyenne_annee_visite_table) <- row.names(station_year_table)
+  if (!exists("refspa", envir = dataEnv) | is.null(get("refspa", envir = dataEnv))){
+    title <- "Nombre moyen d'année de visite \npour chaque site"
+    listFact <- c("year", "site")
+    barplot_station_year.f(moyenne_annee_visite_table, main = title, listFact = listFact)
+  }
+  else{
+    map_mean_year.f(moyenne_annee_visite_table, dataEnv, baseEnv)
+  }
+}
+
+
+map_mean_year.f <- function(data, dataEnv, baseEnv = .GlobalEnv){
+
+  ## Purpose: Produire des boxplots répartis sur des cartes.
+  ## ----------------------------------------------------------------------
+  ## Arguments: graphType : type de graphique (bar|box-plot).
+  ##            metrique : la métrique choisie.
+  ##            factSpatial : facteur de regroupement spatial.
+  ##            factSpatialSel : sélection sur le facteur de regroupement
+  ##                             spatial.
+  ##            factGraph : le facteur sélection des espèces.
+  ##            factGraphSel : la sélection de modalités pour ce dernier
+  ##            listFact : liste du (des) facteur(s) de regroupement
+  ##            listFactSel : liste des modalités sélectionnées pour ce(s)
+  ##                          dernier(s)
+  ##            tableMetrique : nom de la table de métriques.
+  ##            bbox : emprise spatial (bouding box) ; toute la carte si
+  ##                   NULL.
+  ##            dataEnv : environnement de stockage des données.
+  ##            baseEnv : environnement de l'interface.
+  ## ----------------------------------------------------------------------
+  ## Author: Yves Reecht, Date:  7 fevr. 2013, 17:18
+
+    refspa <- get("refspa", envir = dataEnv)
+    unitobs <- get("unitobs", envir = dataEnv)
+    fact <- "SITE"                                # Le mettre en argument ?
+
+    # Création du fond de carte
+    # Base map creation
+    if (exists("baseMap", envir = dataEnv)){
+      baseMap <- get("baseMap", envir = dataEnv)
+    }else{
+      baseMap <- tryCatch(maptools::unionSpatialPolygons	(SpP = refspa,
+        IDs = ifelse(is.element(tolower(refspa@data[ , getOption("P.landField")]),
+          getOption("P.landMods")),
+          "terre", "mer")),
+        error = function(e){
+          return(refspa)
+      })
+
+      assign("baseMap", baseMap, envir = dataEnv)
+    }
+
+    df <- as.vector(unique(unitobs[which(is.element(unitobs$site, row.names(data))), fact]))
+    data_test <- cbind(df, seq(length(df)))
+    colnames(data_test) <- c(fact, "row")
+
+    # Réduction du référentiel spatial aux données d'intérêt
+    # Spatial reference table reduction
+
+    refspa <- subsetRefspaToData.f(refspa = refspa, unitobs = unitobs, Data = data_test, fact = fact)
+
+    mapview::mapviewOptions(basemaps = "CartoDB.Positron")
+    map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
+      layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE)
+
+    # Fonction pour agréger les polygones correspondant à un même site
+    # Function to merge polygons corresponding to the same site
+    UnionSimplifyPolByPol <- function(subSite, precision = 0){
+      out <- c()
+      for(iSubSite in 1:length(subSite)){
+#        cat("Adding:", subSite@data[iSubSite, "SITE"], "\n")
+        toAdd <- rgeos::gSimplify(as(subSite[iSubSite,], "SpatialPolygons"),
+          tol = precision, topologyPreserve = TRUE)
+        if(is.null(out)){
+          out <- toAdd
+        }else{
+          toUnite <- rbind(out, toAdd)
+          out <- unionSpatialPolygons(toUnite,
+            IDs = rep(1,2),
+            threshold = precision)
+        }
+      }
+      return(out)
+    }
+
+    list_site <- unique(unitobs[,c("site", "SITE", "CODE.SITE")])
+    refspa@data$SITE <- as.character(refspa@data$SITE)
+
+    vectSites <- row.names(data)
+    col <- PAMPAcolors.f(n = length(vectSites), palette = getOption("P.zonesPalette"))
+
+    data_mean <- data.frame()
+    for(iSite in 1:length(vectSites)){
+      siteName <- vectSites[iSite]
+      moyenne <- data[iSite,]
+      cat("Region:", siteName, "\n")
+
+      # Regroupement des sites
+      # Grouping of sites
+      refspa_site <- list_site[which(list_site$site == siteName), "SITE"]
+      polygons_of_interest <- which(is.element(refspa$SITE, refspa_site))
+
+      region <- UnionSimplifyPolByPol(refspa[polygons_of_interest,], 0)
+      region <- spChFIDs(region, siteName)
+
+      # Transformation de region en Spatial Polygons Data Frame
+      # Transform region in Spatial Polygons Data Frame
+      df <- as.data.frame(cbind(siteName, 1))
+      colnames(df) <- c("Site", "row")
+
+      spdf <- SpatialPolygonsDataFrame(region, df, match.ID = FALSE)
+
+      # Création du jeu de données avec les moyennes
+      # Creation of the dataset with the mean
+      x <- mean(do.call(coordinates, list(refspa[polygons_of_interest,]))[,1])
+      y <- mean(do.call(coordinates, list(refspa[polygons_of_interest,]))[,2])
+      data_mean <- rbind(data_mean, cbind(siteName, x, y, moyenne))
+
+      # Création de la carte
+      # Map creation
+      map <- map +
+        mapview::mapview(spdf, col.regions = col[iSite], legend = FALSE,
+          layer.name = siteName, label = FALSE, popup = FALSE)
+    }
+    data_mean$x <- as.numeric(as.character(data_mean$x))
+    data_mean$y <- as.numeric(as.character(data_mean$y))
+    data_mean$moyenne <- as.numeric(as.character(data_mean$moyenne))
+
+    map <- map +
+      mapview(data_mean, xcol = "x", ycol = "y", zcol = "siteName", col.region = col, cex = "moyenne",
+        layer.name = "Moyenne annees visitees", grid = FALSE, label = "siteName",
+        popup = "moyenne")
+    print(map)
+    print("Vous pouvez naviguez entre les couches à l'aide du bouton à gauche.")
+    print("You can switch between layer with the button at the left.")
+}
+
