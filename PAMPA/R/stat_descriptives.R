@@ -42,7 +42,6 @@ station_year.f <- function(site = NA, year = NA, dataEnv, baseEnv){
     is.element(unitobsData[["site"]], site)), "year"]
 
   station_year_table <- table(as.character(station_data), as.character(year_data))
-
   # Si pas de référentiel spatial, barplot normal
   # If no spatial reference table, basic barplot
   if (!exists("refspa", envir = dataEnv) | is.null(get("refspa", envir = dataEnv))){
@@ -55,17 +54,6 @@ station_year.f <- function(site = NA, year = NA, dataEnv, baseEnv){
   else{
     map_station_year.f(station_year_table, dataEnv, baseEnv)
   }
-
-  # for (i in nrow(station_year_table)){
-  #   barplot(station_year_table[i,], beside = TRUE)
-  # }
-  #
-  # moyenne_annee_visite <- sapply(seq(nrow(station_year_table)-1), function(x){
-  #   mean(station_year_table[x,] > 0)
-  # })
-  # sites <- row.names(station_year_table[1:nrow(station_year_table)-1,])
-  # moyenne_annee_visite_table <- cbind(sites, moyenne_annee_visite)
-
 }
 
 
@@ -119,7 +107,7 @@ barplot_station_year.f <- function(heights, main, listFact, cex = getOption("P.c
     cex.lab = cex,
     cex.axis = cex,
     legend.text = ifelse(length(listFact) > 1 && ! isSubplot(), TRUE, FALSE),
-    args.legend = list("x" = "topright", "inset" = 0, "xpd" = NA,
+    args.legend = list("x" = "topright", "inset" = -0.08, "xpd" = NA,
       "title" = Capitalize.f(varNames[listFact[1], "nom"])),
     ...)
 
@@ -195,7 +183,6 @@ map_station_year.f <- function(data, dataEnv, baseEnv = .GlobalEnv){
         error = function(e){
           return(refspa)
       })
-
       assign("baseMap", baseMap, envir = dataEnv)
     }
 
@@ -205,7 +192,6 @@ map_station_year.f <- function(data, dataEnv, baseEnv = .GlobalEnv){
 
     # Réduction du référentiel spatial aux données d'intérêt
     # Spatial reference table reduction
-
     refspa <- subsetRefspaToData.f(refspa = refspa, unitobs = unitobs, Data = data_test, fact = fact)
 
     mapview::mapviewOptions(basemaps = "CartoDB.Positron")
@@ -217,7 +203,6 @@ map_station_year.f <- function(data, dataEnv, baseEnv = .GlobalEnv){
     UnionSimplifyPolByPol <- function(subSite, precision = 0){
       out <- c()
       for(iSubSite in 1:length(subSite)){
-#        cat("Adding:", subSite@data[iSubSite, "SITE"], "\n")
         toAdd <- rgeos::gSimplify(as(subSite[iSubSite,], "SpatialPolygons"),
           tol = precision, topologyPreserve = TRUE)
         if(is.null(out)){
@@ -248,7 +233,6 @@ map_station_year.f <- function(data, dataEnv, baseEnv = .GlobalEnv){
       # Création du barplot
       # Barplot creation
       data_plot <- as.matrix(data[vectSites[iSite],])
-#      names(data_plot) <- colnames(data)
       flnm <- paste(file_temp, paste("barplot_", siteName, ".png", sep = ""), sep = "/")
       title <- paste("Nombre de visites par année \npour le site ", siteName, sep = "")
       listFact <- c("year")
@@ -462,7 +446,6 @@ map_mean_year.f <- function(data, dataEnv, baseEnv = .GlobalEnv){
         error = function(e){
           return(refspa)
       })
-
       assign("baseMap", baseMap, envir = dataEnv)
     }
 
@@ -472,7 +455,6 @@ map_mean_year.f <- function(data, dataEnv, baseEnv = .GlobalEnv){
 
     # Réduction du référentiel spatial aux données d'intérêt
     # Spatial reference table reduction
-
     refspa <- subsetRefspaToData.f(refspa = refspa, unitobs = unitobs, Data = data_test, fact = fact)
 
     mapview::mapviewOptions(basemaps = "CartoDB.Positron")
@@ -484,7 +466,6 @@ map_mean_year.f <- function(data, dataEnv, baseEnv = .GlobalEnv){
     UnionSimplifyPolByPol <- function(subSite, precision = 0){
       out <- c()
       for(iSubSite in 1:length(subSite)){
-#        cat("Adding:", subSite@data[iSubSite, "SITE"], "\n")
         toAdd <- rgeos::gSimplify(as(subSite[iSubSite,], "SpatialPolygons"),
           tol = precision, topologyPreserve = TRUE)
         if(is.null(out)){
