@@ -13,13 +13,14 @@
 #' @description Cree un graph (et une carte si refspa disponible) presentant le nombre de visites
 #' de chaque sites par annees
 #'
-#' @param site selection des sites a etudier, si NA, tous les sites seront selectionnes
-#' @param year selection des annees a etudier, si NA toutes les annees seront selectionnees
+#' @param site chr, selection des sites a etudier, si NA, tous les sites seront selectionnes
+#' @param year chr, selection des annees a etudier, si NA toutes les annees seront selectionnees
 #' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
 #' @examples
-#' #test
+#' PAMPA::station_year.f(site = c("Mbe Kouen", "Laregnere"), year = c("2008", "2009", "2010"),
+#'   .dataEnv, .baseEnv)
 #'
 #' @export
 station_year.f <- function(site = NA, year = NA, dataEnv, baseEnv){
@@ -373,13 +374,14 @@ map_station_year.f <- function(data, dataEnv, baseEnv = .GlobalEnv){
 }
 
 
-#' @title Moyenne année visite
+#' @title Nombre moyen d'annee de visite pour chaque site
 #'
-#' @description Nombre moyen d'année de visite pour chaque site
+#' @description Cree un graph (et une carte si refspa disponible) presentant le nombre de moyen
+#' d'annee de visite par site
 #'
-#' @param site selection des sites a etudier, si NA, tous les sites seront selectionnes
-#' @param year selection des annees a etudier, si NA toutes les annees seront selectionnees
-#' @param dataEnv environnement de stockage des données
+#' @param site chr, selection des sites a etudier, si NA, tous les sites seront selectionnes
+#' @param year chr, selection des annees a etudier, si NA toutes les annees seront selectionnees
+#' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
 #' @examples
