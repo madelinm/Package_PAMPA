@@ -85,8 +85,8 @@ load_files.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv){
   # Faire plus de vérifications ?
 
   if (is.na(filePathes["results"])){
-    filePathes["results"] <- ifelse(as.logical(length(grep("Data/$", filePathes["ws"]))),
-      sub("Data/$", "Results/", filePathes["ws"]),
+    filePathes["results"] <- ifelse(as.logical(length(grep("Data/$|Data$", filePathes["ws"]))),
+      sub("Data/$|Data$", "Results/", filePathes["ws"]),
       paste(filePathes["ws"], "Results/", sep = ""))
   }
   assign("filePathes", filePathes, envir = dataEnv)
@@ -172,7 +172,7 @@ load_files.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv){
     })
 
   moyenne_annee_visite <- sapply(seq(nrow(station_year_table)-1), function(x){
-    mean(station_year_table[x,] > 0)
+    mean(station_year_table[x,1:ncol(station_year_table)-1] > 0)
   })
   sites <- row.names(station_year_table[1:nrow(station_year_table)-1,])
   moyenne_annee_visite_table <- cbind(sites, moyenne_annee_visite)
@@ -188,7 +188,7 @@ load_files.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv){
         call. = FALSE, immediate. = TRUE)
     })
 
-  return(data)
+  return(Data)
 }
 
 
@@ -1634,7 +1634,9 @@ loadRefEspeces.f <- function (pathRefesp, pathRefesp.local = NA, baseEnv = .Glob
     })
 
   # Ajout de catégories benthiques supplémentaires lues dans un fichier de correspondance :
-  correspCatBenthique <- read.csv("inst/file_translation/corresp-cat-benth.csv", row.names = 1) ###### !!!!!!! faire attention !!
+  correspCatBenthique <- read.csv(
+    system.file("file_translation/corresp-cat-benth.csv", package = "PAMPA"),
+    row.names = 1)
 
   especes <- cbind(especes, correspCatBenthique[
     as.character(especes$benthic.categ), , drop = FALSE])
