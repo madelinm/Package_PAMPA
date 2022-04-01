@@ -1773,7 +1773,7 @@ symbColCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
           layer.name = metrique, grid = FALSE, label = fact, popup = metrique)
     }
     else{
-      x <- tmpDataMod2[order(tmpDataMod2$CODE.SITE),]
+      x <- tmpDataMod2[order(tmpDataMod2[fact]),]
       df <- as.data.frame(x)
 
       spdf <- SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
