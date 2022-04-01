@@ -49,7 +49,7 @@
 #'
 #' @export
 
-selection.f <- function(field, baseEnv, dataEnv){
+selection.f <- function(field, dataEnv, baseEnv){
   if(field == "refesp"){
     return(selectionOnRefesp.f(dataEnv, baseEnv))
   }

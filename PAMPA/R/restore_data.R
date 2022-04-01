@@ -18,7 +18,7 @@
 #'
 #' @export
 
-restoreData.f <- function(baseEnv, dataEnv){
+restoreData.f <- function(dataEnv, baseEnv){
 
   ## Purpose: Restauration des données originales (avant sélection selon un
   ##          ou plusieurs critères).
