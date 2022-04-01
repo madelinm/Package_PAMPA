@@ -532,3 +532,207 @@ map_mean_year.f <- function(data, dataEnv, baseEnv = .GlobalEnv){
     print("You can switch between layer with the button at the left.")
 }
 
+
+#' @title Occurence des especes par site et par annee
+#'
+#' @description Cree un graph (et une carte si refspa disponible) presentant le nombre d'occurrence
+#' des especes par site et par annee
+#'
+#' @param site chr, selection des sites a etudier, si NA, tous les sites seront selectionnes
+#' @param year chr, selection des annees a etudier, si NA toutes les annees seront selectionnees
+#' @param species chr, selection des especes a etudier, si NA toutes les especes seront selectionnees
+#' @param dataEnv environnement de stockage des donnees
+#' @param baseEnv environnement parent
+#' @examples
+#' PAMPA::occurence_especes_site_annee.f(site = NA, year = NA,
+#'   species = c("Acanthurus_sp2", "Chaetodon_kleinii", "Naso_tonganus", "Scaridae"),
+#'   .dataEnv, .baseEnv)
+#'
+#' @export
+occurence_especes_site_annee.f <- function(site = NA, year = NA, species = NA,
+  dataEnv, baseEnv = .GlobalEnv){
+
+  # Récupération des données
+  # Get the datas
+  obs <- get("obs", envir = dataEnv)
+  unitobs <- get("unitobs", envir = dataEnv)
+  refesp <- get("refesp", envir = dataEnv)
+
+  if (is.na(site[1])){
+    site <- unique(unitobs[["site"]])
+  }
+  if (is.na(year[1])){
+    year <- unique(unitobs[["year"]])
+  }
+  if (is.na(species[1])){
+    species <- unique(refesp[["scient.name"]])
+  }
+
+  # Récupération des colonnes qui nous intéressent
+  # Keep only columns with interest
+  df_obs <- obs[c("species.code", "observation.unit")]
+  df_unitobs <- unitobs[c("observation.unit", "site", "year")]
+  df_refesp <- refesp[c("species.code", "scient.name")]
+
+  # Fusions des tableaux
+  # Merge the data table
+  df_final <- dplyr::left_join(df_obs, df_unitobs, by = "observation.unit")
+  df_final <- dplyr::left_join(df_final, df_refesp, by = "species.code")
+
+  # Suppression des colonnes qui ne servent plus
+  # Keep only interesting columns
+  df_final <- df_final[c("scient.name", "site", "year")]
+
+  # On ne garde que les données sélectionnées par l'utilisateur
+  # Keep only data selected by user
+  df_final <- df_final[which(
+    is.element(df_final$site, site) &
+    is.element(df_final$year, year) &
+    is.element(df_final$scient.name, species)
+  ),]
+
+  # Conversion des données en caractères et suppression des facteurs pour éviter les surprises
+  # Convert data in character and suppression of factors to have no troubles
+  df_final$scient.name <- as.character(df_final$scient.name)
+  df_final$site <- as.character(df_final$site)
+  df_final$year <- as.character(df_final$year)
+
+  # Création du tableau de données final
+  # Creation of the final data frame
+  df <- as.data.frame(table(df_final))
+
+  if (!exists("refspa", envir = dataEnv) | is.null(get("refspa", envir = dataEnv))){
+    for (iSite in unique(df$site)){
+      barplotPAMPA.f(metrique = "Freq", listFact = c("scient.name", "year"), Data = df[which(df$site == iSite),])
+    }
+  }else{
+    map_occurence_esp.f(df, dataEnv, baseEnv)
+  }
+}
+
+
+map_occurence_esp.f <- function(data, dataEnv, baseEnv = .GlobalEnv){
+
+  ## Purpose: Produire des boxplots répartis sur des cartes.
+  ## ----------------------------------------------------------------------
+  ## Arguments: graphType : type de graphique (bar|box-plot).
+  ##            metrique : la métrique choisie.
+  ##            factSpatial : facteur de regroupement spatial.
+  ##            factSpatialSel : sélection sur le facteur de regroupement
+  ##                             spatial.
+  ##            factGraph : le facteur sélection des espèces.
+  ##            factGraphSel : la sélection de modalités pour ce dernier
+  ##            listFact : liste du (des) facteur(s) de regroupement
+  ##            listFactSel : liste des modalités sélectionnées pour ce(s)
+  ##                          dernier(s)
+  ##            tableMetrique : nom de la table de métriques.
+  ##            bbox : emprise spatial (bouding box) ; toute la carte si
+  ##                   NULL.
+  ##            dataEnv : environnement de stockage des données.
+  ##            baseEnv : environnement de l'interface.
+  ## ----------------------------------------------------------------------
+  ## Author: Yves Reecht, Date:  7 fevr. 2013, 17:18
+
+  refspa <- get("refspa", envir = dataEnv)
+  unitobs <- get("unitobs", envir = dataEnv)
+  fact <- "SITE"                                # Le mettre en argument ?
+
+  # Création du fond de carte
+  # Base map creation
+  if (exists("baseMap", envir = dataEnv)){
+    baseMap <- get("baseMap", envir = dataEnv)
+  }else{
+    baseMap <- tryCatch(maptools::unionSpatialPolygons	(SpP = refspa,
+      IDs = ifelse(is.element(tolower(refspa@data[ , getOption("P.landField")]),
+        getOption("P.landMods")),
+        "terre", "mer")),
+      error = function(e){
+        return(refspa)
+    })
+    assign("baseMap", baseMap, envir = dataEnv)
+  }
+
+  df <- as.vector(unique(unitobs[which(is.element(unitobs$site, unique(data)$site)), fact]))
+  data_test <- cbind(df, seq(length(df)))
+  colnames(data_test) <- c(fact, "row")
+
+  # Réduction du référentiel spatial aux données d'intérêt
+  # Spatial reference table reduction
+  refspa <- subsetRefspaToData.f(refspa = refspa, unitobs = unitobs, Data = data_test, fact = fact)
+
+  mapview::mapviewOptions(basemaps = "CartoDB.Positron")
+  map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
+    layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE)
+
+  # Fonction pour agrégé les polygones correspondant à un même site
+  # Function to merge polygons corresponding to the same site
+  UnionSimplifyPolByPol <- function(subSite, precision = 0){
+    out <- c()
+    for(iSubSite in 1:length(subSite)){
+      toAdd <- rgeos::gSimplify(as(subSite[iSubSite,], "SpatialPolygons"),
+        tol = precision, topologyPreserve = TRUE)
+      if(is.null(out)){
+        out <- toAdd
+      }else{
+        toUnite <- rbind(out, toAdd)
+        out <- unionSpatialPolygons(toUnite,
+          IDs = rep(1,2),
+          threshold = precision)
+      }
+    }
+    return(out)
+  }
+
+  list_site <- unique(unitobs[,c("site", "SITE", "CODE.SITE")])
+  refspa@data$SITE <- as.character(refspa@data$SITE)
+
+  vectSites <- as.character(unique(data$site))
+  col <- PAMPAcolors.f(n = length(vectSites), palette = getOption("P.zonesPalette"))
+
+  file_temp = tempfile()
+  dir.create(file_temp)
+
+  for(iSite in 1:length(vectSites)){
+    siteName <- vectSites[iSite]
+    cat("Region:", siteName, "\n")
+
+    # Création du barplot
+    # Barplot creation
+    data_plot <- data[which(data$site == siteName),]
+    flnm <- paste(file_temp, paste("barplot_", siteName, ".png", sep = ""), sep = "/")
+    title <- paste("Nombre d'occurence des espèces \npour le site ", siteName, sep = "")
+    metrique <- "Freq"
+    listFact <- c("scient.name", "year")
+    png(filename = flnm)
+
+    barplotPAMPA.f(metrique = metrique, listFact = listFact, Data = data_plot, main = title)
+
+    dev.off()
+
+    # Regroupement des sites
+    # Grouping of sites
+    refspa_site <- list_site[which(list_site$site == siteName), "SITE"]
+    polygons_of_interest <- which(is.element(refspa$SITE, refspa_site))
+
+    region <- UnionSimplifyPolByPol(refspa[polygons_of_interest,], 0)
+    region <- spChFIDs(region, siteName)
+
+    # Transformation de region en Spatial Polygons Data Frame
+    # Transform region in Spatial Polygons Data Frame
+    df <- as.data.frame(cbind(siteName, 1))
+    colnames(df) <- c("Site", "row")
+
+    spdf <- SpatialPolygonsDataFrame(region, df, match.ID = FALSE)
+
+    # Création de la carte
+    # Map creation
+    map <- map +
+      mapview::mapview(spdf, col.regions = col[iSite], legend = TRUE,
+        layer.name = siteName, label = FALSE, popup = leafpop::popupImage(flnm))
+  }
+  print(map)
+  print("Vous pouvez naviguez entre les couches à l'aide du bouton à gauche.")
+  print("You can switch between layer with the button at the left.")
+
+  unlink(file_temp, recursive = TRUE)
+}
