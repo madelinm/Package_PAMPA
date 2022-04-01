@@ -386,7 +386,8 @@ loadUnitobs.f <- function(pathUnitobs) {
   ## Author: Yves Reecht, Date:  5 déc. 2011, 11:33
 
   # Lecture du fichier :
-  unitobs <- read.table(pathUnitobs, sep = "\t", dec = ".", header = TRUE, encoding = "latin1")
+  unitobs <- read.table(pathUnitobs, sep = "\t", dec = ".", header = TRUE, encoding = "latin1",
+    stringsAsFactors = TRUE)
 
   # Changement des noms de colonnes :
   colnames(unitobs) <- c(getOption("P.MPAfield"), "observation.unit",
@@ -788,7 +789,7 @@ loadRefspa.f <- function(pathRefspa, baseEnv = .GlobalEnv){
 
       # ...Sinon, chargement sous forme de fichier texte :
       refSpatial <- read.table(pathRefspa, sep = "\t", dec = ".", header = TRUE,
-        encoding = "latin1")
+        encoding = "latin1", stringsAsFactors = TRUE)
 
       # Renommage des champs pour l'ancien format : [???]
       if (ncol(refSpatial) == 15){     # [!!!] à vérifier  [yr: 7/12/2011]
@@ -823,7 +824,8 @@ loadShapefile.f <- function(directory, layer){
 
   # Read the shapefile :
   refspa <- rgdal::readOGR(dsn = directory, layer = layer,
-    use_iconv = TRUE, encoding = getOption("P.shapefileEncoding"), verbose = FALSE)
+    use_iconv = TRUE, encoding = getOption("P.shapefileEncoding"), verbose = FALSE,
+    stringsAsFactors = TRUE)
 
   colnames(refspa@data) <- gsub("_", ".", colnames(refspa@data), fixed = TRUE)
   colnames(refspa@data)[1] <- "OBJECTID"
@@ -834,10 +836,11 @@ loadShapefile.f <- function(directory, layer){
   refspa <- maptools::spCbind(refspa,
     data.frame("SITE.SURFACE" = geosphere::areaPolygon(
       sp::spTransform(x = refspa, CRSobj = crsArea)) / (10^6), # en km² !
-        row.names = row.names(refspa@data)))
+        row.names = row.names(refspa@data), stringsAsFactors = TRUE))
 
   # Add centroids :
-  tmpCentr <- as.data.frame(coordinates(refspa), row.names = row.names(refspa@data))
+  tmpCentr <- as.data.frame(coordinates(refspa), row.names = row.names(refspa@data),
+    stringsAsFactor = TRUE)
 
   colnames(tmpCentr) <- paste("SITE.centr", c("X", "Y"), sep = "")
 
@@ -1321,7 +1324,8 @@ loadObservations.f <- function(pathObs, dminMax = 5){
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 12 déc. 2011, 14:38
 
-  obs <- read.table(pathObs, sep = "\t", dec = ".", header = TRUE, encoding = "latin1")
+  obs <- read.table(pathObs, sep = "\t", dec = ".", header = TRUE, encoding = "latin1",
+    stringsAsFactors = TRUE)
 
   if (getOption("P.obsType") != "SVR"){ # [!!!] à modifier (et porter dans une autre fonction ?) [yr: 12/12/2011]
     colnames(obs) <- c("observation.unit", "sector", "species.code", "sex", "length",
@@ -1614,7 +1618,7 @@ loadRefEspeces.f <- function (pathRefesp, pathRefesp.local = NA, baseEnv = .Glob
 
   # Importation des caracteristiques des especes
   especes <- read.table(pathRefesp, sep = "\t", dec = ".", quote = "", header = TRUE,
-    encoding = "latin1")
+    encoding = "latin1", stringsAsFactors = TRUE)
 
   # Traitement différent selon le nombre de colonnes :
   switch(as.character(ncol(especes)),
@@ -1748,7 +1752,7 @@ loadRefEspeces.new.f <- function(refesp, pathRefesp.local){
 
   if ( ! is.na(pathRefesp.local) && file.exists(pathRefesp.local)){
     refesp.local <- read.table(pathRefesp.local, sep = "\t", dec = ".", quote = "",
-      header = TRUE, encoding = "latin1")
+      header = TRUE, encoding = "latin1", stringsAsFactors = TRUE)
 
     # Le référentiel local a 13 colonnes obligatoires :
     if (ncol(refesp.local) < 14){
@@ -1925,7 +1929,7 @@ calc.unitSpSz.f <- function(obs, unitobs, refesp, dataEnv){
       "observation.unit" = NULL, "species.code" = NULL, "number" = NULL,
       "weight" = NULL, "mean.weight" = NULL, "density" = NULL,
       "pres.abs" = NULL, "site" = NULL, "biotop" = NULL,
-      "year" = NULL, "protection.status" = NULL)
+      "year" = NULL, "protection.status" = NULL, stringsAsFactors = TRUE)
   }
 
 #  pampaProfilingEnd.f()
@@ -2136,7 +2140,7 @@ calc.numbers.f <- function(nbr, nbName = "number"){
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 19 déc. 2011, 13:46
 
-  res <- as.data.frame(as.table(nbr), responseName = nbName)
+  res <- as.data.frame(as.table(nbr), responseName = nbName, stringsAsFactor = TRUE)
   # res$unitobs <- res$observation.unit # Pour compatibilité uniquement !!!
 
   if (is.element("size.class", colnames(res))){
@@ -2269,7 +2273,8 @@ calc.density.SVR.f <- function(Data, obs, metric = "density",
       as.data.frame(as.table(tapply(obs[obs[ , "number"] > 0 , "min.distance"],
         as.list(obs[obs[ , "number"] > 0, factors, drop = FALSE]),
         max, na.rm = TRUE)),
-        responseName = "r"))
+        responseName = "r"),
+        stringsAsFactor = TRUE)
 
     # Calcul des différentes densités :
     res <- lapply(metric,
@@ -2286,7 +2291,7 @@ calc.density.SVR.f <- function(Data, obs, metric = "density",
     # Ajout des résultats à Data
     names(res) <- metric
 
-    res <- as.data.frame(res)
+    res <- as.data.frame(res, stringsAsFactor = TRUE)
 
     Data <- cbind(Data, res)
     Data$r <- NULL
@@ -2322,7 +2327,8 @@ calc.biomass.SVR.f <- function(Data, obs,
     as.data.frame(as.table(tapply(obs[obs[ , "number"] > 0 , "min.distance"],
       as.list(obs[obs[ , "number"] > 0, factors, drop = FALSE]),
       max, na.rm = TRUE)),
-    responseName = "r"))
+    responseName = "r"),
+    stringsAsFactor = TRUE)
 
   biomass <- Data[ , "weight"] / (pi * (Data[ , "r"] ^ 2))
   # Les poids ont été corrigés au préalable et tiennent compte des espèces pour
@@ -2355,7 +2361,8 @@ stat.biomass.SVR.f <- function(Data, obs, metric,
       as.data.frame(as.table(tapply(obs[obs[ , "number"] > 0 , "min.distance"],
         as.list(obs[obs[ , "number"] > 0, factors, drop = FALSE]),
         max, na.rm = TRUE)),
-      responseName = "r"))
+      responseName = "r"),
+      stringsAsFactor = TRUE)
 
     # Calcul des différentes densités :
     res <- lapply(metric,
@@ -2369,7 +2376,7 @@ stat.biomass.SVR.f <- function(Data, obs, metric,
     # Ajout des résultats à Data
     names(res) <- metric
 
-    res <- as.data.frame(res)
+    res <- as.data.frame(res, stringsAsFactor = TRUE)
 
     Data <- cbind(Data, res)
     Data$r <- NULL
@@ -2775,7 +2782,7 @@ calc.nestingSuccess.f <- function(obs, Data,
   traces.lisibles[is.na(traces.lisibles) & ! is.na(Data[ , nbName])] <- 0
 
   return(data.frame("spawnings" = pontes, "readable.tracks" = traces.lisibles,
-    "spawning.success" = 100 * pontes / traces.lisibles))
+    "spawning.success" = 100 * pontes / traces.lisibles, stringsAsFactors = TRUE))
 }
 
 
@@ -3076,7 +3083,7 @@ agregations.generic.f <- function(Data, metrics, factors, listFact = NULL, unitS
         sum, na.rm = TRUE)
 
       Data <- merge(Data,
-        as.data.frame(as.table(nbTot), responseName = "nombre.tot"))
+        as.data.frame(as.table(nbTot), responseName = "nombre.tot"), stringsAsFactor = TRUE)
     }else{
       if (is.null(unitSp)) stop("unitSp must be defined")
 
@@ -3106,7 +3113,7 @@ agregations.generic.f <- function(Data, metrics, factors, listFact = NULL, unitS
       })
 
     Data <- merge(Data,
-      as.data.frame(as.table(biomTot), responseName = "tot.biomass"))
+      as.data.frame(as.table(biomTot), responseName = "tot.biomass"), stringsAsFactor = TRUE)
   }
 
   # Ajout du champ colonie pour le calcul des moyennes pondérées s'il est absent :
@@ -3171,7 +3178,8 @@ agregations.generic.f <- function(Data, metrics, factors, listFact = NULL, unitS
       }else{
         return(reslong[ , x])
       }
-    }, simplify = FALSE))
+    }, simplify = FALSE),
+    stringsAsFactor = TRUE)
 
   ## Fermeture de la fenêtre d'information
   #  if (info) close.info.f(WinInfo)
@@ -3404,7 +3412,7 @@ agregation.f <- function(metric, Data, factors, casMetrique, dataEnv,
   names(dimnames(res)) <- c(factors)
 
   # Transformation vers format long :
-  reslong <- as.data.frame(as.table(res), responseName = metric)
+  reslong <- as.data.frame(as.table(res), responseName = metric, stringsAsFactor = TRUE)
   reslong <- reslong[ , c(tail(colnames(reslong), 1), head(colnames(reslong), -1))] # métrique en première.
 
   return(reslong)
@@ -3782,7 +3790,8 @@ calcBiodiv.f <- function(Data, refesp, MPA, unitobs = "observation.unit",
 
   df.biodiv <- as.data.frame(as.table(tapply(Data[ , nombres],
     Data[ , unitobs],
-    sum, na.rm = TRUE)))
+    sum, na.rm = TRUE)),
+    stringsAsFactor = TRUE)
 
   colnames(df.biodiv) <- c(unitobs, nombres)
 
@@ -4044,7 +4053,7 @@ calcBiodivTaxo.f <- function(Data, refesp, unitobs = "observation.unit",
         divTaxo <- taxondive(contingence, taxdis)
 
         # mise de divTaxo sous forme de data.frame :
-        df.biodivTaxo <- as.data.frame(divTaxo[names(retained.indices)])
+        df.biodivTaxo <- as.data.frame(divTaxo[names(retained.indices)], stringsAsFactor = TRUE)
 
         colnames(df.biodivTaxo) <- retained.indices # [!!!] "LambdaPlus" ? vraiment ? [???]
 
