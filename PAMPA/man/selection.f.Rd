@@ -4,14 +4,14 @@
 \alias{selection.f}
 \title{Selection des donnees}
 \usage{
-selection.f(field, baseEnv, dataEnv)
+selection.f(field, dataEnv, baseEnv)
 }
 \arguments{
 \item{field}{: chr, unitobs ou refesp, type de champs choisi pour la selection.}
 
-\item{baseEnv}{: environnement parent}
-
 \item{dataEnv}{: environnement de stockage des donnees}
+
+\item{baseEnv}{: environnement parent}
 }
 \value{
 list, liste contenant les tables de donnees selon la selection.
@@ -38,8 +38,8 @@ selon quel(s) critere(s) du champs choisi il veut la faire.
 Elle ne retourne rien, les donnees sont stockees dans l'environnement .dataEnv
 (pas forcement tres pratique, a changer plus tard ?)
 
-A changer plus tard pour supprimer les lignes de code en doublon dans selectionOnRefesp.f (et
-dependaces) et selectionOnUnitobs.f (et dependances) ?
+A changer plus tard pour supprimer les lignes de code en doublon dans \code{selectionOnRefesp.f}
+(et dependances) et \code{selectionOnUnitobs.f} (et dependances) ?
 }
 \examples{
 ws_path <- system.file('example_data/COTE BLEUE/Data/', package = 'PAMPA')

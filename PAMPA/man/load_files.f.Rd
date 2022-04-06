@@ -11,11 +11,13 @@ load_files.f(filePathes, dminMax = 5, dataEnv, baseEnv)
 \itemize{unitobs}{ : chr, fichier unitobs}
 \itemize{obs}{ : chr, fichier d'observation}
 \itemize{refesp}{ : chr, referentiel especes}
+\itemize{locrefesp}{ : chr, referentiel especes local (facultatif)}
 \itemize{refspa}{ : chr, referentiel spatial (facultatif)}
 \itemize{ws}{ : chr, dossier de travail}
+\itemize{results}{ : chr, dossier ou enregistrer les donnees (facultatif)}
 \itemize{...}}
 
-\item{dminMax}{seuil de Min.Distance (en m) au-dessus duquel les observations ne sont pas prises en compte}
+\item{dminMax}{seuil (en m) au-dessus duquel les observations ne sont pas prises en compte}
 
 \item{dataEnv}{environnement de stockage des donnees}
 
@@ -35,21 +37,29 @@ Cette fonction permet de faire le chargement des donnees.
 
 Elle prend en entree les chemins des differents fichiers (sous forme d'un
 vecteur nomme).
+
+Le referentiel espece local et le referentiel statial sont facultatifs.
+
+Le chemin du dossier "results" est facultatif egalement. S'il n'est pas renseigne, les donnees
+seront enregistrees dans un dossier nomme 'results' dans le dossier de travail.
 Elle prend egalement en entree deux environnements, celui où stocker les donnees, et
 l'environnement parent. (Pas forcement tres pratique d'utilisation, a enlever plus tard ?)
 
-Dans un premier temps, elle va charger les differents fichiers de donnees (obs, unitobs, refesp,
-refspa). Elle va ensuite faire le calcul des tables de metriques. Puis, elle va enregistrer les
-tableaux de donnees dans l'environnement dataEnv afin de pouvoir les reutiliser plus tard.
-Enfin, elle va faire le calcul des poids pour chaque AMP.
+Le dossier de travail doit etre un dossier nomme 'Data' et doit etre le dossier de stockage
+des donnees.
 
-Elle renvoie ensuite les differentes tables de donnees, sous forme d'une liste nommee.
+Cette fonction charge les donnees a partir des chemins de fichiers donnes. Elle calcule ensuite
+les poids pour chaque AMP. Puis, elle calcule les tables de metriques, qu'elle enregistre dans
+l'environnement dataEnv afin de pouvoir les réutiliser plus tard. Elle renvoie ensuite les
+differentes tables de donnees, sous forme d'une liste nommee.
 }
 \examples{
 ws_path <- system.file('example_data/COTE BLEUE/Data/', package = 'PAMPA')
-unitobs_path <- system.file('example_data/COTE BLEUE/Data/UnitObs_Staviro_CB191110_280720.txt', package = 'PAMPA')
-obs_path <- system.file('example_data/COTE BLEUE/Data/Obs_Staviro_CB191110_AllIdentifiedSpecies_280720.txt', package = 'PAMPA')
-refesp_path <- system.file('example_data/COTE BLEUE/Data/refEspecesMed_general_270720 - Int peche est intCH_CB.txt', package = 'PAMPA')
+unitobs_path <- system.file('UnitObs_Staviro_CB191110_280720.txt', package = 'PAMPA')
+obs_path <- system.file('Obs_Staviro_CB191110_AllIdentifiedSpecies_280720.txt',
+  package = 'PAMPA')
+refesp_path <- system.file('refEspecesMed_general_270720 - Int peche est intCH_CB.txt',
+  package = 'PAMPA')
 
 filepaths <- c(unitobs = unitobs_path, obs = obs_path, refesp =  refesp_path,
   refspa = NULL, ws = ws_path)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/linear_modele.R
 \name{lm.f}
 \alias{lm.f}
-\title{Modele lineaire (donnees agregees par especes)}
+\title{Modele lineaire}
 \usage{
 lm.f(
   agregation,
@@ -36,39 +36,36 @@ lm.f(
 \item{baseEnv}{environnement parent}
 }
 \description{
-Calcul de modeles lineaires pour des donnees agregees par especes.
+Calcul de modeles lineaires selon les paramètres fournis
 }
 \details{
-Fonction pour calculer des modeles lineaires pour des donnees agregees par especes.
+Fonction pour calculer des modeles lineaires.
 
-agregation peut prendre la valeur 'espece' ou 'unitobs'. Si 'espece', l'agregation se fera
+\code{agregation} peut prendre la valeur 'espece' ou 'unitobs'. Si 'espece', l'agregation se fera
 par especes, si unitobs, elle se fera par groupe d'especes.
 
-tableMetrique peut prendre les valeurs 'unitSp' (/station /especes /classe de taille),
-'unitSpSz' (/station /especes) ou 'unit' (de biodiversite (/station)). Ce dernier cas n'est
-possible uniquement lorsque agregation == 'unitobs'.
+\code{tableMetrique} peut prendre les valeurs 'unitSpSz' (/station /especes /classe de taille),
+'unitSp' (/station /especes) ou 'unit' (de biodiversite (/station)). Ce dernier cas n'est
+possible uniquement lorsque \code{agregation == 'unitobs'}. La table de metriques 'unitSpSz'
+n'est pas disponible si le jeu de donnees est un jeu de donnees de benthos.
 
-metrique peut prendre differentes valeur en fonction de celle de tableMetrique. Elle peut prendre
-les valeurs 'density', 'max.density', 'max.number', 'number', 'sd.density', 'sd.number' lorsque
-tableMetrique == 'unitSp'. Lorsque tableMetrique == 'unitSpSz', metrique peut prendre ces memes
-valeurs ainsi que la valeur 'abundance.propo.SC'. Lorsque tableMetrique == 'unit', metrique peut
-prendre les valeurs suivantes : 'species.richness', 'simpson', 'simpson.l', 'pielou', 'hill',
-'Delta', 'DeltaStar', 'LambdaPlus', 'DeltaPlus', 'SDeltaPlus', 'relative.SR.site',
-'relative.SR.site.phylum', 'relative.SR.data', 'relative.SR.region', 'relative.SR.region.phylum'.
+\code{metrique} peut prendre differentes valeurs en fonction de celle de \code{tableMetrique} et
+du jeu de donnees.
 
-factAnaSel peut prendre differentes valeurs en fonction de celle de factAna. Ce parametre
-est facultatif. S'il est egal a NA, toutes les modalites du facteur seront selectionnees.
+\code{factAnaSel} peut prendre differentes valeurs en fonction de celle de \code{factAna}. Ce
+parametre est facultatif. S'il est egal a NA, toutes les modalites du facteur seront
+selectionnees.
 
-Il est deconseille de mettre plus de deux facteurs pour listFact, et il n'est pas possible d'en
-mettre plus de trois.
+Il est deconseille de mettre plus de deux facteurs pour \code{listFact}, et il n'est pas possible
+d'en mettre plus de trois.
 
-listFactSel peut prendre differentes valeurs en fonction de celle de listFact. Ce parametre est
-facultatif. S'il est egal a NA, alors toutes les modalites du ou des facteur(s) de regroupement
-selectionne(s) seront prises en compte.
+\code{listFactSel} peut prendre differentes valeurs en fonction de celle de \code{listFact}. Ce
+parametre est facultatif. S'il est egal a NA, alors toutes les modalites du ou des facteur(s) de
+regroupement selectionne(s) seront prises en compte.
 }
 \examples{
-lm.f(agregation = "espece", metrique = c("density"), factAna = c("scient.name"),
-  factAnaSel = c("Chromis_chromis"), listFact = c("year", "protection.status"),
+lm.f(agregation = "espece", metrique = "density", factAna = "scient.name",
+  factAnaSel = "Chromis_chromis", listFact = c("year", "protection.status"),
   listFactSel = list(c("2011", "2019"), NA), tableMetrique = "unitSp",
   dataEnv = .dataEnv, baseEnv = .baseEnv)
 

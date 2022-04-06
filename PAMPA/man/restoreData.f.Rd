@@ -4,12 +4,12 @@
 \alias{restoreData.f}
 \title{Selection et recalcul}
 \usage{
-restoreData.f(baseEnv, dataEnv)
+restoreData.f(dataEnv, baseEnv)
 }
 \arguments{
-\item{baseEnv}{: environnement parent}
-
 \item{dataEnv}{: environnement de stockage des donnees}
+
+\item{baseEnv}{: environnement parent}
 }
 \value{
 none
