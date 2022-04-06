@@ -118,28 +118,38 @@ maps.f <- function(agregation, graphType, metrique, factSpatial, factSpatialSel 
   # ... de la metrique et de la table des metriques :
   # ... the metric and the metrics table :
   if (!is.element(tableMetrique, tableMetrique_possible)){
-    stop("Veuillez choisir une valeur de 'tableMetrique' entre 'unitSp' (/station /especes /classe de taille),
-      'unitSpSz' (/station /especes) et 'unit' (de biodiversite (/station)).")
+    stop(
+      "Veuillez choisir une valeur de 'tableMetrique' entre 'unitSp' (/station /especes),
+        'unitSpSz' (/station /especes /classe de taille) et 'unit' (de biodiversite (/station)).",
+      "Please, choose a value for 'tableMetrique' between 'unitSp', (/station /species),
+        'unitSpSz' (/station /species /size classes) and 'unit' (of biodiversity (/station))."
+    )
   }
 
   # S'il s'agit d'un jeu de données benthos, ou qu'il n'y a pas de classes tailles disponibles
-  # If it's data for benthos, or if there isn't selected class size
+  # If it's a benthos data set, or no size classes are available
   if ((is.benthos.f() | nrow(get("unitSpSz", envir = dataEnv)) == 0) & tableMetrique == "unitSpSz"){
     stop(
-      paste("La table de métrique 'unitSpSz' n'est pas disponible pour ce jeu de données")
+      "La table de métrique 'unitSpSz' n'est pas disponible pour ce jeu de données.",
+      "The metric table 'unitSpSz' is not available for this data set."
     )
   }
   if (tableMetrique == "unit" & agregation == "espece"){
     stop(
-      paste("La valeur de 'tableMetrique' ne peut pas etre 'unit' quand 'agregation' == 'espece'.")
+      "La valeur de 'tableMetrique' ne peut pas etre 'unit' quand 'agregation' == 'espece'.",
+      "The value of 'tableMetrique' cannot be 'unit' when 'agregation' == 'espece'."
     )
   }
   metriques_possibles <- MetricsField.aliases(tableMetrique, "boxplot", dataEnv)
   if (!is.element(metrique, metriques_possibles)){
     stop(
       paste("La valeur de 'metrique' n'est pas valide.\n"),
-      paste("Veuillez choisir une metrique parmi :\n",
-      paste(metriques_possibles, collapse = ", ")))
+      paste("Veuillez choisir une metrique parmi :\n"),
+      paste(metriques_possibles, collapse = ", "),
+      paste("The value of 'metrique' isn't correct.\n"),
+      paste("Please, choose a metric in the following list :\n"),
+      paste(metriques_possibles, collapse = ", ")
+    )
   }
 
   # ...du facteur de regroupement spatial
@@ -149,6 +159,9 @@ maps.f <- function(agregation, graphType, metrique, factSpatial, factSpatialSel 
     stop(
       paste("La valeur '", factSpatial, "' du paramètre 'factSpatial' n'est pas valide.\n", sep = ""),
       paste("Veuillez choisir parmi :\n"),
+      paste(factSpatial_possible, collapse = ", "),
+      paste("The value '", factSpatial, "' of the parameter 'factSpatial' isn't correct.\n", sep = ""),
+      paste("Please, choose one in the following list :\n"),
       paste(factSpatial_possible, collapse = ", ")
     )
   }
@@ -179,6 +192,11 @@ maps.f <- function(agregation, graphType, metrique, factSpatial, factSpatialSel 
           paste("Veuillez choisir parmi :\n"),
           paste(factGraph_possible_refesp, collapse = ", "),
           paste ("\n ou :\n"),
+          paste(factGraph_possible_unitobs, collapse = ", "),
+          paste("The value '", factGraph, "' for the parameter 'factGraph' isn't correct.\n", sep = ""),
+          paste("Please, choose one in the following list :\n"),
+          paste(factGraph_possible_refesp, collapse = ", "),
+          paste ("\n or :\n"),
           paste(factGraph_possible_unitobs, collapse = ", ")
         )
       }
@@ -190,6 +208,9 @@ maps.f <- function(agregation, graphType, metrique, factSpatial, factSpatialSel 
         stop(
           paste("La valeur '", factGraph, "' du paramètre 'factGraph' n'est pas valide.\n", sep = ""),
           paste("Veuillez choisir parmi :\n"),
+          paste(factGraph_possible_refesp, collapse = ", "),
+          paste("The value '", factGraph, "' of the parameter 'factGraph' isn't correct.\n", sep = ""),
+          paste("please, choose one in the following list :\n"),
           paste(factGraph_possible_refesp, collapse = ", ")
         )
       }
@@ -207,13 +228,17 @@ maps.f <- function(agregation, graphType, metrique, factSpatial, factSpatialSel 
         paste("La valeur '", factGraphSel,
           "' du paramètre 'factGraphSel' n'est pas valide.\n", sep = ""),
         paste("Veillez choisir parmi :\n"),
+        paste(factGraphSel_possible, collapse = ", "),
+        paste("The value '", factGraphSel,
+          "' of the parameter 'factGraphSel' isn't correct.\n", sep = ""),
+        paste("Please, choose one in the following list :\n"),
         paste(factGraphSel_possible, collapse = ", ")
       )
     }
   }
 
   # ...des facteurs explicatifs
-  # ... the explanatory factors
+  # ...the explanatory factors
   if (is.element(graphType, barboxplot)){  # seulement pour les graphiques
     listFact_possible <- refTablesFields.aliases(nomTable = tableMetrique, dataEnv = dataEnv)
     for (i in seq(length(listFact))){
@@ -221,6 +246,9 @@ maps.f <- function(agregation, graphType, metrique, factSpatial, factSpatialSel 
         stop(
           paste("La valeur '", listFact[i], "' du paramètre 'listFact' n'est pas valide.\n", sep = ""),
           paste("Veuillez choisir parmi :\n"),
+          paste(listFact_possible, collapse = ", "),
+          paste("The value '", listFact[i], "' of the parameter 'listFact' isn't correct.\n", sep = ""),
+          paste("Please, choose one in the following list :\n"),
           paste(listFact_possible, collapse = ", ")
         )
       }
@@ -234,7 +262,8 @@ maps.f <- function(agregation, graphType, metrique, factSpatial, factSpatialSel 
       }
       else{
         stop(
-          paste("'listFact' et 'listFactSel' doivent avoir la même longueur.")
+          "'listFact' et 'listFactSel' doivent avoir la même longueur.",
+          "'listFact' and 'listFactSel' must have the same length."
         )
       }
     }
@@ -248,6 +277,10 @@ maps.f <- function(agregation, graphType, metrique, factSpatial, factSpatialSel 
             paste("La valeur '", listFactSel[[i]][j], "' du paramètre 'listFactGraph' pour le facteur '",
               listFact[i], "' n'est pas valide.\n", sep = ""),
             paste("Veuillez choisir parmi :\n"),
+            paste(listFactSel_possible, collapse = ", "),
+            paste("The value '", listFactSel[[i]][j], "' of the parameter 'listFactGraph' for the factor '",
+              listFact[i], "' isn't correct.\n", sep = ""),
+            paste("Please, choose one in the following list :\n"),
             paste(listFactSel_possible, collapse = ", ")
           )
         }
@@ -263,8 +296,10 @@ maps.f <- function(agregation, graphType, metrique, factSpatial, factSpatialSel 
       ifelse(!is.list(listFactSel), list(listFactSel), NA), NA))),
     metrique = metrique, nextStep = nextStep, dataEnv)
   if (nrow(modalites_trouvees) == 0){
-    stop("Aucune donnée trouvée avec ces paramètres.",
-         "No data found with these parameters.")
+    stop(
+      "Aucune donnée trouvée avec ces paramètres.",
+      "No data found with these parameters."
+    )
   }
 
 #  # verification et creation de la bbox :

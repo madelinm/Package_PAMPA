@@ -35,12 +35,14 @@
 freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factSel = NA,
   families = NA, dataEnv, baseEnv = .GlobalEnv){
 
-  # Verification des parametres :
+  # Verification des parametres
+  # Check of the parameters
   tableMetrique = "TablePresAbs"
   metrique = "pres.abs"
   agregation = "espece"
 
-  # ...du facteur de separation des graphiques
+  # ...du facteur de separation des graphiques :
+  # ...the factor for the graphic separation :
   factGraph_possible_unitobs <- UnitobsFields.aliases(ordered = FALSE, dataEnv = dataEnv,
     tableMetrique = tableMetrique)
 
@@ -48,11 +50,15 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
     stop(
       paste("La valeur '", factGraph, "' du paramètre 'factGraph' n'est pas valide.\n", sep = ""),
       paste("Veuillez choisir parmi :\n"),
+      paste(factGraph_possible_unitobs, collapse = ", "),
+      paste("The value '", factGraph, "' for the 'factGraph' parameter isn't correct.\n", sep = ""),
+      paste("Please, choose one in the following list :\n"),
       paste(factGraph_possible_unitobs, collapse = ", ")
     )
   }
 
-  # ...des modalites du facteur de separation des graphiques
+  # ...des modalites du facteur de separation des graphiques :
+  # ...the modalities of the factor for the  graphic separation :
   factGraphSel_possible <- unique(selectModalites.f( tableMetrique = tableMetrique,
     facts = factGraph, selections = append(list(NA), NA), metrique = metrique,
     nextStep = "freq_occurrence", dataEnv, level = 0)[, factGraph])
@@ -62,14 +68,20 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
       paste("La valeur '", factGraphSel,
         "' du paramètre 'factGraphSel' n'est pas valide.\n", sep = ""),
       paste("Veillez choisir parmi :\n"),
+      paste(factGraphSel_possible, collapse = ", "),
+      paste("The value '", factGraphSel,
+        "' of the 'factGraphSel' parameter isn't correct.\n", sep = ""),
+      paste("Please, choose one in the following list :\n"),
       paste(factGraphSel_possible, collapse = ", ")
     )
   }
 
-  # ...des facteurs explicatifs
+  # ...des facteurs explicatifs :
+  # ...the explanatory factors :
   if (length(fact) > 1){
     stop(
-      "Veuillez ne sélectionner que 1 facteur pour le paramètre 'fact'."
+      "Veuillez ne sélectionner que 1 facteur pour le paramètre 'fact'.",
+      "Please, select only 1 factor for the 'fact' parameter."
     )
   }
   fact_possible <- refTablesFields.aliases(nomTable = tableMetrique, dataEnv = dataEnv)
@@ -77,14 +89,19 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
     stop(
       paste("La valeur '", fact, "' du paramètre 'fact' n'est pas valide.\n", sep = ""),
       paste("Veuillez choisir parmi :\n"),
+      paste(fact_possible, collapse = ", "),
+      paste("The value '", fact, "' of the 'fact' parameter isn't correct.\n", sep = ""),
+      paste("Please, choose one in the following list :\n"),
       paste(fact_possible, collapse = ", ")
     )
   }
 
-  # ...des modalites des facteurs explicatifs
+  # ...des modalites des facteurs explicatifs :
+  # ...the modalities of the explanatory factors :
   if (length(factSel) != length(fact)){
     stop(
-      paste("'fact' et 'factSel' doivent avoir la même longueur.")
+      "'fact' et 'factSel' doivent avoir la même longueur.",
+      "'fact' and 'factSel' must have the same length."
     )
   }
 
@@ -97,12 +114,17 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
         paste("La valeur '", factSel, "' du paramètre 'factGraph' pour le facteur '",
           fact, "' n'est pas valide.\n", sep = ""),
         paste("Veuillez choisir parmi :\n"),
+        paste(factSel_possible, collapse = ", "),
+        paste("The value '", factSel, "' of the 'factGraph' parameter for the factor '",
+          fact, "' isn't correct.\n", sep = ""),
+        paste("Please, choose one in the following list :\n"),
         paste(factSel_possible, collapse = ", ")
       )
     }
   }
 
-  # ...des familles sélectionnées
+  # ...des familles sélectionnées :
+  # ...the selected families :
   families_possible <- unique(selectModalites.f(tableMetrique = tableMetrique,
     facts = "family", selections = append(list(NA), NA), metrique = metrique,
     nextStep = "freq_occurrence", dataEnv, level = 1)[, "family"])
@@ -111,20 +133,28 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
       stop(
         paste("La valeur '", families[i], "' du paramètre 'families' n'est pas valide.\n", sep = ""),
         paste("Veuillez choisir parmi :\n"),
-        paste(families_possible, collapse = ", ")
+        paste(families_possible, collapse = ", "),
+        paste("The value '", families[i], "' of the 'families' parameter isn't correct.\n", sep = ""),
+        paste("Please, choose one in the following list :\n"),
+        paste(listFact_possible, collapse = ", ")
       )
     }
   }
 
   # Verification que les parametres sont "compatibles" et correspondent a des donnees :
+  # Check that the parameter are "compatibles" and correspond to data :
   modalites_trouvees <- selectModalites.f(tableMetrique = tableMetrique,
     facts = c(factGraph, fact), selections = append(list(factGraphSel), factSel),
     metrique = metrique, nextStep = "freq_occurrence", dataEnv, level = length(fact))
   if (nrow(modalites_trouvees) == 0){
-    stop("Aucune donnee trouvee avec ces parametres.")
+    stop(
+      "Aucune donnée trouvée avec ces paramètres.",
+      "No data found with these parameters."
+    )
   }
 
   # Lancement de la fonction de graphique
+  # Launch of the graphic function
   barplotOccurrenceFamille.f(factGraph = factGraph, factGraphSel = factGraphSel,
     fact = fact, factSel = factSel, families = families,
     dataEnv = .dataEnv, baseEnv = .baseEnv)

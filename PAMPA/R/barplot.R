@@ -53,30 +53,40 @@ barplot_pampa.f <- function(agregation, metrique, factGraph = NULL, factGraphSel
     "espece" = "barplot.esp",
     "unitobs" = "barplot.unitobs",
     stop(
-      "Veuillez choisir une valeur de 'agregation' parmi 'espece' et 'unitobs' (groupe d'especes)."
+      "Veuillez choisir une valeur de 'agregation' parmi 'espece' ou 'unitobs' (groupe d'especes).",
+      "Please, choose an agregation between 'espece' and 'unitobs'."
     )
   )
   if (is.null(factGraph)){
     factGraph <- ""
   }
 
-  # Verification des parametres :
-  # ...de la metrique et de la table de metrique
+  # Verification des parametres
+  # Check of the parameters
+  # ...de la metrique et de la table de metrique :
+  # ...the metric and the metric table :
   if (!is.element(tableMetrique, tableMetrique_possible)){
-    stop("Veuillez choisir une valeur de 'tableMetrique' entre 'unitSp' (/station /especes),
-      'unitSpSz' (/station /especes /classe de taille) et 'unit' (de biodiversite (/station)).")
+    stop(
+      "Veuillez choisir une valeur de 'tableMetrique' entre 'unitSp' (/station /especes),
+        'unitSpSz' (/station /especes /classe de taille) et 'unit' (de biodiversite (/station)).",
+      "Please, choose a value for 'tableMetrique' between 'unitSp', (/station /species),
+        'unitSpSz' (/station /species /size classes) and 'unit' (of biodiversity (/station))."
+    )
   }
 
-  # S'il s'agit d'un jeu de données benthos, ou qu'il n'y a pas de classes tailles disponibles
+  # S'il s'agit d'un jeu de données benthos, ou qu'il n'y a pas de classes tailles disponibles :
+  # If it's a benthos data set, or no size classes are available :
   if ((is.benthos.f() | nrow(get("unitSpSz", envir = dataEnv)) == 0) & tableMetrique == "unitSpSz"){
     stop(
-      paste("La table de métrique 'unitSpSz' n'est pas disponible pour ce jeu de données")
+      "La table de métrique 'unitSpSz' n'est pas disponible pour ce jeu de données.",
+      "The metric table 'unitSpSz' is not available for this data set."
     )
   }
 
   if (tableMetrique == "unit" & agregation == "espece"){
     stop(
-      paste("La valeur de 'tableMetrique' ne peut pas etre 'unit' quand 'agregation' == 'espece'.")
+      "La valeur de 'tableMetrique' ne peut pas etre 'unit' quand 'agregation' == 'espece'.",
+      "The value of 'tableMetrique' cannot be 'unit' when 'agregation' == 'espece'."
     )
   }
 
@@ -85,11 +95,15 @@ barplot_pampa.f <- function(agregation, metrique, factGraph = NULL, factGraphSel
     stop(
       paste("La valeur de 'metrique' n'est pas valide.\n"),
       paste("Veuillez choisir une metrique parmi :\n"),
+      paste(metriques_possibles, collapse = ", "),
+      paste("The value of 'metrique' isn't correct.\n"),
+      paste("Please, choose a metric in the following list :\n"),
       paste(metriques_possibles, collapse = ", ")
     )
   }
 
-  # ...du facteur de separation des graphiques
+  # ...du facteur de separation des graphiques :
+  # ...the factor for the graphic separation :
   if (factGraph != ""){
     if (agregation == 'espece'){
       factGraph_possible_refesp <- spRefFields.aliases(site = getOption("P.MPA"), dataEnv = dataEnv,
@@ -103,6 +117,11 @@ barplot_pampa.f <- function(agregation, metrique, factGraph = NULL, factGraphSel
           paste("Veuillez choisir parmi :\n"),
           paste(factGraph_possible_refesp, collapse = ", "),
           paste ("\n ou :\n"),
+          paste(factGraph_possible_unitobs, collapse = ", "),
+          paste("The value '", factGraph, "' for the 'factGraph' parameter isn't correct.\n", sep = ""),
+          paste("Please, choose one in the following list :\n"),
+          paste(factGraph_possible_refesp, collapse = ", "),
+          paste ("\n or :\n"),
           paste(factGraph_possible_unitobs, collapse = ", ")
         )
       }
@@ -114,13 +133,17 @@ barplot_pampa.f <- function(agregation, metrique, factGraph = NULL, factGraphSel
         stop(
           paste("La valeur '", factGraph, "' du paramètre 'factGraph' n'est pas valide.\n", sep = ""),
           paste("Veuillez choisir parmi :\n"),
+          paste(factGraph_possible_refesp, collapse = ", "),
+          paste("The value '", factGraph, "' of the 'factGraph' parameter isn't correct.\n", sep = ""),
+          paste("please, choose one in the following list :\n"),
           paste(factGraph_possible_refesp, collapse = ", ")
         )
       }
     }
   }
 
-  # ...des modalites du facteur de separation des graphiques
+  # ...des modalites du facteur de separation des graphiques :
+  # ...the modalities of the factor for the  graphic separation :
   if (factGraph != ""){
     factGraphSel_possible <- unique(selectModalites.f(tableMetrique = tableMetrique,
       facts = factGraph, selections = append(list(NA), NA), metrique = metrique,
@@ -130,15 +153,21 @@ barplot_pampa.f <- function(agregation, metrique, factGraph = NULL, factGraphSel
         paste("La valeur '", factGraphSel,
           "' du paramètre 'factGraphSel' n'est pas valide.\n", sep = ""),
         paste("Veillez choisir parmi :\n"),
+        paste(factGraphSel_possible, collapse = ", "),
+        paste("The value '", factGraphSel,
+          "' of the 'factGraphSel' parameter isn't correct.\n", sep = ""),
+        paste("Please, choose one in the following list :\n"),
         paste(factGraphSel_possible, collapse = ", ")
       )
     }
   }
 
-  # ...des facteurs explicatifs
+  # ...des facteurs explicatifs :
+  # ...the explanatory factors :
   if (length(listFact) > 2){
     stop(
-      "Veuillez ne sélectionner que 2 facteurs au maximum pour le paramètre 'listFact'."
+      "Veuillez ne sélectionner que 2 facteurs au maximum pour le paramètre 'listFact'.",
+      "Please, select only 2 factors at most for the 'listFact' parameter."
     )
   }
   listFact_possible <- refTablesFields.aliases(nomTable = tableMetrique, dataEnv = dataEnv)
@@ -147,19 +176,24 @@ barplot_pampa.f <- function(agregation, metrique, factGraph = NULL, factGraphSel
       stop(
         paste("La valeur '", listFact[i], "' du paramètre 'listFact' n'est pas valide.\n", sep = ""),
         paste("Veuillez choisir parmi :\n"),
+        paste(listFact_possible, collapse = ", "),
+        paste("The value '", listFact[i], "' of the 'listFact' parameter isn't correct.\n", sep = ""),
+        paste("Please, choose one in the following list :\n"),
         paste(listFact_possible, collapse = ", ")
       )
     }
   }
 
-  # ...des modalites des facteurs explicatifs
+  # ...des modalites des facteurs explicatifs :
+  # ...the modalities of the explanatory factors :
   if (length(listFactSel) != length(listFact)){
     if (length(listFactSel) == 1 & is.na(listFactSel)){
       listFactSel <- lapply(listFact, function(x) NA)
     }
     else{
       stop(
-        paste("'listFact' et 'listFactSel' doivent avoir la même longueur.")
+        "'listFact' et 'listFactSel' doivent avoir la même longueur.",
+        "'listFact' and 'listFactSel' must have the same length."
       )
     }
   }
@@ -172,8 +206,12 @@ barplot_pampa.f <- function(agregation, metrique, factGraph = NULL, factGraphSel
       if (!is.na(listFactSel[[i]][j]) & !is.element(listFactSel[[i]][j], listFactSel_possible)){
         stop(
           paste("La valeur '", listFactSel[[i]][j], "' du paramètre 'listFactGraph' pour le facteur '",
-            listFact[i], "' n'est pas valide.\n", sep = ""),
+                listFact[i], "' n'est pas valide.\n", sep = ""),
           paste("Veuillez choisir parmi :\n"),
+          paste(listFactSel_possible, collapse = ", "),
+          paste("The value '", listFactSel[[i]][j], "' of the 'listFactGraph' parameter for the factor '",
+                listFact[i], "' isn't correct.\n", sep = ""),
+          paste("Please, choose one in the following list :\n"),
           paste(listFactSel_possible, collapse = ", ")
         )
       }
@@ -181,14 +219,19 @@ barplot_pampa.f <- function(agregation, metrique, factGraph = NULL, factGraphSel
   }
 
   # Verification que les parametres sont "compatibles" et correspondent a des donnees :
+  # Check that the parameter are "compatibles" and correspond to data :
   modalites_trouvees <- selectModalites.f(tableMetrique = tableMetrique,
     facts = c(factGraph, listFact), selections = append(list(factGraphSel), listFactSel),
     metrique = metrique, nextStep = nextStep, dataEnv, level = length(listFact))
   if (nrow(modalites_trouvees) == 0){
-    stop("Aucune donnee trouvee avec ces parametres.")
+    stop(
+      "Aucune donnée trouvée avec ces paramètres.",
+      "No data found with these parameters."
+    )
   }
 
   # Lancement de la fonction de graphique
+  # Launch of the graphic function
   if (agregation == 'espece'){
     WP2barplot.esp.f(metrique, factGraph, factGraphSel, listFact, listFactSel, tableMetrique,
       dataEnv, baseEnv)
