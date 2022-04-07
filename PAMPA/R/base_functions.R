@@ -2,6 +2,7 @@
 # Ces fonctions concernent la traduction du package (anglais/français), la typographie(majuscules /
 # minuscules), la modification de fonctions déjà existantes, ...
 
+#' @import tkrplot
 
 aliases <- function(fieldID, language = tolower(getOption("P.GUIlang")), reverse = FALSE){
 

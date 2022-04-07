@@ -24,6 +24,7 @@
 #' @import sp
 #' @import maptools
 #' @import geosphere
+#' @import rgdal
 
 
 #' @title Importation des donnees et calculs des poids
@@ -39,7 +40,7 @@
 #'  \itemize{ws}{ : chr, dossier de travail}
 #'  \itemize{results}{ : chr, dossier ou enregistrer les donnees (facultatif)}
 #'  \itemize{...}
-#' @param dminMax seuil de Min.Distance (en m) au-dessus duquel les observations ne sont pas prises en compte
+#' @param dminMax seuil (en m) au-dessus duquel les observations ne sont pas prises en compte
 #' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
@@ -54,8 +55,7 @@
 #' obs_path <- system.file('example_data/COTE BLEUE/Data/Obs_Staviro_CB191110_AllIdentifiedSpecies_280720.txt', package = 'PAMPA')
 #' refesp_path <- system.file('example_data/COTE BLEUE/Data/refEspecesMed_general_270720 - Int peche est intCH_CB.txt', package = 'PAMPA')
 #'
-#' filepaths <- c(unitobs = unitobs_path, obs = obs_path, refesp =  refesp_path,
-#'   refspa = NULL, ws = ws_path)
+#' filepaths <- c(unitobs = unitobs_path, obs = obs_path, refesp =  refesp_path, refspa = NULL, ws = ws_path)
 #'
 #' load_files.f(filepaths, dminMax = 5, .dataEnv, .baseEnv)
 #'
