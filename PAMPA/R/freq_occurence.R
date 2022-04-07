@@ -295,6 +295,8 @@ barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, 
       dataEnv = dataEnv,
       type = "espece",
       typeGraph = "barplot")
+#    graphFileTmp <- "test_unitaire"  # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
+                                      # donc on la commente et on décommente cette ligne pour passer les tests
 
     # graphFile uniquement si nouveau fichier :
     if (!is.null(graphFileTmp)) graphFile <- graphFileTmp
@@ -1482,6 +1484,9 @@ barplotOccurrence.unitobs.f <- function(factGraph, factGraphSel, listFact, listF
       dataEnv = dataEnv,
       type = "unitobs",
       typeGraph = "barplot")
+#    graphFile <- "test_unitaire"   # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
+                                    # donc on la commente et on décommente cette ligne pour passer les tests
+
 
     # Titre (d'après les métriques, modalité du facteur de séparation et facteurs de regroupement) :
     if ((! isTRUE(getOption("P.graphPaper"))) && isTRUE(getOption("P.title"))){
