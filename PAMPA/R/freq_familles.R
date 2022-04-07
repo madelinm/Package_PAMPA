@@ -273,6 +273,8 @@ barplotOccurrenceFamille.f <- function(factGraph, factGraphSel, fact, factSel, f
       dataEnv = dataEnv,
       type = "espece",
       typeGraph = "barplot")
+#    graphFileTmp <- "test_unitaire"  # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
+                                      # donc on la commente et on décommente cette ligne pour passer les tests
 
     # graphFile uniquement si nouveau fichier :
     if (!is.null(graphFileTmp)) graphFile <- graphFileTmp
