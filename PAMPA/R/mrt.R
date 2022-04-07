@@ -346,6 +346,8 @@ WP2MRT.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSe
         "unitSpSz" = {"CL_espece"},
         "espece"),
       typeGraph = "MRT")
+#    graphFileTmp <- "test_unitaire"  # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
+                                      # donc on la commente et on décommente cette ligne pour passer les tests
 
     # graphFile uniquement si nouveau fichier :
     if (!is.null(graphFileTmp)) graphFile <- graphFileTmp
@@ -1463,6 +1465,8 @@ WP2MRT.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, listFa
       "unitobs"),
     typeGraph = "MRT",
     large = TRUE)
+#  graphFile <- "test_unitaire"  # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
+                                 # donc on la commente et on décommente cette ligne pour passer les tests
 
   par(mar = c(1.5, 7, 7, 7), mgp = c(3.5, 1, 0)) # paramètres graphiques.
 
