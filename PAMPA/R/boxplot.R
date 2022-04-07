@@ -229,6 +229,8 @@ boxplot_pampa.f <- function(agregation, metrique, factGraph =  NULL, factGraphSe
     )
   }
 
+#  factGraphSel <- "Labridae"
+
   # Lancement de la fonction de graphique
   # Launch of the graphic function
   if (agregation == 'espece'){
@@ -355,6 +357,8 @@ WP2boxplot.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSe
         "unit" = {"unitobs"},
         "espece"),
       typeGraph = "boxplot")
+#    graphFileTmp <- "test_unitaire"   # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
+                                       # donc on la commente et on décommente cette ligne pour passer les tests
 
     # graphFile uniquement si nouveau fichier :
     if (!is.null(graphFileTmp)) graphFile <- graphFileTmp
@@ -545,7 +549,6 @@ WP2boxplot.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSe
         dataEnv = dataEnv, baseEnv = baseEnv)
     }else{}
   }else{}
-
 }
 
 
@@ -2297,6 +2300,9 @@ WP2boxplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, li
         "CL_unitobs",
         "unitobs"),
       typeGraph = "boxplot")
+#    graphFile <- "test_unitaire"   # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
+                                    # donc on la commente et on décommente cette ligne pour passer les tests
+
 
     par(mar = c(9, 5, 8, 1), mgp = c(3.5, 1, 0)) # paramètres graphiques.
 

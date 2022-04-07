@@ -1,12 +1,49 @@
-library("ggplot2")
+# Attention : ne fonctionne qu'avec R 4.1.0 au minimum
+# Warning : only works with R 4.1.0 at least
+
 library(testthat)
 library(vdiffr)
 
-testthat::test_that("plots have known output", {
-  disp_hist_base <- function() hist(mtcars$disp)
-  vdiffr::expect_doppelganger("disp-histogram-base", disp_hist_base)
+.baseEnv <- environment()
+.dataEnv <- new.env()
 
-  disp_hist_ggplot <- ggplot(mtcars, aes(disp)) + geom_histogram()
-  vdiffr::expect_doppelganger("disp-histogram-ggplot", disp_hist_ggplot)
+assign(".baseEnv", .baseEnv, .GlobalEnv)
+assign(".dataEnv", .dataEnv, .GlobalEnv)
+
+ws_path <- system.file('example_data/COTE BLEUE/Data/', package = 'PAMPA')
+unitobs_path <- system.file('example_data/COTE BLEUE/Data/UnitObs_Staviro_CB191110_280720.txt', package = 'PAMPA')
+obs_path <- system.file('example_data/COTE BLEUE/Data/Obs_Staviro_CB191110_AllIdentifiedSpecies_280720.txt', package = 'PAMPA')
+refesp_path <- system.file('example_data/COTE BLEUE/Data/refEspecesMed_general_270720 - Int peche est intCH_CB.txt', package = 'PAMPA')
+filePathes <- c(unitobs = unitobs_path, obs = obs_path, refesp =  refesp_path, refspa = NULL, ws = ws_path)
+
+data <- load_files.f(filePathes, dminMax = 5, .dataEnv, .baseEnv)
+
+# Attention : ne fonctionne pas si la fonction openDevice.f est active.
+# Voir dans la fonction testée pour faire les changements qui s'imposent.
+# Warning : doesn't word if the openDevice.f function is used.
+# See the tested function to make the necessary changes.
+
+testthat::test_that("plots have known output", {
+  boxplot_esp_density_family <- function() boxplot_pampa.f(
+    agregation = "espece",
+    metrique = "density",
+    factGraph = "family",
+    factGraphSel = "Sparidae",
+    listFact = c("year", "protection.status"),
+    listFactSel = NA,
+    tableMetrique = "unitSp",
+    dataEnv = .dataEnv, baseEnv = .baseEnv)
+  vdiffr::expect_doppelganger("boxplot-especes-density-family", boxplot_esp_density_family)
+
+  boxplot_unitobs_sr_family <- function() boxplot_pampa.f(
+    agregation = "unitobs",
+    metrique = "species.richness",
+    factGraph = "family",
+    factGraphSel = "Sparidae",
+    listFact = c("year", "protection.status"),
+    listFactSel = NA,
+    tableMetrique = "unit",
+    dataEnv = .dataEnv, baseEnv = .baseEnv)
+  vdiffr::expect_doppelganger("boxplot-unitobs-species_richness-family", boxplot_unitobs_sr_family)
 })
 
