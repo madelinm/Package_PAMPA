@@ -361,6 +361,8 @@ WP2barplot.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFa
         "unit" = {"unitobs"},
         "espece"),
       typeGraph = paste("barplot", getOption("P.barplotStat"), sep = "-")) # moyenne/médiane !?
+#    graphFileTmp <- "test_unitaire"   # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
+                                       # donc on la commente et on décommente cette ligne pour passer les tests
 
     # graphFile uniquement si nouveau fichier :
     if (!is.null(graphFileTmp)) graphFile <- graphFileTmp
@@ -1874,6 +1876,9 @@ WP2barplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, li
         "CL_unitobs",
         "unitobs"),
       typeGraph = paste("barplot", getOption("P.barplotStat"), sep = "-")) # moyenne/médiane !?
+#    graphFile <- "test_unitaire"   # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
+                                    # donc on la commente et on décommente cette ligne pour passer les tests
+
 
 
     par(mar = c(9, 5, 8, 1), mgp = c(3.5, 1, 0)) # paramètres graphiques.
