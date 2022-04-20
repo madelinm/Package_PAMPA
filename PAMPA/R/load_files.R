@@ -142,7 +142,7 @@ load_files.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv){
       warning(paste("Impossible d'écrire le fichier ", fileNm,
         ".\nIl est possible qu'il soit ouvert par une autre application", sep = ""),
         call. = FALSE, immediate. = TRUE)
-#      errorLog.f(error = e, niv = -4)
+      errorLog.f(error = e, niv = -4)
     })
 
   # Calculation and exportation of year visited site number
@@ -169,6 +169,7 @@ load_files.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv){
       warning(paste("Impossible d'écrire le fichier ", fileNm,
         "\nIl est possibles qu'il soit ouvert par une autre application", sep = ""),
         call. = FALSE, immediate. = TRUE)
+      errorLog.f(error = e, niv = -4)
     })
 
   moyenne_annee_visite <- sapply(seq(nrow(station_year_table)-1), function(x){
@@ -217,8 +218,8 @@ loadData.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv = .GlobalEnv){
 #  # Le profilage de la fonction est activé si l'option adéquate est sur TRUE :
 #  pampaProfilingStart.f()
 #
-#  runLog.f(msg = c("--------------------------------------------------------------------------------",
-#    mltext("loadData.info.0")))
+  runLog.f(msg = c("--------------------------------------------------------------------------------",
+    mltext("loadData.info.0")))
 #
 #
 #  add.logFrame.f(msgID = "dataLoadingNew", env = baseEnv,
@@ -1138,7 +1139,7 @@ selectLink.interface.f <- function(unitobs, refspa,
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 22 nov. 2012, 11:01
 
-#  runLog.f(msg = c(mltext("logmsg.link.unitobs.refspa")))
+  runLog.f(msg = c(mltext("logmsg.link.unitobs.refspa")))
 
 # .BGcolor <- "#FFFBCF"
   .BGcolor <- "#F7F5CE"
@@ -1613,8 +1614,8 @@ checkUnitobs.in.obs.f <- function(obs, unitobs){
 
 loadRefEspeces.f <- function (pathRefesp, pathRefesp.local = NA, baseEnv = .GlobalEnv){
 
-  #  # rm(especes)
-  #  runLog.f(msg = c(mltext("loadRefEspeces.info")))
+  # rm(especes)
+  runLog.f(msg = c(mltext("loadRefEspeces.info")))
 
   # Importation des caracteristiques des especes
   especes <- read.table(pathRefesp, sep = "\t", dec = ".", quote = "", header = TRUE,
@@ -1833,8 +1834,8 @@ calcTables.f <- function(obs, unitobs, refesp, dataEnv){
   ## Author: Yves Reecht, Date: 15 déc. 2011, 10:33
 
 #  pampaProfilingStart.f()
-  #
-  #  runLog.f(msg = c(mltext("logmsg.calcTables")))
+
+  runLog.f(msg = c(mltext("logmsg.calcTables")))
 
   # Métriques par classe de taille par espèce par unité d'observation :
   unitSpSz <- calc.unitSpSz.f(obs = obs, unitobs = unitobs, refesp = refesp, dataEnv = dataEnv)
@@ -1863,8 +1864,8 @@ calc.unitSpSz.f <- function(obs, unitobs, refesp, dataEnv){
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 16 déc. 2011, 11:51
 
-#  runLog.f(msg = c(mltext("logmsg.calc.unitSpSz")))
-#
+  runLog.f(msg = c(mltext("logmsg.calc.unitSpSz")))
+
 #  pampaProfilingStart.f()
 #
 #  # Informations :
@@ -4045,7 +4046,7 @@ calcBiodivTaxo.f <- function(Data, refesp, unitobs = "observation.unit",
       # calcul des distances taxonomiques entre les especes
       if (!is.null(taxdis <- tryCatch(taxa2dist(sp.taxon, varstep = TRUE, check = TRUE),
         error = function(e){
-          # errorLog.f(error = e, niv = -3)
+          errorLog.f(error = e, niv = -3)
           return(NULL)
         }))){
         # Function finds indices of taxonomic diversity and distinctiness, which are averaged
@@ -4197,8 +4198,7 @@ exportMetrics.f <- function(unitSpSz, unitSp, unit, obs, unitobs, refesp,
         warning(paste("Impossible d'écrire le fichier ", fileNm,
           ".\nIl est possible qu'il soit ouvert par une autre application", sep = ""),
           call. = FALSE, immediate. = TRUE)
-#      errorLog.f(error = e, niv = -4)
-
+        errorLog.f(error = e, niv = -4)
     })
   }else{}                             # Sinon rien !
 
@@ -4217,7 +4217,7 @@ exportMetrics.f <- function(unitSpSz, unitSp, unit, obs, unitobs, refesp,
       warning(paste("Impossible d'écrire le fichier ", fileNm,
         ".\nIl est possible qu'il soit ouvert par une autre application", sep = ""),
         call. = FALSE, immediate. = TRUE)
-#      errorLog.f(error = e, niv = -4)
+      errorLog.f(error = e, niv = -4)
   })
 
   # Table unit :
@@ -4235,7 +4235,7 @@ exportMetrics.f <- function(unitSpSz, unitSp, unit, obs, unitobs, refesp,
       warning(paste("Impossible d'écrire le fichier ", fileNm,
         ".\nIl est possible qu'il soit ouvert par une autre application", sep = ""),
         call. = FALSE, immediate. = TRUE)
-#      errorLog.f(error = e, niv = -4)
+      errorLog.f(error = e, niv = -4)
   })
 }
 
@@ -4372,7 +4372,7 @@ calcWeightMPA.f <- function(Data, refesp, MPA,
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date:  6 déc. 2010, 11:57
 
-#  runLog.f(msg = c(mltext("logmsg.weightMPA.calc")))
+  runLog.f(msg = c(mltext("logmsg.weightMPA.calc")))
 
   # Identification des différents cas :
   casSite <- c("BA" = "Med", "BO" = "Med", "CB" = "Med", "CR" = "Med", "STM" = "Med",
@@ -4472,7 +4472,7 @@ addMeanSize.f <- function(Data, vars = c(sz = "length", szcl = "size.class")){
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 26 août 2010, 16:20
 
-#  runLog.f(msg = c(mltext("logmsg.meansize.szcl")))
+  runLog.f(msg = c(mltext("logmsg.meansize.szcl")))
 
   res <- Data[ , vars["sz"]]
   classes.taille <- Data[ , vars["szcl"]]
@@ -4519,7 +4519,7 @@ sizeClasses.f <- function(Data, refesp,
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 15 déc. 2011, 11:33
 
-#  runLog.f(msg = c(mltext("logmsg.sizeclass")))
+  runLog.f(msg = c(mltext("logmsg.sizeclass")))
 
   if (any(idx <- (( ! is.na(Data[ , vars["sz"]])) &
     is.na(Data[ , vars["szcl"]])))){
@@ -4581,7 +4581,7 @@ meanWeight.SzCl.f <- function(Data, refesp,
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 11 oct. 2010, 14:58
 
-#  runLog.f(msg = c(mltext("logmsg.meanweight.szcl")))
+  runLog.f(msg = c(mltext("logmsg.meanweight.szcl")))
 
   refespTmp <- as.matrix(refesp[ , c("mean.weight.small", "mean.weight.medium", "mean.weight.large")])
   row.names(refespTmp) <- as.character(refesp[ , vars["sp"]] )

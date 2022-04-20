@@ -372,11 +372,10 @@ modeleLineaireWP2.esp.f <- function(metrique, factAna, factAnaSel, listFact, lis
           "CL_espece",
           "espece"),
         baseEnv = baseEnv),
-        error =
-#          errorLog.f
-          function(e) {
-            print("An error occurs")
-          }
+        error = function(e) {
+          errorLog.f()
+          print("An error occurs")
+        }
       )
 
       # Estimation des résidus "annormaux" :
@@ -404,11 +403,10 @@ modeleLineaireWP2.esp.f <- function(metrique, factAna, factAnaSel, listFact, lis
               "CL_espece",
               "espece"),
             baseEnv = baseEnv),
-            error=
-#              errorLog.f
-              function(e){
-                print("An error occurs")
-              }
+            error = function(e){
+              errorLog.f()
+              print("An error occurs")
+            }
           )
         }else{}
       }else{}
@@ -2870,11 +2868,10 @@ modeleLineaireWP2.unitobs.f <- function(metrique, factAna, factAnaSel, listFact,
           "CL_unitobs",
           "unitobs"),
         baseEnv = baseEnv),
-      error =
-#        errorLog.f
-        function(e){
-          print("error 1")
-        }
+      error = function(e){
+        errorLog.f()
+        print("error 1")
+      }
     )
 
     resid.out <- boxplot(residuals(res), plot = FALSE)$out
@@ -2903,11 +2900,10 @@ modeleLineaireWP2.unitobs.f <- function(metrique, factAna, factAnaSel, listFact,
               "CL_unitobs",
               "unitobs"),
             dataEnv = dataEnv, baseEnv = baseEnv),
-          error =
-#            errorLog.f
-            function(e){
-              print("error 2")
-            }
+          error = function(e){
+            errorLog.f()
+            print("error 2")
+          }
         )
 
       }else{}

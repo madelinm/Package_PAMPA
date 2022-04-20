@@ -1685,7 +1685,7 @@ writeData.f <- function(filename, Data, cols = NULL){
     row.names = FALSE),
     error = function(e){
       message(mltext("writeData.f.msg"), filename)
-#     errorLog.f(error = e, niv = -4)
+     errorLog.f(error = e, niv = -4)
   })
 }
 

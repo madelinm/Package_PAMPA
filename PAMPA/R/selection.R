@@ -73,8 +73,8 @@ selectionOnRefesp.f <- function(dataEnv, baseEnv){
   ## Author: Yves Reecht, Date:  4 janv. 2012, 14:54
 
 #  on.exit(winRaise.f(get("W.main", envir = baseEnv)))
-#
-#  runLog.f(msg = c(mltext("logmsg.selectionOnRefesp")))
+
+  runLog.f(msg = c(mltext("logmsg.selectionOnRefesp")))
 
   # Récupération des données :
   obs <- get("obs", envir = dataEnv)
@@ -215,7 +215,7 @@ selectionEsp.f <- function(refesp, obs){
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date:  4 janv. 2012, 17:38
 
-#  runLog.f(msg = c(mltext("logmsg.selectionEsp")))
+  runLog.f(msg = c(mltext("logmsg.selectionEsp")))
 
   factSp <- chooseRefespField.f(refesp = refesp, obs = obs)
 
@@ -265,8 +265,8 @@ chooseRefespField.f <- function(refesp, obs){
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date:  4 janv. 2012, 17:47
 
-#  runLog.f(msg = c(mltext("logmsg.chooseRefespField")))
-#
+  runLog.f(msg = c(mltext("logmsg.chooseRefespField")))
+
 #  Done <- tcltk::tclVar("0")                 # Variable de statut d'exécution.
 #
 #  W.selRef <- tcltk::tktoplevel()
@@ -680,8 +680,8 @@ selectionOnUnitobs.f <- function(dataEnv, baseEnv){
   ## Author: Yves Reecht, Date:  5 janv. 2012, 21:02
 
 #  on.exit(winRaise.f(get("W.main", envir = baseEnv)))
-#
-#  runLog.f(msg = c(mltext("logmsg.selectionOnUnitobs")))
+
+  runLog.f(msg = c(mltext("logmsg.selectionOnUnitobs")))
 
   # Récupération des données :
   obs <- get("obs", envir = dataEnv)
@@ -815,7 +815,7 @@ selectionUnitobs.f <- function(unitobs, obs){
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date:  5 janv. 2012, 21:11
 
-#  runLog.f(msg = c(mltext("logmsg.selectionUnitobs")))
+  runLog.f(msg = c(mltext("logmsg.selectionUnitobs")))
 
   factunitobs <- chooseUnitobsField.f(unitobs = unitobs, obs = obs)
 
@@ -863,8 +863,8 @@ chooseUnitobsField.f <- function(unitobs, obs){
   ## Arguments:
   ## ---------------------------------------------------------------------------
 
-#  runLog.f(msg = c("Choix d'un Facteur dans le référentiel des unités d'observation :"))
-#
+  runLog.f(msg = c("Choix d'un Facteur dans le référentiel des unités d'observation :"))
+
 #  Done <- tcltk::tclVar("0")                 # Variable de statut d'exécution.
 #
 #  W.select <- tcltk::tktoplevel()

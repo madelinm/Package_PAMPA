@@ -1,8 +1,20 @@
 # Liste de fonctions appelées à différents endroits dans le code.
 # Ces fonctions concernent la traduction du package (anglais/français), la typographie(majuscules /
-# minuscules), la modification de fonctions déjà existantes, ...
+# minuscules), la modification de fonctions déjà existantes, les fichiers log...
 
 #' @import tkrplot
+
+
+PAMPAhome <- ifelse(Sys.getenv("PAMPA_HOME") == "",
+  normalizePath(file.path(Sys.getenv("HOME"), "PAMPA", fsep = "/"),
+    winslash = "/", mustWork = FALSE),
+  normalizePath(Sys.getenv("PAMPA_HOME"),
+    winslash = "/", mustWork = FALSE))
+if (!dir.exists(PAMPAhome)){
+  dir.create(PAMPAhome)
+  print(paste("The directory 'PAMPA' was created at '", PAMPAhome, "'", sep = ""))
+}
+
 
 aliases <- function(fieldID, language = tolower(getOption("P.GUIlang")), reverse = FALSE){
 
@@ -326,3 +338,97 @@ tkrplot <- function(parent, fun, hscale = 1, vscale = 1, ...){
   }
 }
 
+
+runLog.f <- function(msg, niv = -1){
+  ## Purpose: écrire les appels de fonctions dans un fichier log, si et
+  ##          seulement si l'option est activée.
+  ## ----------------------------------------------------------------------
+  ## Arguments: msg : message.
+  ##            niv : niveau de l'appel pour retrouver la fonction
+  ##                  appelante () ; si NULL, seul le message est
+  ##                  écrit.
+  ## ----------------------------------------------------------------------
+  ## Author: Yves Reecht, Date:  8 févr. 2011, 14:14
+
+  on.exit(if (exists("logFile") &&
+    tryCatch(isOpen(logFile),
+      error = function(e) return(FALSE))) close(logFile))
+
+  logDir <- file.path(PAMPAhome, "logs")
+
+  # Test d'existance et éventuelle création du dossier de logs:
+  if (! dir.exists(logDir)){
+    dir.create(logDir)
+  }
+
+  # Test d'existance et éventuelle création du fichier de log du jour :
+  logFileName <- paste("Runs_", format(Sys.Date(), "%d-%m-%Y"), ".log", sep = "")
+
+  if (!file.exists(file.path(logDir, logFileName)) ||
+      isTRUE(file.info(file.path(logDir, logFileName))$isdir))
+  {
+    file.create(file.path(logDir, logFileName))
+  }
+
+  logFile <- file(description = file.path(logDir, logFileName),
+                  open = "a", encoding = "latin1")
+
+  # on.exit(close(logFile))
+
+  callingFct <- ifelse(is.null(niv),
+    "",
+    deparse(sys.call(niv)))
+
+  cat(paste("\n", format(Sys.time(), "[%H:%M:%S] : "),
+    paste(msg, collapse = "\n\t"), "\n",
+    paste(callingFct, collapse = "\n\t"), "\n", sep = ""),
+    file = logFile)
+
+  close(logFile)
+}
+
+
+errorLog.f <- function(error, niv = -3){
+  ## Purpose: écrire les erreurs dans un fichier log + avertissement de
+  ##          l'utilisateur
+  ## ----------------------------------------------------------------------
+  ## Arguments: error : erreur (récupérée par la fonction tryCatch).
+  ##            niv : niveau de l'appel pour retrouver la fonction
+  ##                  appelante (-3 par défaut pour tryCatch).
+  ## ----------------------------------------------------------------------
+  ## Author: Yves Reecht, Date: 22 déc. 2010, 11:54
+
+  on.exit(if (exists("logFile") &&
+    tryCatch(isOpen(logFile),
+      error = function(e) return(FALSE))) close(logFile))
+
+  logDir <- file.path(PAMPAhome, "logs")
+
+  # Test d'existance et éventuelle création du dossier de logs :
+  if (! dir.exists(logDir)){
+    dir.create(logDir)
+  }
+
+  # Test d'existance et éventuelle création du fichier de log du jour :
+  logFileName <- paste("Errors_", format(Sys.Date(), "%d-%m-%Y"), ".log", sep = "")
+
+  if (!file.exists(file.path(logDir, logFileName)) ||
+      isTRUE(file.info(file.path(logDir, logFileName))$isdir))
+  {
+    file.create(file.path(logDir, logFileName))
+  }
+
+  logFile <- file(description = file.path(logDir, logFileName), open = "a", encoding = "latin1")
+
+  callingFct <- sys.call(niv)
+
+  cat(paste("\n", format(Sys.time(), "[%H:%M:%S]"), "\n",
+    paste(deparse(callingFct), collapse = "\n\t"), " :\n", sep = ""),
+    file = logFile)
+  capture.output(print(error), file = logFile)
+  cat("\n", file = logFile)
+
+  close(logFile)
+
+  message(mltext("errorLog.f.msg1"), mltext("errorLog.f.msg2"), logFileName, "\n")
+}

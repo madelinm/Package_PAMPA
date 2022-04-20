@@ -390,11 +390,10 @@ WP2MRT.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSe
           "CL_espece",
           "espece"),
         baseEnv = baseEnv),
-      error =
-#        errorLog.f
-        function(e){
-          print("error")
-        }
+      error = function(e){
+        errorLog.f()
+        print("error")
+      }
     )
 
     # On ferme les périphériques PNG en mode fichier individuel :
@@ -1500,11 +1499,10 @@ WP2MRT.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, listFa
         "CL_unitobs",
         "unitobs"),
       baseEnv = baseEnv),
-    error =
-#      errorLog.f
-      function(e){
-        print("error")
-      }
+    error = function(e){
+      errorLog.f()
+      print("error")
+    }
   )
 
 
