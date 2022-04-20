@@ -29,17 +29,14 @@ Cette fonction permet de faire la selection et le recalcul des donnees.
 Elle prend en entree le type de critere selon lequel le recalcul sera fait
 (champs du referentiel espece ou champs des unitobs).
 
-Elle prend egalemnt en entree deux environnements, celui ou stocker les donnees,
+Elle prend egalement en entree deux environnements, celui ou stocker les donnees,
 et l'environnement parent.
 
 Elle va ensuite faire la selection des donnees, en demandant a l'utilisateur
 selon quel(s) critere(s) du champs choisi il veut la faire.
 
-Elle ne retourne rien, les donnees sont stockees dans l'environnement .dataEnv
-(pas forcement tres pratique, a changer plus tard ?)
-
-A changer plus tard pour supprimer les lignes de code en doublon dans \code{selectionOnRefesp.f}
-(et dependances) et \code{selectionOnUnitobs.f} (et dependances) ?
+Elle retourne la table des observations modifiee, celle des uniotobs, et celle du referentiel
+spatial.
 }
 \examples{
 ws_path <- system.file('example_data/COTE BLEUE/Data/', package = 'PAMPA')
@@ -51,6 +48,6 @@ filePathes <- c(unitobs = unitobs_path, obs = obs_path, refesp =  refesp_path, r
 
 data <- load_and_calc.f(filePathes, .dataEnv, .baseEnv)
 
-selection.f('unitobs', .baseEnv, .dataEnv)
+selection.f('unitobs', .dataEnv, .baseEnv)
 
 }

@@ -55,14 +55,11 @@ differentes tables de donnees, sous forme d'une liste nommee.
 }
 \examples{
 ws_path <- system.file('example_data/COTE BLEUE/Data/', package = 'PAMPA')
-unitobs_path <- system.file('UnitObs_Staviro_CB191110_280720.txt', package = 'PAMPA')
-obs_path <- system.file('Obs_Staviro_CB191110_AllIdentifiedSpecies_280720.txt',
-  package = 'PAMPA')
-refesp_path <- system.file('refEspecesMed_general_270720 - Int peche est intCH_CB.txt',
-  package = 'PAMPA')
+unitobs_path <- system.file('example_data/COTE BLEUE/Data/UnitObs_Staviro_CB191110_280720.txt', package = 'PAMPA')
+obs_path <- system.file('example_data/COTE BLEUE/Data/Obs_Staviro_CB191110_AllIdentifiedSpecies_280720.txt', package = 'PAMPA')
+refesp_path <- system.file('example_data/COTE BLEUE/Data/refEspecesMed_general_270720 - Int peche est intCH_CB.txt', package = 'PAMPA')
 
-filepaths <- c(unitobs = unitobs_path, obs = obs_path, refesp =  refesp_path,
-  refspa = NULL, ws = ws_path)
+filepaths <- c(unitobs = unitobs_path, obs = obs_path, refesp =  refesp_path, refspa = NULL, ws = ws_path)
 
 load_files.f(filepaths, dminMax = 5, .dataEnv, .baseEnv)
 

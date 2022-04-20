@@ -2,7 +2,7 @@
 % Please edit documentation in R/restore_data.R
 \name{restoreData.f}
 \alias{restoreData.f}
-\title{Selection et recalcul}
+\title{Restauration des donnees}
 \usage{
 restoreData.f(dataEnv, baseEnv)
 }
@@ -12,18 +12,21 @@ restoreData.f(dataEnv, baseEnv)
 \item{baseEnv}{: environnement parent}
 }
 \value{
-none
+list, liste contenant les tables de donnees selon la selection.
+ \itemize{unitobs}{ : chr, fichier unitobs}
+ \itemize{obs}{ : chr, fichier d'observation}
+ \itemize{refesp}{ : chr, referentiel especes}
 }
 \description{
-Permet la selection des donnees d'observation, selon un critere du
-referentiel d'unites d'observation
+Permet la restauration des donnees.
 }
 \details{
 Fonction pour la restauration des donnees apres la selection et le recalcul.
-Vraiment utile ? Un loadData.f suffit pour ca...
-Et si on enlève les environnement, sera tocké dans une variable...
+
+Permet de faire la restauration des donnees. Cela revient à re-charger les donnees, mais en plus
+rapide.
 }
 \examples{
-restoreData.f(.baseEnv, .dataEnv)
+restoreData.f(.dataEnv, .baseEnv)
 
 }

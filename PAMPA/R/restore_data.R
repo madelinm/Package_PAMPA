@@ -1,20 +1,23 @@
 #' Fonction pour la restauration des donnees apres la selection et le recalcul.
-#' Vraiment utile ? Un loadData.f suffit pour ca...
-#' Et si on enlève les environnement, sera tocké dans une variable...
+#'
+#' Permet de faire la restauration des donnees. Cela revient à re-charger les donnees, mais en plus
+#' rapide.
 
 
-#' @title Selection et recalcul
+#' @title Restauration des donnees
 #'
-#' @description Permet la selection des donnees d'observation, selon un critere du
-#' referentiel d'unites d'observation
+#' @description Permet la restauration des donnees.
 #'
-#' @param baseEnv : environnement parent
 #' @param dataEnv : environnement de stockage des donnees
+#' @param baseEnv : environnement parent
 #'
-#' @return none
+#' @return list, liste contenant les tables de donnees selon la selection.
+#'  \itemize{unitobs}{ : chr, fichier unitobs}
+#'  \itemize{obs}{ : chr, fichier d'observation}
+#'  \itemize{refesp}{ : chr, referentiel especes}
 #'
 #' @examples
-#' restoreData.f(.baseEnv, .dataEnv)
+#' restoreData.f(.dataEnv, .baseEnv)
 #'
 #' @export
 
