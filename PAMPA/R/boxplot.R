@@ -229,8 +229,6 @@ boxplot_pampa.f <- function(agregation, metrique, factGraph =  NULL, factGraphSe
     )
   }
 
-#  factGraphSel <- "Labridae"
-
   # Lancement de la fonction de graphique
   # Launch of the graphic function
   if (agregation == 'espece'){

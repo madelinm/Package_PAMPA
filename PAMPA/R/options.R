@@ -98,7 +98,7 @@ options(
 #    is.null(getOption("P.GUIlang"))),
 #    tolower(getOption("defaultLang")),
 #    "en"),          # Language for the GUI.
-  P.barplotStat = "moyenne",              # Statistique des barplots
+  P.barplotStat = "mean",              # Statistique des barplots
                                           # ("mean", "moyenne", "médiane" ou "median").
   P.barplotErrorBar = TRUE,               # Doit-on afficher les barres d'erreur
                                           # (sd/quantiles) sur les barplots?
