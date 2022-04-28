@@ -157,7 +157,7 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
   # Launch of the graphic function
   barplotOccurrenceFamille.f(factGraph = factGraph, factGraphSel = factGraphSel,
     fact = fact, factSel = factSel, families = families,
-    dataEnv = .dataEnv, baseEnv = .baseEnv)
+    dataEnv = dataEnv, baseEnv = baseEnv)
 }
 
 
