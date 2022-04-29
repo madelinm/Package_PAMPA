@@ -18,11 +18,6 @@ filePathes <- c(unitobs = unitobs_path, obs = obs_path, refesp =  refesp_path, r
 
 data <- load_files.f(filePathes, dminMax = 5, .dataEnv, .baseEnv)
 
-# Attention : ne fonctionne pas si la fonction openDevice.f est active.
-# Voir dans la fonction testée pour faire les changements qui s'imposent.
-# Warning : doesn't word if the openDevice.f function is used.
-# See the tested function to make the necessary changes.
-
 testthat::test_that("plots have known output", {
   boxplot_esp_density_family <- function() boxplot_pampa.f(
     agregation = "espece",
@@ -32,7 +27,7 @@ testthat::test_that("plots have known output", {
     listFact = c("year", "protection.status"),
     listFactSel = NA,
     tableMetrique = "unitSp",
-    dataEnv = .dataEnv, baseEnv = .baseEnv)
+    new_window = FALSE, dataEnv = .dataEnv, baseEnv = .baseEnv)
   vdiffr::expect_doppelganger("boxplot-especes-density-family", boxplot_esp_density_family)
 
   boxplot_unitobs_sr_family <- function() boxplot_pampa.f(
@@ -43,7 +38,7 @@ testthat::test_that("plots have known output", {
     listFact = c("year", "protection.status"),
     listFactSel = NA,
     tableMetrique = "unit",
-    dataEnv = .dataEnv, baseEnv = .baseEnv)
+    new_window = FALSE, dataEnv = .dataEnv, baseEnv = .baseEnv)
   vdiffr::expect_doppelganger("boxplot-unitobs-species_richness-family", boxplot_unitobs_sr_family)
 })
 

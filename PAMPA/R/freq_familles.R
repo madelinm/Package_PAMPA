@@ -23,17 +23,19 @@
 #' @param fact chr, facteur de regroupement
 #' @param factSel chr, modalites selectionnees pour le facteur de regroupement
 #' @param families chr, familles a prendre en compte
+#' @param new_window bool, affichage du graphique dans une nouvelle fenêtre ?
 #' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
 #' @examples
 #' PAMPA::freq_occurrence_families.f(factGraph = "protection.status", factGraphSel = NA,
-#'   fact = "year", factSel = NA, families = NA, dataEnv = .dataEnv, baseEnv = .baseEnv)
+#'   fact = "year", factSel = NA, families = NA, new_window = TRUE,
+#'   dataEnv = .dataEnv, baseEnv = .baseEnv)
 #'
 #' @export
 
 freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factSel = NA,
-  families = NA, dataEnv, baseEnv = .GlobalEnv){
+  families = NA, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   # Verification des parametres
   # Check of the parameters
@@ -156,7 +158,7 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
   # Lancement de la fonction de graphique
   # Launch of the graphic function
   barplotOccurrenceFamille.f(factGraph = factGraph, factGraphSel = factGraphSel,
-    fact = fact, factSel = factSel, families = families,
+    fact = fact, factSel = factSel, families = families, new_window,
     dataEnv = dataEnv, baseEnv = baseEnv)
 }
 
@@ -177,7 +179,7 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
 #' @param baseEnv environnement parent
 
 barplotOccurrenceFamille.f <- function(factGraph, factGraphSel, fact, factSel, families = NA,
-  dataEnv, baseEnv = .GlobalEnv){
+  new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   ## Purpose: création des barplots d'après les sélections de facteurs et
   ##          modalités.
@@ -260,21 +262,40 @@ barplotOccurrenceFamille.f <- function(factGraph, factGraphSel, fact, factSel, f
     # Sauvegarde temporaire des données :
     DataBackup[[modGraphSel]] <<- tmpDataMod
 
-    # Ouverture et configuration du périphérique graphique :
-    graphFileTmp <- openDevice.f(noGraph = which(modGraphSel == iFactGraphSel),
-      metrique = metrique,
-      factGraph = factGraph,
-      modSel = if (getOption("P.plusieursGraphPage")){
+    if (new_window){
+      # Ouverture et configuration du périphérique graphique :
+      graphFileTmp <- openDevice.f(noGraph = which(modGraphSel == iFactGraphSel),
+        metrique = metrique,
+        factGraph = factGraph,
+        modSel = if (getOption("P.plusieursGraphPage")){
+          iFactGraphSel      # toutes les modalités.
+        }else{
+          modGraphSel        # la modalité courante uniquement.
+        },
+        listFact = fact,
+        dataEnv = dataEnv,
+        type = "espece",
+        typeGraph = "barplot")
+    } else{
+      modSel <- if (getOption("P.plusieursGraphPage")){
         iFactGraphSel      # toutes les modalités.
       }else{
         modGraphSel        # la modalité courante uniquement.
-      },
-      listFact = fact,
-      dataEnv = dataEnv,
-      type = "espece",
-      typeGraph = "barplot")
-#    graphFileTmp <- "test_unitaire"  # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
-                                      # donc on la commente et on décommente cette ligne pour passer les tests
+      }
+
+      graphFileTmp <- resFileGraph.f(
+        metrique = metrique,
+        factGraph = factGraph,
+        modSel = modSel,
+        listFact = fact,
+        dataEnv = dataEnv,
+        ext = "wmf",
+        prefix = "freq_familles",
+        sufixe = ifelse(getOption("P.plusieursGraphPage") && (length(modSel) > 1 || modSel[1] == ""),
+          "%03d",
+          ""),
+        type = "espece")
+    }
 
     # graphFile uniquement si nouveau fichier :
     if (!is.null(graphFileTmp)) graphFile <- graphFileTmp

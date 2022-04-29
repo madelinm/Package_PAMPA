@@ -12,6 +12,7 @@ boxplot_pampa.f(
   listFact,
   listFactSel = NA,
   tableMetrique,
+  new_window = TRUE,
   dataEnv,
   baseEnv = .GlobalEnv
 )
@@ -30,6 +31,8 @@ boxplot_pampa.f(
 \item{listFactSel}{list, modalite(s) selectionnee(s) pour le(s) facteur(s) de regroupement}
 
 \item{tableMetrique}{chr, nom de la table de metrique}
+
+\item{new_window}{bool, affichage du graphique dans une nouvelle fenêtre ?}
 
 \item{dataEnv}{environnement de stockage des donnees}
 
@@ -65,11 +68,11 @@ regroupement selectionne(s) seront prises en compte.
 boxplot.f(agregation = "espece", metrique = "density", factGraph = "scient.name",
   factGraphSel = "Chromis_chromis", listFact = c("year", "protection.status"),
   listFactSel = list(c("2011", "2019"), NA), tableMetrique = "unitSp",
-  dataEnv = .dataEnv, baseEnv = .baseEnv)
+  new_window = TRUE, dataEnv = .dataEnv, baseEnv = .baseEnv)
 
 boxplot_pampa.f(agregation = "unitobs", metrique = "pielou", factGraph = "family",
   factGraphSel = c("Labridae"), listFact = c("year", "protection.status"),
   listFactSel = NA, tableMetrique = "unit",
-  dataEnv = .dataEnv, baseEnv = .baseEnv)
+  new_window = TRUE, dataEnv = .dataEnv, baseEnv = .baseEnv)
 
 }

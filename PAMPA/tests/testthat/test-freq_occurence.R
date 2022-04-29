@@ -18,11 +18,6 @@ filePathes <- c(unitobs = unitobs_path, obs = obs_path, refesp =  refesp_path, r
 
 data <- load_files.f(filePathes, dminMax = 5, .dataEnv, .baseEnv)
 
-# Attention : ne fonctionne pas si la fonction openDevice.f est active.
-# Voir dans la fonction testée pour faire les changements qui s'imposent.
-# Warning : doesn't word if the openDevice.f function is used.
-# See the tested function to make the necessary changes.
-
 testthat::test_that("plots have known output", {
   freq_occu_esp_site <- function() freq_occurrence.f(
     agregation = "espece",
@@ -30,7 +25,7 @@ testthat::test_that("plots have known output", {
     factGraphSel = NA,
     listFact = c("year", "family"),
     listFactSel = NA,
-    dataEnv = .dataEnv, baseEnv = .baseEnv)
+    new_window = FALSE, dataEnv = .dataEnv, baseEnv = .baseEnv)
   vdiffr::expect_doppelganger("frequence_occurrence-especes-site", freq_occu_esp_site)
 
   freq_occu_unitobs_family <- function() freq_occurrence.f(
@@ -39,6 +34,6 @@ testthat::test_that("plots have known output", {
     factGraphSel = "Sparidae",
     listFact = c("year", "site"),
     listFactSel = NA,
-    dataEnv = .dataEnv, baseEnv = .baseEnv)
+    new_window = FALSE, dataEnv = .dataEnv, baseEnv = .baseEnv)
   vdiffr::expect_doppelganger("frequence_occurrence-unitobs-family", freq_occu_unitobs_family)
 })

@@ -10,6 +10,7 @@ barplotOccurrenceFamille.f(
   fact,
   factSel,
   families = NA,
+  new_window = TRUE,
   dataEnv,
   baseEnv = .GlobalEnv
 )

@@ -18,11 +18,6 @@ filePathes <- c(unitobs = unitobs_path, obs = obs_path, refesp =  refesp_path, r
 
 data <- load_files.f(filePathes, dminMax = 5, .dataEnv, .baseEnv)
 
-# Attention : ne fonctionne pas si la fonction openDevice.f est active.
-# Voir dans la fonction testée pour faire les changements qui s'imposent.
-# Warning : doesn't word if the openDevice.f function is used.
-# See the tested function to make the necessary changes.
-
 testthat::test_that("plots have known output", {
   freq_familles_prot_stat <- function() freq_occurrence_familles.f(
     factGraph = "protection.status",
@@ -30,6 +25,6 @@ testthat::test_that("plots have known output", {
     fact = "year",
     factSel = NA,
     families = NA,
-    dataEnv = .dataEnv, baseEnv = .baseEnv)
+    new_window = FALSE, dataEnv = .dataEnv, baseEnv = .baseEnv)
   vdiffr::expect_doppelganger("frequence_familles-protection_status", freq_familles_prot_stat)
 })

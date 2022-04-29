@@ -10,6 +10,7 @@ freq_occurrence_familles.f(
   fact,
   factSel = NA,
   families = NA,
+  new_window = TRUE,
   dataEnv,
   baseEnv = .GlobalEnv
 )
@@ -22,6 +23,8 @@ freq_occurrence_familles.f(
 \item{factSel}{chr, modalites selectionnees pour le facteur de regroupement}
 
 \item{families}{chr, familles a prendre en compte}
+
+\item{new_window}{bool, affichage du graphique dans une nouvelle fenêtre ?}
 
 \item{dataEnv}{environnement de stockage des donnees}
 
@@ -50,6 +53,7 @@ alors toutes les familles seront prises en compte
 }
 \examples{
 PAMPA::freq_occurrence_families.f(factGraph = "protection.status", factGraphSel = NA,
-  fact = "year", factSel = NA, families = NA, dataEnv = .dataEnv, baseEnv = .baseEnv)
+  fact = "year", factSel = NA, families = NA, new_window = TRUE,
+  dataEnv = .dataEnv, baseEnv = .baseEnv)
 
 }

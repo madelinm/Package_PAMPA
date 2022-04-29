@@ -10,6 +10,7 @@ freq_occurrence.f(
   factGraphSel = NA,
   listFact,
   listFactSel = NA,
+  new_window = TRUE,
   dataEnv,
   baseEnv = .GlobalEnv
 )
@@ -24,6 +25,8 @@ freq_occurrence.f(
 \item{listFact}{chr, facteur(s) de regroupement}
 
 \item{listFactSel}{list, modalite selectionnees pour le(s) facteur(s) de regroupement}
+
+\item{new_window}{bool, affichage du graphique dans une nouvelle fenêtre ?}
 
 \item{dataEnv}{environnement de stockage des donnees}
 
@@ -51,6 +54,7 @@ regroupement selectionne(s) seront prises en compte.
 \examples{
 freq_occurrences.f(agregation = "espece", factGraph = "scient.name",
   factGraphSel = "Chromis_chromis", listFact = c("year", "protection.status"),
-  listFactSel = list(c("2011", "2019"), NA), dataEnv = .dataEnv, baseEnv = .baseEnv)
+  listFactSel = list(c("2011", "2019"), NA), new_window = TRUE,
+  dataEnv = .dataEnv, baseEnv = .baseEnv)
 
 }

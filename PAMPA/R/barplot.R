@@ -33,6 +33,7 @@
 #' @param listFact chr, facteur(s) de regroupement
 #' @param listFactSel list, modalite selectionnees pour le(s) facteur(s) de regroupement
 #' @param tableMetrique chr, nom de la table de metrique
+#' @param new_window bool, affichage du graphique dans une nouvelle fenêtre ?
 #' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
@@ -41,12 +42,12 @@
 #' barplot.f(agregation = "espece", metrique = "density", factGraph = "scient.name",
 #'   factGraphSel = "Chromis_chromis", listFact = c("year", "protection.status"),
 #'   listFactSel = list(c("2011", "2019"), NA), tableMetrique = "unitSp",
-#'   dataEnv = .dataEnv, baseEnv = .baseEnv)
+#'   new_window = TRUE, dataEnv = .dataEnv, baseEnv = .baseEnv)
 #'
 #' @export
 
 barplot_pampa.f <- function(agregation, metrique, factGraph = NULL, factGraphSel = NA, listFact,
-  listFactSel = NA, tableMetrique, dataEnv, baseEnv = .GlobalEnv){
+  listFactSel = NA, tableMetrique, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   tableMetrique_possible <- c("unit", "unitSp", "unitSpSz")
   nextStep <- switch(agregation,
@@ -234,11 +235,11 @@ barplot_pampa.f <- function(agregation, metrique, factGraph = NULL, factGraphSel
   # Launch of the graphic function
   if (agregation == 'espece'){
     WP2barplot.esp.f(metrique, factGraph, factGraphSel, listFact, listFactSel, tableMetrique,
-      dataEnv, baseEnv)
+      new_window, dataEnv, baseEnv)
   }
   else{
     WP2barplot.unitobs.f(metrique, factGraph, factGraphSel, listFact, listFactSel, tableMetrique,
-      dataEnv, baseEnv)
+      new_window, dataEnv, baseEnv)
   }
 }
 
@@ -260,7 +261,7 @@ barplot_pampa.f <- function(agregation, metrique, factGraph = NULL, factGraphSel
 #' @return none
 
 WP2barplot.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSel,
-  tableMetrique, dataEnv, baseEnv = .GlobalEnv){
+  tableMetrique, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   ## Purpose: Produire des barplots génériques par espèce en tenant compte
   ##          des options graphiques
@@ -343,26 +344,48 @@ WP2barplot.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFa
     # Sauvegarde temporaire des données :
     DataBackup[[modGraphSel]] <<- tmpDataMod
 
-    # Ouverture et configuration du périphérique graphique :
-    graphFileTmp <- openDevice.f(noGraph = which(modGraphSel == iFactGraphSel),
-      metrique = metrique,
-      factGraph = factGraph,
-      modSel =
-        if (getOption("P.plusieursGraphPage")){
-          iFactGraphSel        # toutes les modalités.
-        }else{
-          modGraphSel          # la modalité courante uniquement.
-        },
-      listFact = listFact,
-      dataEnv = dataEnv,
-      type = switch(tableMetrique, # différents types de graphs en fonction de la table de données.
-        "unitSp" = {"espece"},
-        "unitSpSz" = {"CL_espece"},
-        "unit" = {"unitobs"},
-        "espece"),
-      typeGraph = paste("barplot", getOption("P.barplotStat"), sep = "-")) # moyenne/médiane !?
-#    graphFileTmp <- "test_unitaire"   # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
-                                       # donc on la commente et on décommente cette ligne pour passer les tests
+    if (new_window){
+      # Ouverture et configuration du périphérique graphique :
+      graphFileTmp <- openDevice.f(noGraph = which(modGraphSel == iFactGraphSel),
+        metrique = metrique,
+        factGraph = factGraph,
+        modSel =
+          if (getOption("P.plusieursGraphPage")){
+            iFactGraphSel        # toutes les modalités.
+          }else{
+            modGraphSel          # la modalité courante uniquement.
+          },
+        listFact = listFact,
+        dataEnv = dataEnv,
+        type = switch(tableMetrique, # différents types de graphs en fonction de la table de données.
+          "unitSp" = {"espece"},
+          "unitSpSz" = {"CL_espece"},
+          "unit" = {"unitobs"},
+          "espece"),
+        typeGraph = paste("barplot", getOption("P.barplotStat"), sep = "-")) # moyenne/médiane !?
+    } else{
+      modSel <- if (getOption("P.plusieursGraphPage")){
+        iFactGraphSel      # toutes les modalités.
+      }else{
+        modGraphSel        # la modalité courante uniquement.
+      }
+      graphFileTmp <- resFileGraph.f(
+        metrique = metrique,
+        factGraph = factGraph,
+        modSel = modSel,
+        listFact = listFact,
+        dataEnv = dataEnv,
+        ext = "wmf",
+        prefix = paste("barplot", getOption("P.barplotStat"), sep = "-"),
+        sufixe = ifelse(getOption("P.plusieursGraphPage") && (length(modSel) > 1 || modSel[1] == ""),
+          "%03d",
+          ""),
+        type = switch(tableMetrique, # différents types de graphs en fonction de la table de données.
+          "unitSp" = {"espece"},
+          "unitSpSz" = {"CL_espece"},
+          "unit" = {"unitobs"},
+          "espece"))
+    }
 
     # graphFile uniquement si nouveau fichier :
     if (!is.null(graphFileTmp)) graphFile <- graphFileTmp
@@ -1760,7 +1783,7 @@ pointsSmallSample.f <- function(objBaP, nbmin = 20){
 #' @param baseEnv environnement parent
 
 WP2barplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSel,
-  tableMetrique, dataEnv, baseEnv = .GlobalEnv){
+  tableMetrique, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   ## Purpose: Produire les barplots en tenant compte des options graphiques
   ## ----------------------------------------------------------------------
@@ -1857,7 +1880,7 @@ WP2barplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, li
   # (attention : écrasée à chaque nouvelle série de graphiques) :
   DataBackup <<- list(tmpData)
 
-  # Création du graphique si le nombre d'observations  < au minimum défini dans les options :
+  # Création du graphique si le nombre d'observations < au minimum défini dans les options :
   if (nrow(tmpData) < getOption("P.MinNbObs")){
     warning(mltext("WP2boxplot.W.n.1"), " (", paste(iFactGraphSel, collapse = ", "), ") < ",
       getOption("P.MinNbObs"), mltext("WP2boxplot.W.n.2"))
@@ -1865,21 +1888,34 @@ WP2barplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, li
     # Suppression des 'levels' non utilisés :
     tmpData <- dropLevels.f(tmpData)
 
-    # Ouverture et configuration du périphérique graphique :
-    graphFile <- openDevice.f(noGraph = 1,
-      metrique = metrique,
-      factGraph = factGraph,
-      modSel = iFactGraphSel,
-      listFact = listFact,
-      dataEnv = dataEnv,
-      type = ifelse(tableMetrique == "unitSpSz" && factGraph != "size.class",
-        "CL_unitobs",
-        "unitobs"),
-      typeGraph = paste("barplot", getOption("P.barplotStat"), sep = "-")) # moyenne/médiane !?
-#    graphFile <- "test_unitaire"   # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
-                                    # donc on la commente et on décommente cette ligne pour passer les tests
-
-
+    if (new_window){
+      # Ouverture et configuration du périphérique graphique :
+      graphFile <- openDevice.f(noGraph = 1,
+        metrique = metrique,
+        factGraph = factGraph,
+        modSel = iFactGraphSel,
+        listFact = listFact,
+        dataEnv = dataEnv,
+        type = ifelse(tableMetrique == "unitSpSz" && factGraph != "size.class",
+          "CL_unitobs",
+          "unitobs"),
+        typeGraph = paste("barplot", getOption("P.barplotStat"), sep = "-")) # moyenne/médiane !?
+    } else{
+      graphFile <- resFileGraph.f(
+        metrique = metrique,
+        factGraph = factGraph,
+        modSel = iFactGraphSel,
+        listFact = listFact,
+        dataEnv = dataEnv,
+        ext = "wmf",
+        prefix = paste("barplot", getOption("P.barplotStat"), sep = "-"),
+        sufixe = ifelse(getOption("P.plusieursGraphPage") && (length(modSel) > 1 || modSel[1] == ""),
+          "%03d",
+          ""),
+        type = ifelse(tableMetrique == "unitSpSz" && factGraph != "size.class",
+          "CL_unitobs",
+          "unitobs"))
+    }
 
     par(mar = c(9, 5, 8, 1), mgp = c(3.5, 1, 0)) # paramètres graphiques.
 

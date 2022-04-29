@@ -23,18 +23,20 @@
 #' @param factGraphSel chr, selection de modalites du facteur de separation des graphiques
 #' @param listFact chr, facteur(s) de regroupement
 #' @param listFactSel list, modalite selectionnees pour le(s) facteur(s) de regroupement
+#' @param new_window bool, affichage du graphique dans une nouvelle fenêtre ?
 #' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
 #' @examples
 #' freq_occurrences.f(agregation = "espece", factGraph = "scient.name",
 #'   factGraphSel = "Chromis_chromis", listFact = c("year", "protection.status"),
-#'   listFactSel = list(c("2011", "2019"), NA), dataEnv = .dataEnv, baseEnv = .baseEnv)
+#'   listFactSel = list(c("2011", "2019"), NA), new_window = TRUE,
+#'   dataEnv = .dataEnv, baseEnv = .baseEnv)
 #'
 #' @export
 
 freq_occurrence.f <- function(agregation, factGraph = NULL, factGraphSel = NA, listFact,
-  listFactSel = NA, dataEnv, baseEnv = .GlobalEnv){
+  listFactSel = NA, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   nextStep <- switch(agregation,
     "espece" = "boxplot.esp",
@@ -185,10 +187,10 @@ freq_occurrence.f <- function(agregation, factGraph = NULL, factGraphSel = NA, l
   # Lancement de la fonction de graphique
   # Launch of the graphic function
   if (agregation == "espece"){
-    barplotOccurrence.f(factGraph, factGraphSel, listFact, listFactSel, dataEnv, baseEnv)
+    barplotOccurrence.f(factGraph, factGraphSel, listFact, listFactSel, new_window, dataEnv, baseEnv)
   }
   else{
-    barplotOccurrence.unitobs.f(factGraph, factGraphSel, listFact, listFactSel, dataEnv, baseEnv)
+    barplotOccurrence.unitobs.f(factGraph, factGraphSel, listFact, listFactSel, new_window, dataEnv, baseEnv)
   }
 }
 
@@ -206,8 +208,8 @@ freq_occurrence.f <- function(agregation, factGraph = NULL, factGraphSel = NA, l
 #'
 #' @return none
 
-barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, dataEnv,
-  baseEnv = .GlobalEnv){
+barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, new_window = TRUE,
+  dataEnv, baseEnv = .GlobalEnv){
 
   ## Purpose: création des barplots d'après les sélections de facteurs et
   ##          modalités.
@@ -282,21 +284,40 @@ barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, 
     # Sauvegarde temporaire des données :
     DataBackup[[modGraphSel]] <<- tmpDataMod
 
-    # Ouverture et configuration du périphérique graphique :
-    graphFileTmp <- openDevice.f(noGraph = which(modGraphSel == iFactGraphSel),
-      metrique = metrique,
-      factGraph = factGraph,
-      modSel = if (getOption("P.plusieursGraphPage")){
+    if (new_window){
+      # Ouverture et configuration du périphérique graphique :
+      graphFileTmp <- openDevice.f(noGraph = which(modGraphSel == iFactGraphSel),
+        metrique = metrique,
+        factGraph = factGraph,
+        modSel = if (getOption("P.plusieursGraphPage")){
+          iFactGraphSel      # toutes les modalités.
+        }else{
+          modGraphSel        # la modalité courante uniquement.
+        },
+        listFact = listFact,
+        dataEnv = dataEnv,
+        type = "espece",
+        typeGraph = "barplot")
+    } else{
+      modSel <- if (getOption("P.plusieursGraphPage")){
         iFactGraphSel      # toutes les modalités.
       }else{
         modGraphSel        # la modalité courante uniquement.
-      },
-      listFact = listFact,
-      dataEnv = dataEnv,
-      type = "espece",
-      typeGraph = "barplot")
-#    graphFileTmp <- "test_unitaire"  # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
-                                      # donc on la commente et on décommente cette ligne pour passer les tests
+      }
+
+      graphFileTmp <- resFileGraph.f(
+        metrique = metrique,
+        factGraph = factGraph,
+        modSel = modSel,
+        listFact = listFact,
+        dataEnv = dataEnv,
+        ext = "wmf",
+        prefix = "barplot",
+        sufixe = ifelse(getOption("P.plusieursGraphPage") && (length(modSel) > 1 || modSel[1] == ""),
+          "%03d",
+          ""),
+        type = "espece")
+    }
 
     # graphFile uniquement si nouveau fichier :
     if (!is.null(graphFileTmp)) graphFile <- graphFileTmp
@@ -1404,8 +1425,8 @@ barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, 
 #'
 #' @return none
 
-barplotOccurrence.unitobs.f <- function(factGraph, factGraphSel, listFact, listFactSel, dataEnv,
-  baseEnv = .GlobalEnv){
+barplotOccurrence.unitobs.f <- function(factGraph, factGraphSel, listFact, listFactSel,
+  new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   ## Purpose: création d'un barplot d'après les sélections de facteurs et
   ##          modalités, avec les présences/absences agrégées par unitobs.
@@ -1464,7 +1485,7 @@ barplotOccurrence.unitobs.f <- function(factGraph, factGraphSel, listFact, listF
   DataBackup <<- list(tmpData)
 
   # ###############################################################
-  # Création du graphique si le nombre d'observations  < au minimum défini dans les options :
+  # Création du graphique si le nombre d'observations < au minimum défini dans les options :
   if (dim(tmpData)[1] < getOption("P.MinNbObs")){
     warning(mltext("WP2boxplot.W.n.1"), "(", paste(iFactGraphSel, collapse = ", "), ") < ",
       getOption("P.MinNbObs"), mltext("WP2boxplot.W.n.2"))
@@ -1476,17 +1497,29 @@ barplotOccurrence.unitobs.f <- function(factGraph, factGraphSel, listFact, listF
     tmpData <- dropLevels.f(tmpData)
 
     # Ouverture et configuration du périphérique graphique :
-    graphFile <- openDevice.f(noGraph = 1,
-      metrique = metrique,
-      factGraph = factGraph,
-      modSel = iFactGraphSel,
-      listFact = listFact,
-      dataEnv = dataEnv,
-      type = "unitobs",
-      typeGraph = "barplot")
-#    graphFile <- "test_unitaire"   # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
-                                    # donc on la commente et on décommente cette ligne pour passer les tests
-
+    if (new_window){
+      graphFile <- openDevice.f(noGraph = 1,
+        metrique = metrique,
+        factGraph = factGraph,
+        modSel = iFactGraphSel,
+        listFact = listFact,
+        dataEnv = dataEnv,
+        type = "unitobs",
+        typeGraph = "barplot")
+    } else{
+      graphFile <- resFileGraph.f(
+        metrique = metrique,
+        factGraph = factGraph,
+        modSel = iFactGraphSel,
+        listFact = listFact,
+        dataEnv = dataEnv,
+        ext = "wmf",
+        prefix = "barplot",
+        sufixe = ifelse(getOption("P.plusieursGraphPage") && (length(modSel) > 1 || modSel[1] == ""),
+          "%03d",
+          ""),
+        type = "unitobs")
+    }
 
     # Titre (d'après les métriques, modalité du facteur de séparation et facteurs de regroupement) :
     if ((! isTRUE(getOption("P.graphPaper"))) && isTRUE(getOption("P.title"))){

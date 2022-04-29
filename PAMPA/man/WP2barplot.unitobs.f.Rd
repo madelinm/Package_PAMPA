@@ -11,6 +11,7 @@ WP2barplot.unitobs.f(
   listFact,
   listFactSel,
   tableMetrique,
+  new_window = TRUE,
   dataEnv,
   baseEnv = .GlobalEnv
 )

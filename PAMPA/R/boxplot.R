@@ -31,6 +31,7 @@
 #' @param listFact chr, facteur(s) de regroupement
 #' @param listFactSel list, modalite(s) selectionnee(s) pour le(s) facteur(s) de regroupement
 #' @param tableMetrique chr, nom de la table de metrique
+#' @param new_window bool, affichage du graphique dans une nouvelle fenêtre ?
 #' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
@@ -39,17 +40,17 @@
 #' boxplot.f(agregation = "espece", metrique = "density", factGraph = "scient.name",
 #'   factGraphSel = "Chromis_chromis", listFact = c("year", "protection.status"),
 #'   listFactSel = list(c("2011", "2019"), NA), tableMetrique = "unitSp",
-#'   dataEnv = .dataEnv, baseEnv = .baseEnv)
+#'   new_window = TRUE, dataEnv = .dataEnv, baseEnv = .baseEnv)
 #'
 #' boxplot_pampa.f(agregation = "unitobs", metrique = "pielou", factGraph = "family",
 #'   factGraphSel = c("Labridae"), listFact = c("year", "protection.status"),
 #'   listFactSel = NA, tableMetrique = "unit",
-#'   dataEnv = .dataEnv, baseEnv = .baseEnv)
+#'   new_window = TRUE, dataEnv = .dataEnv, baseEnv = .baseEnv)
 #'
 #' @export
 
 boxplot_pampa.f <- function(agregation, metrique, factGraph =  NULL, factGraphSel = NA, listFact,
-  listFactSel = NA, tableMetrique, dataEnv, baseEnv = .GlobalEnv){
+  listFactSel = NA, tableMetrique, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   tableMetrique_possible <- c("unit", "unitSp", "unitSpSz")
   nextStep <- switch(agregation,
@@ -233,11 +234,11 @@ boxplot_pampa.f <- function(agregation, metrique, factGraph =  NULL, factGraphSe
   # Launch of the graphic function
   if (agregation == 'espece'){
     WP2boxplot.f(metrique, factGraph, factGraphSel, listFact, listFactSel, tableMetrique,
-      dataEnv, baseEnv)
+      new_window, dataEnv, baseEnv)
   }
   else{
     WP2boxplot.unitobs.f(metrique, factGraph, factGraphSel, listFact, listFactSel, tableMetrique,
-      dataEnv, baseEnv)
+      new_window, dataEnv, baseEnv)
   }
 }
 
@@ -258,7 +259,7 @@ boxplot_pampa.f <- function(agregation, metrique, factGraph =  NULL, factGraphSe
 #' @return none
 
 WP2boxplot.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSel,
-  tableMetrique, dataEnv, baseEnv = .GlobalEnv){
+  tableMetrique, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   ## Purpose: Produire les boxplots en tenant compte des options graphiques
   ## ----------------------------------------------------------------------
@@ -337,26 +338,49 @@ WP2boxplot.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSe
     # Sauvegarde temporaire des données :
     DataBackup[[modGraphSel]] <<- tmpDataMod
 
-    # Ouverture et configuration du périphérique graphique :
-    graphFileTmp <- openDevice.f(noGraph = which(modGraphSel == iFactGraphSel),
-      metrique = metrique,
-      factGraph = factGraph,
-      modSel =
-        if (getOption("P.plusieursGraphPage")){
-          iFactGraphSel      # toutes les modalités.
-        }else{
-          modGraphSel        # la modalité courante uniquement.
-        },
-      listFact = listFact,
-      dataEnv = dataEnv,
-      type = switch(tableMetrique, # différents types de graphs en fonction de la table de données.
-        "unitSp" = {"espece"},
-        "unitSpSz" = {"CL_espece"},
-        "unit" = {"unitobs"},
-        "espece"),
-      typeGraph = "boxplot")
-#    graphFileTmp <- "test_unitaire"   # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
-                                       # donc on la commente et on décommente cette ligne pour passer les tests
+    if (new_window){
+      # Ouverture et configuration du périphérique graphique :
+      graphFileTmp <- openDevice.f(noGraph = which(modGraphSel == iFactGraphSel),
+        metrique = metrique,
+        factGraph = factGraph,
+        modSel =
+          if (getOption("P.plusieursGraphPage")){
+            iFactGraphSel      # toutes les modalités.
+          }else{
+            modGraphSel        # la modalité courante uniquement.
+          },
+        listFact = listFact,
+        dataEnv = dataEnv,
+        type = switch(tableMetrique, # différents types de graphs en fonction de la table de données.
+          "unitSp" = {"espece"},
+          "unitSpSz" = {"CL_espece"},
+          "unit" = {"unitobs"},
+          "espece"),
+        typeGraph = "boxplot")
+    } else{
+      modSel <- if (getOption("P.plusieursGraphPage")){
+        iFactGraphSel      # toutes les modalités.
+      }else{
+        modGraphSel        # la modalité courante uniquement.
+      }
+
+      graphFileTmp <- resFileGraph.f(
+        metrique = metrique,
+        factGraph = factGraph,
+        modSel = modSel,
+        listFact = listFact,
+        dataEnv = dataEnv,
+        ext = "wmf",
+        prefix = "boxplot",
+        sufixe = ifelse(getOption("P.plusieursGraphPage") && (length(modSel) > 1 || modSel[1] == ""),
+          "%03d",
+          ""),
+        type = switch(tableMetrique, # différents types de graphs en fonction de la table de données.
+          "unitSp" = {"espece"},
+          "unitSpSz" = {"CL_espece"},
+          "unit" = {"unitobs"},
+          "espece"))
+    }
 
     # graphFile uniquement si nouveau fichier :
     if (!is.null(graphFileTmp)) graphFile <- graphFileTmp
@@ -2177,7 +2201,7 @@ UnitobsFields.aliases <- function(dataEnv, ordered = FALSE, tableMetrique = ""){
 #' @return none
 
 WP2boxplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSel,
-  tableMetrique, dataEnv, baseEnv = .GlobalEnv){
+  tableMetrique, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   ## Purpose: Produire les boxplots en tenant compte des options graphiques
   ## ----------------------------------------------------------------------
@@ -2287,20 +2311,34 @@ WP2boxplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, li
     # Suppression des 'levels' non utilisés :
     tmpData <- dropLevels.f(tmpData)
 
-    # Ouverture et configuration du périphérique graphique :
-    graphFile <- openDevice.f(noGraph = 1,
-      metrique = metrique,
-      factGraph = factGraph,
-      modSel = iFactGraphSel,
-      listFact = listFact,
-      dataEnv = dataEnv,
-      type = ifelse(tableMetrique == "unitSpSz" && factGraph != "size.class",
-        "CL_unitobs",
-        "unitobs"),
-      typeGraph = "boxplot")
-#    graphFile <- "test_unitaire"   # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
-                                    # donc on la commente et on décommente cette ligne pour passer les tests
-
+    if (new_window){
+      # Ouverture et configuration du périphérique graphique :
+      graphFile <- openDevice.f(noGraph = 1,
+        metrique = metrique,
+        factGraph = factGraph,
+        modSel = iFactGraphSel,
+        listFact = listFact,
+        dataEnv = dataEnv,
+        type = ifelse(tableMetrique == "unitSpSz" && factGraph != "size.class",
+          "CL_unitobs",
+          "unitobs"),
+        typeGraph = "boxplot")
+    } else{
+      graphFile <- resFileGraph.f(
+        metrique = metrique,
+        factGraph = factGraph,
+        modSel = iFactGraphSel,
+        listFact = listFact,
+        dataEnv = dataEnv,
+        ext = "wmf",
+        prefix = "boxplot",
+        sufixe = ifelse(getOption("P.plusieursGraphPage") && (length(modSel) > 1 || modSel[1] == ""),
+          "%03d",
+          ""),
+        type = ifelse(tableMetrique == "unitSpSz" && factGraph != "size.class",
+          "CL_unitobs",
+          "unitobs"))
+    }
 
     par(mar = c(9, 5, 8, 1), mgp = c(3.5, 1, 0)) # paramètres graphiques.
 

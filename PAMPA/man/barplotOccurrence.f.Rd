@@ -9,6 +9,7 @@ barplotOccurrence.f(
   factGraphSel,
   listFact,
   listFactSel,
+  new_window = TRUE,
   dataEnv,
   baseEnv = .GlobalEnv
 )
