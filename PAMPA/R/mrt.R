@@ -48,7 +48,7 @@
 #' @export
 
 mrt.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact, listFactSel = NA,
-  tableMetrique, dataEnv, baseEnv = .GlobalEnv){
+  tableMetrique, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   tableMetrique_possible <- c("unit", "unitSp", "unitSpSz")
   nextStep <- switch(agregation,
@@ -225,11 +225,11 @@ mrt.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact, 
   # Launch of the graphic function
   if (agregation == "espece"){
     WP2MRT.esp.f(metrique, factGraph, factGraphSel, listFact, listFactSel, tableMetrique,
-      dataEnv, baseEnv)
+      new_window, dataEnv, baseEnv)
   }
   else{
     WP2MRT.unitobs.f(metrique, factGraph, factGraphSel, listFact, listFactSel, tableMetrique,
-      dataEnv, baseEnv)
+      new_window, dataEnv, baseEnv)
   }
 }
 
@@ -251,7 +251,7 @@ mrt.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact, 
 #' @return none
 
 WP2MRT.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSel, tableMetrique,
-  dataEnv, baseEnv = .GlobalEnv){
+  new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   ## Purpose: Produire des arbres de régression multivariée en tenant
   ##          compte des options graphiques + Sorties texte.
@@ -329,25 +329,47 @@ WP2MRT.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSe
     # Sauvegarde temporaire des données :
     DataBackup[[modGraphSel]] <<- tmpDataMod
 
-    # Ouverture et configuration du périphérique graphique :
-    graphFileTmp <- openDevice.f(
-      noGraph = which(modGraphSel == iFactGraphSel),
-      metrique = metrique,
-      factGraph = factGraph,
-      modSel = if (getOption("P.plusieursGraphPage")){
+    if (new_window){
+      # Ouverture et configuration du périphérique graphique :
+      graphFileTmp <- openDevice.f(
+        noGraph = which(modGraphSel == iFactGraphSel),
+        metrique = metrique,
+        factGraph = factGraph,
+        modSel = if (getOption("P.plusieursGraphPage")){
+          iFactGraphSel      # toutes les modalités.
+        }else{
+          modGraphSel        # la modalité courante uniquement.
+        },
+        listFact = listFact,
+        dataEnv = dataEnv,
+        type = switch(tableMetrique, # différents types de graphs en fonction de la table de données.
+          "unitSp" = {"espece"},
+          "unitSpSz" = {"CL_espece"},
+          "espece"),
+        typeGraph = "MRT")
+    } else{
+      modSel <- if (getOption("P.plusieursGraphPage")){
         iFactGraphSel      # toutes les modalités.
       }else{
         modGraphSel        # la modalité courante uniquement.
-      },
-      listFact = listFact,
-      dataEnv = dataEnv,
-      type = switch(tableMetrique, # différents types de graphs en fonction de la table de données.
-        "unitSp" = {"espece"},
-        "unitSpSz" = {"CL_espece"},
-        "espece"),
-      typeGraph = "MRT")
-#    graphFileTmp <- "test_unitaire"  # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
-                                      # donc on la commente et on décommente cette ligne pour passer les tests
+      }
+
+      graphFileTmp <- resFileGraph.f(
+        metrique = metrique,
+        factGraph = factGraph,
+        modSel = modSel,
+        listFact = listFact,
+        dataEnv = dataEnv,
+        ext = "wmf",
+        prefix = "MRT",
+        sufixe = ifelse(getOption("P.plusieursGraphPage") && (length(modSel) > 1 || modSel[1] == ""),
+          "%03d",
+          ""),
+        type = switch(tableMetrique, # différents types de graphs en fonction de la table de données.
+          "unitSp" = {"espece"},
+          "unitSpSz" = {"CL_espece"},
+          "espece"))
+    }
 
     # graphFile uniquement si nouveau fichier :
     if (!is.null(graphFileTmp)) graphFile <- graphFileTmp
@@ -1350,7 +1372,7 @@ summary.rpart.ml <- function (object, cp = 0, digits = getOption("digits"), file
 #'@return none
 
 WP2MRT.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSel,
-  tableMetrique, dataEnv = dataEnv, baseEnv = .GlobalEnv){
+  tableMetrique, new_window = TRUE, dataEnv = dataEnv, baseEnv = .GlobalEnv){
 
   ## Purpose:
   ## ----------------------------------------------------------------------
@@ -1452,20 +1474,35 @@ WP2MRT.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, listFa
   # Suppression des 'levels' non utilisés :
   tmpData <- dropLevels.f(tmpData)
 
-  # Ouverture et configuration du périphérique graphique :
-  graphFile <- openDevice.f(noGraph = 1,
-    metrique = metrique,
-    factGraph = factGraph,
-    modSel = iFactGraphSel,
-    listFact = listFact,
-    dataEnv = dataEnv,
-    type = ifelse(tableMetrique == "unitSpSz" && factGraph != "size.class",
-      "CL_unitobs",
-      "unitobs"),
-    typeGraph = "MRT",
-    large = TRUE)
-#  graphFile <- "test_unitaire"  # les tests unitaires ne fonctionnent pas avec la fonction openDevice.f,
-                                 # donc on la commente et on décommente cette ligne pour passer les tests
+  if (new_window){
+    # Ouverture et configuration du périphérique graphique :
+    graphFile <- openDevice.f(noGraph = 1,
+      metrique = metrique,
+      factGraph = factGraph,
+      modSel = iFactGraphSel,
+      listFact = listFact,
+      dataEnv = dataEnv,
+      type = ifelse(tableMetrique == "unitSpSz" && factGraph != "size.class",
+        "CL_unitobs",
+        "unitobs"),
+      typeGraph = "MRT",
+      large = TRUE)
+  } else{
+    graphFile <- resFileGraph.f(
+      metrique = metrique,
+      factGraph = factGraph,
+      modSel = iFactGraphSel,
+      listFact = listFact,
+      dataEnv = dataEnv,
+      ext = "wmf",
+      prefix = "MRT",
+      sufixe = ifelse(getOption("P.plusieursGraphPage") && (length(modSel) > 1 || modSel[1] == ""),
+        "%03d",
+        ""),
+      type = ifelse(tableMetrique == "unitSpSz" && factGraph != "size.class",
+        "CL_unitobs",
+        "unitobs"))
+  }
 
   par(mar = c(1.5, 7, 7, 7), mgp = c(3.5, 1, 0)) # paramètres graphiques.
 
