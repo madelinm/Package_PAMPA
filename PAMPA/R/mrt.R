@@ -52,8 +52,8 @@ mrt.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact, 
 
   tableMetrique_possible <- c("unit", "unitSp", "unitSpSz")
   nextStep <- switch(agregation,
-    "espece" = "boxplot.esp",
-    "unitobs" = "boxplot.unitobs",
+    "espece" = "MRT.esp",
+    "unitobs" = "MRT.unitobs",
     stop(
       "Veuillez choisir une valeur de 'agregation' parmi 'espece' ou 'unitobs' (groupe d'especes).",
       "Please, choose an agregation between 'espece' and 'unitobs'."
@@ -89,7 +89,7 @@ mrt.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact, 
     )
   }
 
-  metriques_possibles <- MetricsField.aliases(tableMetrique, "boxplot", dataEnv)
+  metriques_possibles <- MetricsField.aliases(tableMetrique, nextStep, dataEnv)
   if (!is.element(metrique, metriques_possibles)){
     stop(
       paste("La valeur de 'metrique' n'est pas valide.\n"),

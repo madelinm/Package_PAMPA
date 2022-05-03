@@ -39,8 +39,8 @@ freq_occurrence.f <- function(agregation, factGraph = NULL, factGraphSel = NA, l
   listFactSel = NA, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   nextStep <- switch(agregation,
-    "espece" = "boxplot.esp",
-    "unitobs" = "boxplot.unitobs",
+    "espece" = "freq_occurrence",
+    "unitobs" = "freq_occurrence.unitobs",
     stop(
       "Veuillez choisir une valeur de 'agregation' parmi 'espece' ou 'unitobs' (groupe d'especes)."
     )
@@ -154,8 +154,7 @@ freq_occurrence.f <- function(agregation, factGraph = NULL, factGraphSel = NA, l
   for (i in seq(length(listFact))){
     listFactSel_possible <- unique(selectModalites.f(tableMetrique = tableMetrique,
       facts = listFact[i], selections = append(list(NA), NA), metrique = metrique,
-      nextStep = ifelse(agregation == "espece", "freq_occurrence", "freq_occurrence.unitobs"),
-      dataEnv, level = 1)[, listFact[i]])
+      nextStep = nextStep, dataEnv, level = 1)[, listFact[i]])
     for (j in seq(length(listFactSel[[i]]))){
       if (!is.na(listFactSel[[i]][j]) & !is.element(listFactSel[[i]][j], listFactSel_possible)){
         stop(

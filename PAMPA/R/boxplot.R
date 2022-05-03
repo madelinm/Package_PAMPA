@@ -95,7 +95,7 @@ boxplot_pampa.f <- function(agregation, metrique, factGraph =  NULL, factGraphSe
     )
   }
 
-  metriques_possibles <- MetricsField.aliases(tableMetrique, "boxplot", dataEnv)
+  metriques_possibles <- MetricsField.aliases(tableMetrique, nextStep, dataEnv)
   if (!is.element(metrique, metriques_possibles)){
     stop(
       paste("La valeur de 'metrique' n'est pas valide.\n"),
