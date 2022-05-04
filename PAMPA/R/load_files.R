@@ -150,45 +150,46 @@ load_files.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv){
   station <- Data[["unitobs"]][["site"]]
   year <- Data[["unitobs"]][["year"]]
 
-  station_year_table <- table(station, year)
-  station_year_table <- cbind(station_year_table,
-    Total = sapply(seq(nrow(station_year_table)), function(x){
-      sum(station_year_table[x,])
-    }))
-  station_year_table <- rbind(station_year_table,
-    Total = sapply(seq(ncol(station_year_table)), function(x){
-      sum(station_year_table[,x])
-    }))
+  if (!all(is.na(station)) & !all(is.na(year))){
+    station_year_table <- table(station, year)
+    station_year_table <- cbind(station_year_table,
+      Total = sapply(seq(nrow(station_year_table)), function(x){
+        sum(station_year_table[x,])
+      }))
+    station_year_table <- rbind(station_year_table,
+      Total = sapply(seq(ncol(station_year_table)), function(x){
+        sum(station_year_table[,x])
+      }))
 
-  fileNm <- paste(filePathes["results"], "NombreSiteAnnee",
-    ".csv", sep = "")
-  tryCatch(write.csv(station_year_table,
-    file = fileNm,
-    quote = TRUE, row.names = TRUE),
-    error = function(e){
-      warning(paste("Impossible d'écrire le fichier ", fileNm,
-        "\nIl est possibles qu'il soit ouvert par une autre application", sep = ""),
-        call. = FALSE, immediate. = TRUE)
-      errorLog.f(error = e, niv = -4)
+    fileNm <- paste(filePathes["results"], "NombreSiteAnnee",
+      ".csv", sep = "")
+    tryCatch(write.csv(station_year_table,
+      file = fileNm,
+      quote = TRUE, row.names = TRUE),
+      error = function(e){
+        warning(paste("Impossible d'écrire le fichier ", fileNm,
+          "\nIl est possibles qu'il soit ouvert par une autre application", sep = ""),
+          call. = FALSE, immediate. = TRUE)
+        errorLog.f(error = e, niv = -4)
+      })
+
+    moyenne_annee_visite <- sapply(seq(nrow(station_year_table)-1), function(x){
+      mean(station_year_table[x,1:ncol(station_year_table)-1] > 0)
     })
+    sites <- row.names(station_year_table[1:nrow(station_year_table)-1,])
+    moyenne_annee_visite_table <- cbind(sites, moyenne_annee_visite)
 
-  moyenne_annee_visite <- sapply(seq(nrow(station_year_table)-1), function(x){
-    mean(station_year_table[x,1:ncol(station_year_table)-1] > 0)
-  })
-  sites <- row.names(station_year_table[1:nrow(station_year_table)-1,])
-  moyenne_annee_visite_table <- cbind(sites, moyenne_annee_visite)
-
-  fileNm <- paste(filePathes["results"], "MoyenneAnneeVisiteSite",
-    ".csv", sep = "")
-  tryCatch(write.csv(moyenne_annee_visite_table,
-    file = fileNm,
-    quote = TRUE, row.names = FALSE),
-    error = function(e){
-      warning(paste("Impossible d'écrire le fichier ", fileNm,
-        "\nIl est possibles qu'il soit ouvert par une autre application", sep = ""),
-        call. = FALSE, immediate. = TRUE)
-    })
-
+    fileNm <- paste(filePathes["results"], "MoyenneAnneeVisiteSite",
+      ".csv", sep = "")
+    tryCatch(write.csv(moyenne_annee_visite_table,
+      file = fileNm,
+      quote = TRUE, row.names = FALSE),
+      error = function(e){
+        warning(paste("Impossible d'écrire le fichier ", fileNm,
+          "\nIl est possibles qu'il soit ouvert par une autre application", sep = ""),
+          call. = FALSE, immediate. = TRUE)
+      })
+  }
   return(Data)
 }
 
