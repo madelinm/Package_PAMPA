@@ -413,7 +413,7 @@ barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, 
       mtext(nbObs, side = 3, at = barPlotTmp, las = 2, col = getOption("P.NbObsCol"), adj = -0.2)
 
       legend(x = "topleft",
-        legend = substitute(expression(part1 == part2),
+        legend = substitute(part1 == part2,
           list(part1 = mltext("barplotOccurrence.leg.1", language = getOption("P.lang")),
             part2 = mltext("barplotOccurrence.leg.2", language = getOption("P.lang")))),
         cex = 0.9, col = getOption("P.NbObsCol"), text.col = getOption("P.NbObsCol"), merge = FALSE)

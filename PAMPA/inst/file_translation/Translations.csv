@@ -826,8 +826,8 @@ sortiesMRT.call,X,Appel :,Call:
 sortiesMRT.printRes,X,Résultat général :,Main results:
 sortiesMRT.details,X,Détails :,Detailed output:
 WP2MRT.esp.graphTitle.pfx,X,Arbre de régression multivariée,Multivariate regression tree
-barplotOccurrence.leg.1,X,Nombre d'observations (,Number of observation (
-barplotOccurrence.leg.2,X,nb unités d'observation x nb espèces),nb station x nb species)
+barplotOccurrence.leg.1,X,Nombre d'observations (,Number of records (
+barplotOccurrence.leg.2,X,nb unités d'observation x nb espèces),nb stations x nb species)
 barplotOccurrence.unitobs.leg,X,Nombre d'unités d'observation,Number of stations
 WP2barplot.esp.leg,X,Nombre d'enregistrements par barre,Number of records per bar
 initInnerTkProgressBar.title,X,Progression :,Progress:
