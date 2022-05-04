@@ -300,18 +300,6 @@ barplotOccurrenceFamille.f <- function(factGraph, factGraphSel, fact, factSel, f
     # graphFile uniquement si nouveau fichier :
     if (!is.null(graphFileTmp)) graphFile <- graphFileTmp
 
-    # Titre (d'après les métriques, modalité du facteur de séparation et facteurs de regroupement) :
-    if ((! isTRUE(getOption("P.graphPaper"))) && isTRUE(getOption("P.title"))){
-      mainTitle <- graphTitle.f(metrique = metrique,
-        modGraphSel = modGraphSel,
-        factGraph = factGraph,
-        listFact = fact,
-        type = "espece",
-        graphType = "occFrequency")
-    }else{
-      mainTitle <- NULL
-    }
-
     # Calcul des fréquences :
     heights <- with(tmpDataMod,
       tapply(pres.abs, lapply(fact, function(y)eval(parse(text = y))),
@@ -367,6 +355,29 @@ barplotOccurrenceFamille.f <- function(factGraph, factGraphSel, fact, factSel, f
     colors <- PAMPAcolors.f(n = nrow(heights))
 
     for (i in seq(ncol(heights))){
+
+      # Titre (d'après les métriques, modalité du facteur de séparation et facteurs de regroupement) :
+      if ((! isTRUE(getOption("P.graphPaper"))) && isTRUE(getOption("P.title"))){
+        nbObs <- nbObs <- with(tmpDataMod,
+          tapply(pres.abs,
+            lapply(fact, function(y)eval(parse(text = y))),
+            function(x){
+              length(na.omit(x))
+            }))
+        nbObs <- sum(nbObs[,i])
+
+        mainTitle <- graphTitle.f(metrique = metrique,
+          modGraphSel = modGraphSel,
+          factGraph = factGraph,
+          listFact = fact,
+          type = "espece",
+          graphType = "occFamily",
+          nbObs = nbObs)
+      }else{
+        mainTitle <- NULL
+      }
+
+
       ordre <- order(heights[,i], decreasing = TRUE)
       heights_ordered <- heights[ordre, i]
       heights_ordered <- as.matrix(heights_ordered)
@@ -394,29 +405,29 @@ barplotOccurrenceFamille.f <- function(factGraph, factGraphSel, fact, factSel, f
           side = 1, line = 2.3, cex = cex)
       }else{}
 
-      if (getOption("P.NbObs")){
-        # Nombre d'"observations" :
-        nbObs <- with(tmpDataMod,
-          tapply(pres.abs,
-            lapply(fact, function(y)eval(parse(text = y))),
-            function(x){
-              length(na.omit(x))
-        }))
-
-        if (!is.matrix(nbObs)){   # cas où nbObs n'est pas une matrice (pas de facteur sélectionné)
-          nbObs <- as.matrix(nbObs)
-        }
-
-        # Nombres sur l'axe supérieur :
-        mtext(nbObs[,i], side = 3, at = barPlotTmp, las = 2, col = getOption("P.NbObsCol"), adj = -0.2)
-
-        legend(x = "topleft",
-          legend = substitute(expression(part1 == part2),
-            list(part1 = mltext("barplotOccurrence.leg.1", language = getOption("P.lang")),
-              part2 = mltext("barplotOccurrence.leg.2", language = getOption("P.lang")))),
-          cex = 0.9, col = getOption("P.NbObsCol"), text.col = getOption("P.NbObsCol"), merge = FALSE)
-
-      }else{}
+#      if (getOption("P.NbObs")){
+#        # Nombre d'"observations" :
+#        nbObs <- with(tmpDataMod,
+#          tapply(pres.abs,
+#            lapply(fact, function(y)eval(parse(text = y))),
+#            function(x){
+#              length(na.omit(x))
+#        }))
+#
+#        if (!is.matrix(nbObs)){   # cas où nbObs n'est pas une matrice (pas de facteur sélectionné)
+#          nbObs <- as.matrix(nbObs)
+#        }
+#
+#        # Nombres sur l'axe supérieur :
+#        mtext(nbObs[,i], side = 3, at = barPlotTmp, las = 2, col = getOption("P.NbObsCol"), adj = -0.2)
+#
+#        legend(x = "topleft",
+#          legend = substitute(expression(part1 == part2),
+#            list(part1 = mltext("barplotOccurrence.leg.1", language = getOption("P.lang")),
+#              part2 = mltext("barplotOccurrence.leg.2", language = getOption("P.lang")))),
+#          cex = 0.9, col = getOption("P.NbObsCol"), text.col = getOption("P.NbObsCol"), merge = FALSE)
+#
+#      }else{}
 
     }
     # ###################################################

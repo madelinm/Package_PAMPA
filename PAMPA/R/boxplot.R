@@ -944,8 +944,8 @@ collapse.max.f <- function(x, nmax = 120, collapse = "+", fillstr = "..."){
 
 
 graphTitle.f <- function(metrique, modGraphSel, factGraph, listFact, model = NULL, type = "espece",
-  graphType = c("generic", "boxplot", "barplot", "occFrequency"),
-  lang = getOption("P.lang")){
+  graphType = c("generic", "boxplot", "barplot", "occFrequency", "occFamily"),
+  lang = getOption("P.lang"), nbObs){
 
   ## Purpose:
   ## ----------------------------------------------------------------------
@@ -953,7 +953,7 @@ graphTitle.f <- function(metrique, modGraphSel, factGraph, listFact, model = NUL
   ## ----------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 14 oct. 2010, 15:44
   graphType <- match.arg(arg = graphType,
-    choices = c("generic", "boxplot", "barplot", "occFrequency"),
+    choices = c("generic", "boxplot", "barplot", "occFrequency", "occFamily"),
     several.ok = FALSE)
 
   # Factors names in the chosen language:
@@ -984,14 +984,16 @@ graphTitle.f <- function(metrique, modGraphSel, factGraph, listFact, model = NUL
               Capitalize.f(mltext("stat.median",
                 language = lang))
             }),
-            "(")
-          },
-          "occFrequency" = {""}),
+            "("
+          )
+        },
+        "occFrequency" = {""},
+        "occFamily" = {""}),
       paste(model,
         mltext("graphTitle.for",
           language = lang),
        varNames[metrique, "article"], sep = "")),
-    ifelse(graphType == "occFrequency",
+    ifelse(graphType == "occFrequency" | graphType == "occFamily",
       Capitalize.f(varNames[metrique, "nom"]),
       varNames[metrique, "nom"]),
     ifelse(test = graphType == "barplot",
@@ -1063,7 +1065,11 @@ graphTitle.f <- function(metrique, modGraphSel, factGraph, listFact, model = NUL
     }else{
       factNames
     },
-    "\n", sep = ""))
+    "\n",
+    if (graphType == "occFamily"){
+      paste("(number of observations = ", nbObs, ")", "\n", sep = "")
+    },
+    sep = ""))
 }
 
 
@@ -2153,7 +2159,7 @@ UnitobsFields.aliases <- function(dataEnv, ordered = FALSE, tableMetrique = ""){
 
   # Champs non-vides de la table 'unitobs' :
   res <- aliases(names(unitobs)[
-    sapply(names(unitobs),
+    sapply(names(unitobs)[!is.na(names(unitobs))],
       function(i){
         !all(is.na(unitobs[ , i]))
     })], reverse = TRUE)
