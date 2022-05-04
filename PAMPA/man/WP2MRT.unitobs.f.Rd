@@ -11,6 +11,7 @@ WP2MRT.unitobs.f(
   listFact,
   listFactSel,
   tableMetrique,
+  new_window = TRUE,
   dataEnv = dataEnv,
   baseEnv = .GlobalEnv
 )

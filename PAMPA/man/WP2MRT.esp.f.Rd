@@ -11,6 +11,7 @@ WP2MRT.esp.f(
   listFact,
   listFactSel,
   tableMetrique,
+  new_window = TRUE,
   dataEnv,
   baseEnv = .GlobalEnv
 )
