@@ -349,24 +349,25 @@ maps.f <- function(agregation, graphType, metrique, factSpatial, factSpatialSel 
   # Launch of the graphic function
   if (is.element(graphType, barboxplot)){
     if (agregation == "espece"){
-      subplotCarto.esp.f(graphType, metrique, factSpatial, factSpatialSel,
+      map <- subplotCarto.esp.f(graphType, metrique, factSpatial, factSpatialSel,
         factGraph, factGraphSel, listFact, listFactSel, tableMetrique, dataEnv, baseEnv)
     }
     else{
-      subplotCarto.unitobs.f(graphType, metrique, factSpatial, factSpatialSel,
+      map <- subplotCarto.unitobs.f(graphType, metrique, factSpatial, factSpatialSel,
         factGraph, factGraphSel, listFact, listFactSel, tableMetrique, dataEnv, baseEnv)
     }
   }
   else{
     if (agregation == "espece"){
-      symbColCarto.esp.f(graphType, metrique, factSpatial, factSpatialSel,
+      map <- symbColCarto.esp.f(graphType, metrique, factSpatial, factSpatialSel,
         factGraph, factGraphSel, tableMetrique, dataEnv, baseEnv)
     }
     else{
-      symbColCarto.unitobs.f(graphType, metrique, factSpatial, factSpatialSel,
+      map <- symbColCarto.unitobs.f(graphType, metrique, factSpatial, factSpatialSel,
         factGraph, factGraphSel, tableMetrique, dataEnv, baseEnv)
     }
   }
+  return(map)
 }
 
 
@@ -690,7 +691,6 @@ subplotCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
 
   print("Affichage de la carte...")
   print("Print map...")
-  print(map)
   if (length(iFactGraphSel) > 1){
     print("Vous pouvez naviguez entre les couches à l'aide du bouton à gauche.")
     print("You can switch between layers with the button at the left.")
@@ -734,6 +734,7 @@ subplotCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
       }
     }else{}
   }else{}
+  return(map)
 
 #  pampaProfilingEnd.f()
 }
@@ -1498,7 +1499,7 @@ subplotCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
       layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE) +
       mapview::mapview(spdf, zcol = fact, col.regions = col, legend = FALSE,
         layer.name = fact, popup = leafpop::popupImage(plot_name[[1]]))
-    print(map)
+
     do.call(file.remove, list(list.files(plot_name[[2]], full.names = TRUE)))
     unlink(plot_name[[2]], recursive = TRUE)
 
@@ -1536,6 +1537,7 @@ subplotCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
 #        savePlot(graphFile, type = "wmf", device = dev.cur())
 #      }else{}
 #    }
+    return(map)
   }
 }
 
@@ -1602,6 +1604,10 @@ symbColCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
   # ###############################################################
   # Boucle de création des graphiques (par facteur de séparation) :
   for (modGraphSel in iFactGraphSel){
+    if (length(iFactGraphSel) > 1){
+      print(paste("Création de la couche pour ", factGraph, " == '", modGraphSel, "'...", sep = ""))
+      print(paste("Creation of the layer for ", factGraph, " == '", modGraphSel, "'...", sep = ""))
+    }
     # Préparation des données pour un graphique :
     if (modGraphSel == ""){         # ...si pas de facteur de séparation des graphiques
       tmpDataMod <- tmpData
@@ -1799,13 +1805,18 @@ symbColCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
       map_data <- cbind(tmpDataMod2, coordinates(polyZones))
       colnames(map_data) <- c(metrique, fact, "x", "y")
 
-      mapview::mapviewOptions(basemaps = "CartoDB.Positron")
-      map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
-          layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE) +
+      if (!exists("map")){
+        mapview::mapviewOptions(basemaps = "CartoDB.Positron")
+        map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
+          layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE)
+      }
+
+      map <- map +
         mapview::mapview(spdf, zcol = fact, col.regions = col, legend = FALSE,
           layer.name = fact, label = fact, popup = NULL) +
         mapview(map_data, xcol = "x", ycol = "y", zcol = fact, col.regions = col, cex = metrique,
-          layer.name = metrique, grid = FALSE, label = fact, popup = metrique)
+          layer.name = paste(fact, modGraphSel, sep = " - "), grid = FALSE,
+          label = fact, popup = metrique)
     }
     else{
       x <- tmpDataMod2[order(tmpDataMod2[fact]),]
@@ -1821,15 +1832,16 @@ symbColCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
 
       rgb.palette <- colorRampPalette(gray.colors(n = 2), space = "rgb")
 
-      mapview::mapviewOptions(basemaps = "CartoDB.Positron")
-      map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
-          layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE) +
+      if (!exists("map")){
+        mapview::mapviewOptions(basemaps = "CartoDB.Positron")
+        map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
+          layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE)
+      }
+      map <- map +
         mapview::mapview(spdf, zcol = metrique, col.regions = rgb.palette, alpha.regions = 1,
           at = at, legend = TRUE, legend.opacity = 1,
-          layer.name = fact, label = fact, popup = metrique)
+          layer.name = paste(fact, modGraphSel, sep = " - "), label = fact, popup = metrique)
     }
-
-    print(map)
 
     # ###################################################
     # Fermeture de graphiques et sauvegarde de fichiers :
@@ -1876,6 +1888,7 @@ symbColCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
       }else{}
     }
   }  # Fin de boucle graphique.
+  return(map)
 }
 
 
@@ -2535,8 +2548,6 @@ symbColCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
           layer.name = fact, label = fact, popup = metrique)
     }
 
-    print(map)
-
     # ##################################################
     # Sauvegarde des données :
     if (getOption("P.saveData")){
@@ -2574,6 +2585,7 @@ symbColCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
         savePlot(graphFile, type = "wmf", device = dev.cur())
       }else{}
     }
+    return(map)
   }
 }
 
