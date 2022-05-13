@@ -34,7 +34,6 @@
 #'   dataEnv = .dataEnv, baseEnv = .baseEnv)
 #'
 #' @export
-
 freq_occurrence.f <- function(agregation, factGraph = NULL, factGraphSel = NA, listFact,
   listFactSel = NA, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
@@ -101,7 +100,7 @@ freq_occurrence.f <- function(agregation, factGraph = NULL, factGraphSel = NA, l
       facts = factGraph, selections = append(list(NA), NA), metrique = metrique,
       nextStep = nextStep, dataEnv, level = 0)[, factGraph])
 
-    if (!is.na(factGraphSel) & !is.element(factGraphSel, factGraphSel_possible)){
+    if (!is.na(factGraphSel) && !is.element(factGraphSel, factGraphSel_possible)){
       stop(
         paste("La valeur '", factGraphSel,
           "' du paramètre 'factGraphSel' n'est pas valide.\n", sep = ""),
@@ -156,7 +155,7 @@ freq_occurrence.f <- function(agregation, factGraph = NULL, factGraphSel = NA, l
       facts = listFact[i], selections = append(list(NA), NA), metrique = metrique,
       nextStep = nextStep, dataEnv, level = 1)[, listFact[i]])
     for (j in seq(length(listFactSel[[i]]))){
-      if (!is.na(listFactSel[[i]][j]) & !is.element(listFactSel[[i]][j], listFactSel_possible)){
+      if (!is.na(listFactSel[[i]][j]) && !is.element(listFactSel[[i]][j], listFactSel_possible)){
         stop(
           paste("La valeur '", listFactSel[[i]][j], "' du paramètre 'listFactGraph' pour le facteur '",
                 listFact[i], "' n'est pas valide.\n", sep = ""),

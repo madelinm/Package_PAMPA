@@ -145,7 +145,7 @@ mrt.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact, 
   factGraphSel_possible <- unique(selectModalites.f(tableMetrique = tableMetrique,
     facts = factGraph, selections = append(list(NA), NA), metrique = metrique,
     nextStep = nextStep, dataEnv, level = 0)[, factGraph])
-  if (!is.na(factGraphSel) & !is.element(factGraphSel, factGraphSel_possible)){
+  if (!is.na(factGraphSel) && !is.element(factGraphSel, factGraphSel_possible)){
     stop(
       paste("La valeur '", factGraphSel,
         "' du paramètre 'factGraphSel' n'est pas valide.\n", sep = ""),
@@ -193,7 +193,7 @@ mrt.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact, 
       facts = listFact[i], selections = append(list(NA), NA), metrique = metrique,
       nextStep = nextStep, dataEnv, level = 1)[, listFact[i]])
     for (j in seq(length(listFactSel[[i]]))){
-      if (!is.na(listFactSel[[i]][j]) & !is.element(listFactSel[[i]][j], listFactSel_possible)){
+      if (!is.na(listFactSel[[i]][j]) && !is.element(listFactSel[[i]][j], listFactSel_possible)){
         stop(
           paste("La valeur '", listFactSel[[i]][j], "' du paramètre 'listFactGraph' pour le facteur '",
                 listFact[i], "' n'est pas valide.\n", sep = ""),

@@ -65,7 +65,7 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
     facts = factGraph, selections = append(list(NA), NA), metrique = metrique,
     nextStep = "freq_occurrence", dataEnv, level = 0)[, factGraph])
 
-  if (!is.na(factGraphSel) & !is.element(factGraphSel, factGraphSel_possible)){
+  if (!is.na(factGraphSel) && !is.element(factGraphSel, factGraphSel_possible)){
     stop(
       paste("La valeur '", factGraphSel,
         "' du paramètre 'factGraphSel' n'est pas valide.\n", sep = ""),
@@ -87,7 +87,7 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
     )
   }
   fact_possible <- refTablesFields.aliases(nomTable = tableMetrique, dataEnv = dataEnv)
-  if (!is.element(fact, fact_possible) & !(is.na(fact))){
+  if (!(is.na(fact)) && !is.element(fact, fact_possible)){
     stop(
       paste("La valeur '", fact, "' du paramètre 'fact' n'est pas valide.\n", sep = ""),
       paste("Veuillez choisir parmi :\n"),
@@ -111,7 +111,7 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
     factSel_possible <- unique(selectModalites.f(tableMetrique = tableMetrique,
       facts = fact, selections = append(list(NA), NA), metrique = metrique,
       nextStep = "freq_occurrence", dataEnv, level = 1)[, fact])
-    if (!is.na(factSel) & !is.element(factSel, factSel_possible)){
+    if (!is.na(factSel) && !is.element(factSel, factSel_possible)){
       stop(
         paste("La valeur '", factSel, "' du paramètre 'factGraph' pour le facteur '",
           fact, "' n'est pas valide.\n", sep = ""),
@@ -131,7 +131,7 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
     facts = "family", selections = append(list(NA), NA), metrique = metrique,
     nextStep = "freq_occurrence", dataEnv, level = 1)[, "family"])
   for (i in seq(length(families))){
-    if (!is.na(families[i]) & !is.element(families[i], families_possible)){
+    if (!is.na(families[i]) && !is.element(families[i], families_possible)){
       stop(
         paste("La valeur '", families[i], "' du paramètre 'families' n'est pas valide.\n", sep = ""),
         paste("Veuillez choisir parmi :\n"),

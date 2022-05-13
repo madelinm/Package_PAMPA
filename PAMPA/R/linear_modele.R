@@ -154,7 +154,7 @@ lm.f <- function(agregation, metrique, factAna, factAnaSel = NA, listFact, listF
     factAnaSel_possible <- unique(selectModalites.f(tableMetrique = tableMetrique,
       facts = factAna, selections = append(list(NA), NA), metrique = metrique,
       nextStep = nextStep, dataEnv, level = 0)[, factAna])
-    if (!is.na(factAnaSel) & !is.element(factAnaSel, factAnaSel_possible)){
+    if (!is.na(factAnaSel) && !is.element(factAnaSel, factAnaSel_possible)){
       stop(
         paste("La valeur '", factAnaSel, "' du paramètre 'factAnaSel' n'est pas valide.\n", sep = ""),
         paste("Veillez choisir parmi :\n"),
@@ -218,7 +218,7 @@ lm.f <- function(agregation, metrique, factAna, factAnaSel = NA, listFact, listF
       facts = listFact[i], selections = append(list(NA), NA), metrique = metrique,
       nextStep = nextStep, dataEnv, level = 1)[, listFact[i]])
     for (j in seq(length(listFactSel[[i]]))){
-      if (!is.na(listFactSel[[i]][j]) & !is.element(listFactSel[[i]][j], listFactSel_possible)){
+      if (!is.na(listFactSel[[i]][j]) && !is.element(listFactSel[[i]][j], listFactSel_possible)){
         stop(
           paste("La valeur '", listFactSel[[i]][j], "' du paramètre 'listFactGraph' pour le facteur '",
             listFact[i], "' n'est pas valide.\n", sep = ""),
