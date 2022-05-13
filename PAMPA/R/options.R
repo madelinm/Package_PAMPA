@@ -4,7 +4,7 @@
 # Ensemble du package
 options(
   versionPAMPA = "3.1-beta3",
-  defaultLang = "fr"
+  defaultLang = "en"
 )
 
 # base_function.R - VarNames.f

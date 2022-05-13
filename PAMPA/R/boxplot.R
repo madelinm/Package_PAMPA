@@ -944,7 +944,7 @@ collapse.max.f <- function(x, nmax = 120, collapse = "+", fillstr = "..."){
 
 graphTitle.f <- function(metrique, modGraphSel, factGraph, listFact, model = NULL, type = "espece",
   graphType = c("generic", "boxplot", "barplot", "occFrequency", "occFamily"),
-  lang = getOption("P.lang"), nbObs){
+  lang = getOption("P.lang"), nbObs = NULL){
 
   ## Purpose:
   ## ----------------------------------------------------------------------

@@ -441,6 +441,7 @@ subplotCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
       print(paste("Création de la couche pour ", factGraph, " == '", modGraphSel, "'...", sep = ""))
       print(paste("Creation of the layer for ", factGraph, " == '", modGraphSel, "'...", sep = ""))
     }
+
     # Préparation des données pour un graphique :
     if (modGraphSel == ""){         # ...si pas de facteur de séparation des graphiques
       tmpDataMod <- tmpData
@@ -1064,6 +1065,9 @@ boxplotCarto.generic.f <- function(polyZones, Data, factSpatial, exprBP){
 #      xpd = TRUE)
     title(main = i)
 
+    # Légende du facteur de second niveau :
+    legendBoxplot.f(terms = attr(terms(exprBP), "term.labels"), data = Data, cex = 1)
+
 
     # On rétabli les précédents paramètres pour éviter un mauvais placement des graphiques suivants :
 #    par(oldpars)
@@ -1072,9 +1076,6 @@ boxplotCarto.generic.f <- function(polyZones, Data, factSpatial, exprBP){
   })
 
   plot_name <- list(plot_name, "dir" = file_temp)
-
-  # Légende du facteur de second niveau :
-  legendBoxplot.f(terms = attr(terms(exprBP), "term.labels"), data = Data, cex = 1)
 
   return(plot_name)
 }
