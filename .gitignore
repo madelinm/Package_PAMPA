@@ -1,4 +1,4 @@
 
-PAMPA/inst/example_data/*
-PAMPA/.Rhistory
-PAMPA/.Rproj.user/*
+inst/example_data/*
+.Rhistory
+.Rproj.user/*
