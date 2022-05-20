@@ -4,11 +4,9 @@
 #' Ce parametre est facultatif. S'il est egal a NA, toutes les modalites du facteur seront
 #' selectionnees.
 #'
-#' \code{fact} ne peut pas avoir plus de 1 facteur.
-#'
-#' \code{factSel} peut prendre differentes valeurs en fonction de celle de \code{listFact}. Ce
-#' parametre est facultatif. S'il est egal a NA, alors toutes les modalites du ou des facteur(s) de
-#' regroupement selectionne(s) seront prises en compte.
+#' \code{factSel} peut prendre differentes valeurs en fonction de celle de \code{fact}. Ce
+#' parametre est facultatif. S'il est egal a NA, alors toutes les modalites du facteur de
+#' regroupement selectionne seront prises en compte.
 #'
 #' \code{families} correspond aux familles que l'on veut etudier. Si ce parametre est egal a NA,
 #' alors toutes les familles seront prises en compte
@@ -42,40 +40,47 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
   tableMetrique = "TablePresAbs"
   metrique = "pres.abs"
   agregation = "espece"
+  if (is.null(factGraph)){
+    factGraph <- ""
+  }
 
   # ...du facteur de separation des graphiques :
   # ...the factor for the graphic separation :
-  factGraph_possible_unitobs <- UnitobsFields.aliases(ordered = FALSE, dataEnv = dataEnv,
-    tableMetrique = tableMetrique)
+  if (factGraph != ""){
+    factGraph_possible_unitobs <- UnitobsFields.aliases(ordered = FALSE, dataEnv = dataEnv,
+      tableMetrique = tableMetrique)
 
-  if (!is.element(factGraph, factGraph_possible_unitobs)){
-    stop(
-      paste("La valeur '", factGraph, "' du paramètre 'factGraph' n'est pas valide.\n", sep = ""),
-      paste("Veuillez choisir parmi :\n"),
-      paste(factGraph_possible_unitobs, collapse = ", "),
-      paste("The value '", factGraph, "' for the 'factGraph' parameter isn't correct.\n", sep = ""),
-      paste("Please, choose one in the following list :\n"),
-      paste(factGraph_possible_unitobs, collapse = ", ")
-    )
+    if (!is.element(factGraph, factGraph_possible_unitobs)){
+      stop(
+        paste("La valeur '", factGraph, "' du paramètre 'factGraph' n'est pas valide.\n", sep = ""),
+        paste("Veuillez choisir parmi :\n"),
+        paste(factGraph_possible_unitobs, collapse = ", "),
+        paste("The value '", factGraph, "' for the 'factGraph' parameter isn't correct.\n", sep = ""),
+        paste("Please, choose one in the following list :\n"),
+        paste(factGraph_possible_unitobs, collapse = ", ")
+      )
+    }
   }
 
   # ...des modalites du facteur de separation des graphiques :
   # ...the modalities of the factor for the  graphic separation :
-  factGraphSel_possible <- unique(selectModalites.f( tableMetrique = tableMetrique,
-    facts = factGraph, selections = append(list(NA), NA), metrique = metrique,
-    nextStep = "freq_occurrence", dataEnv, level = 0)[, factGraph])
+  if (factGraph != ""){
+    factGraphSel_possible <- unique(selectModalites.f( tableMetrique = tableMetrique,
+      facts = factGraph, selections = append(list(NA), NA), metrique = metrique,
+      nextStep = "freq_occurrence", dataEnv, level = 0)[, factGraph])
 
-  if (!is.na(factGraphSel) && !is.element(factGraphSel, factGraphSel_possible)){
-    stop(
-      paste("La valeur '", factGraphSel,
-        "' du paramètre 'factGraphSel' n'est pas valide.\n", sep = ""),
-      paste("Veillez choisir parmi :\n"),
-      paste(factGraphSel_possible, collapse = ", "),
-      paste("The value '", factGraphSel,
-        "' of the 'factGraphSel' parameter isn't correct.\n", sep = ""),
-      paste("Please, choose one in the following list :\n"),
-      paste(factGraphSel_possible, collapse = ", ")
-    )
+    if (!is.na(factGraphSel) && !is.element(factGraphSel, factGraphSel_possible)){
+      stop(
+        paste("La valeur '", factGraphSel,
+          "' du paramètre 'factGraphSel' n'est pas valide.\n", sep = ""),
+        paste("Veillez choisir parmi :\n"),
+        paste(factGraphSel_possible, collapse = ", "),
+        paste("The value '", factGraphSel,
+          "' of the 'factGraphSel' parameter isn't correct.\n", sep = ""),
+        paste("Please, choose one in the following list :\n"),
+        paste(factGraphSel_possible, collapse = ", ")
+      )
+    }
   }
 
   # ...des facteurs explicatifs :
@@ -161,9 +166,6 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
     fact = fact, factSel = factSel, families = families, new_window,
     dataEnv = dataEnv, baseEnv = baseEnv)
 }
-
-
-
 
 
 #' @title Barplot des frequences de familles
