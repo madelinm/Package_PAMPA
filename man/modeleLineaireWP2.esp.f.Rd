@@ -11,6 +11,7 @@ modeleLineaireWP2.esp.f(
   listFact,
   listFactSel,
   tableMetrique,
+  new_window = TRUE,
   dataEnv,
   baseEnv = .GlobalEnv
 )

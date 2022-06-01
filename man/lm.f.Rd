@@ -12,6 +12,7 @@ lm.f(
   listFact,
   listFactSel = NA,
   tableMetrique,
+  new_window = TRUE,
   dataEnv,
   baseEnv = .GlobalEnv
 )

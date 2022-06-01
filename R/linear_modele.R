@@ -52,7 +52,7 @@
 #' @export
 
 lm.f <- function(agregation, metrique, factAna, factAnaSel = NA, listFact, listFactSel = NA,
-  tableMetrique, dataEnv, baseEnv = .GlobalEnv){
+  tableMetrique, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   tableMetrique_possible <- c("unit", "unitSp", "unitSpSz")
   nextStep <- switch(agregation,
@@ -249,11 +249,11 @@ lm.f <- function(agregation, metrique, factAna, factAnaSel = NA, listFact, listF
   # Launch of the graphic function
   if (agregation == "espece"){
     modeleLineaireWP2.esp.f(metrique, factAna, factAnaSel, listFact, listFactSel, tableMetrique,
-      dataEnv, baseEnv)
+      new_window = new_window, dataEnv, baseEnv)
   }
   else{
     modeleLineaireWP2.unitobs.f(metrique, factAna, factAnaSel, listFact, listFactSel, tableMetrique,
-      dataEnv, baseEnv)
+      new_window = new_window, dataEnv, baseEnv)
   }
 }
 
@@ -274,7 +274,7 @@ lm.f <- function(agregation, metrique, factAna, factAnaSel = NA, listFact, listF
 #' @return none
 
 modeleLineaireWP2.esp.f <- function(metrique, factAna, factAnaSel, listFact, listFactSel,
-  tableMetrique, dataEnv, baseEnv = .GlobalEnv){
+  tableMetrique, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   ## Purpose: Gestions des différentes étapes des modèles linéaires.
   ## ----------------------------------------------------------------------
@@ -371,6 +371,7 @@ modeleLineaireWP2.esp.f <- function(metrique, factAna, factAnaSel, listFact, lis
         type = ifelse(tableMetrique == "unitSpSz",
           "CL_espece",
           "espece"),
+        new_window = new_window,
         baseEnv = baseEnv),
         error = function(e) {
           errorLog.f()
@@ -402,6 +403,7 @@ modeleLineaireWP2.esp.f <- function(metrique, factAna, factAnaSel, listFact, lis
             type = ifelse(tableMetrique == "unitSpSz",
               "CL_espece",
               "espece"),
+            new_window = new_window,
             baseEnv = baseEnv),
             error = function(e){
               errorLog.f()
@@ -922,7 +924,7 @@ calcLM.f <- function(loiChoisie, formule, metrique, Data){
 
 
 sortiesLM.f <- function(objLM, formule, metrique, factAna, modSel, listFact, listFactSel, Data,
-  dataEnv, Log = FALSE, sufixe = NULL, type = "espece", baseEnv = .GlobalEnv){
+  dataEnv, Log = FALSE, sufixe = NULL, type = "espece", new_window = TRUE, baseEnv = .GlobalEnv){
 
   ## Purpose: Formater les résultats de lm et les écrire dans un fichier
   ## ----------------------------------------------------------------------
@@ -1068,7 +1070,10 @@ sortiesLM.f <- function(objLM, formule, metrique, factAna, modSel, listFact, lis
   subTitle <- graphTitle.f(metrique = metrique, modGraphSel = modSel, factGraph = factAna,
     listFact = listFact, model = modelType.f(objLM = objLM, Log = Log), type = type)
 
-  eval(call(winFUN, width = 45, height = 35))
+  grDevices::dev.set(1)
+  grDevices::dev.off()
+
+  if (new_window) eval(call(winFUN, width = 45, height = 35))
   par(mfrow = c(2, 2), oma = c(0, 0, 4.7, 0))
   hist(objLM$residuals,
     xlab = mltext("sortiesLM.Graph.hist.xlab", language = getOption("P.lang")),
@@ -2733,7 +2738,7 @@ supprimeObs.f <- function(residus){
 #' @return none
 
 modeleLineaireWP2.unitobs.f <- function(metrique, factAna, factAnaSel, listFact, listFactSel,
-  tableMetrique, dataEnv, baseEnv = .GlobalEnv){
+  tableMetrique, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   ## Purpose: Gestions des différentes étapes des modèles linéaires.
   ## ----------------------------------------------------------------------
@@ -2867,6 +2872,7 @@ modeleLineaireWP2.unitobs.f <- function(metrique, factAna, factAnaSel, listFact,
         type = ifelse(tableMetrique == "unitSpSz" && factAna != "size.class",
           "CL_unitobs",
           "unitobs"),
+        new_window = new_window,
         baseEnv = baseEnv),
       error = function(e){
         errorLog.f()
@@ -2899,6 +2905,7 @@ modeleLineaireWP2.unitobs.f <- function(metrique, factAna, factAnaSel, listFact,
             type = ifelse(tableMetrique == "unitSpSz" && factAna != "size.class",
               "CL_unitobs",
               "unitobs"),
+            new_window = new_window,
             dataEnv = dataEnv, baseEnv = baseEnv),
           error = function(e){
             errorLog.f()
