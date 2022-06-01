@@ -302,49 +302,6 @@ maps.f <- function(agregation, graphType, metrique, factSpatial, factSpatialSel 
     )
   }
 
-#  # verification et creation de la bbox :
-#  # Check and creation of the bbox :
-#  if (!is.null(coord) & !is.na(coord)){
-#    refspa <- get("refspa", envir = dataEnv)
-#    if (is.element("SpatialPolygonsDataFrame", class(refspa))){
-#      bbox_base <- sp::bbox(refspa)
-#    }
-#    if (coord["W"] > coord["E"]){
-#      coord_ordered <- c(coord["E"], coord["W"], coord["S"], coord["N"])
-#      warning(
-#        "Dans le parametre coord :\n",
-#        "La coordonnée ouest est suppérieure à la coordonnée est. Elles ont été inversées.",
-#        immediate. = TRUE
-#      )
-#    }
-#    else if (coord["S"] > coord["S"]){
-#      coord_ordered <- c(coord["W"], coord["E"], coord["N"], coord["S"])
-#      warning(
-#        "Dans le parametre coord\n",
-#        "La coordonnée sud est suppérieure à la coordonnée nord. Elles ont été inversées.",
-#        immediate. = TRUE
-#      )
-#    }
-#    else{
-#      coord_ordered <- c(coord["W"], coord["E"], coord["S"], coord["N"])
-#    }
-#    bbox <- matrix(data = coord_ordered, nrow = 2, ncol = 2, byrow = TRUE)
-#    row.names(bbox) <- c("x", "y")
-#    colnames(bbox) <- c("min", "max")
-#
-#    if (bbox["x", "min"] < bbox_base["x", "min"] | bbox["x", "max"] > bbox_base["x", "max"] |
-#        bbox["y", "min"] < bbox_base["y", "min"] | bbox["y", "max"] > bbox_base["y", "max"]) {
-#      warning(
-#        "Les coordonnées données dans 'coord' sont en dehors de la plage de coordonnées du fichier.",
-#        "\nLes résultats risquent d'être en dehors de la plage de coordonnées sélectionnée.",         # Revoir le message d'erreur ?
-#        immediate. = TRUE
-#      )
-#    }
-#  }
-#  else{
-#    bbox <- NULL
-#  }
-
   # Lancement de la fonction graphique
   # Launch of the graphic function
   if (is.element(graphType, barboxplot)){
@@ -623,7 +580,7 @@ subplotCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
 
     x <- as.vector(unique(refspaTmp@data[[fact]]))
     x <- x[order(x)]
-    y <- sapply(seq(length(x)), function(w) w)
+    y <- seq(length(x))
     df <- as.data.frame(cbind(x, y))
     colnames(df) <- c(fact, "row")
 
@@ -1488,7 +1445,7 @@ subplotCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
 
     x <- as.vector(unique(refspaTmp@data[[fact]]))
     x <- x[order(x)]
-    y <- sapply(seq(length(x)), function(w) w)
+    y <- seq(length(x))
     df <- as.data.frame(cbind(x, y))
     colnames(df) <- c(fact, "row")
 
@@ -1796,7 +1753,7 @@ symbColCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
     if (graphType == "symboles"){
       x <- as.vector(unique(refspaTmp@data[[fact]]))
       x <- x[order(x)]
-      y <- sapply(seq(length(x)), function(w) w)
+      y <- seq(length(x))
       df <- as.data.frame(cbind(x, y))
       colnames(df) <- c(fact, "row")
 
@@ -2509,7 +2466,7 @@ symbColCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
     if (graphType == "symboles"){
       x <- as.vector(unique(refspaTmp@data[[fact]]))
       x <- x[order(x)]
-      y <- sapply(seq(length(x)), function(w) w)
+      y <- seq(length(x))
       df <- as.data.frame(cbind(x, y))
       colnames(df) <- c(fact, "row")
 
