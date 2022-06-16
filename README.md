@@ -2,7 +2,7 @@
 
 # Package PAMPA
 
-Package PAMPA créé dans le cadre d'un stage de Master 2 à l'Ifremer en lien avec PNDB.
+Package PAMPA de calculs, d'exportation et d'analyses de métriques de biodiversité.
 
 
 # Warning
