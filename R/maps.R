@@ -38,6 +38,7 @@
 #' @import mapview
 #' @import leafpop
 #' @import lattice
+#' @import leaflet
 
 
 #' @title Cartes
@@ -588,14 +589,28 @@ subplotCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
     spdf@plotOrder <- seq(length(spdf@plotOrder))
 
     if (!exists("map")){
-      mapview::mapviewOptions(basemaps = "CartoDB.Positron")
-      map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
-        layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE)
+#      mapview::mapviewOptions(basemaps = "CartoDB.Positron")
+#      map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
+#        layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE)
+      map <- leaflet::leaflet() %>%
+        leaflet::addTiles() %>%
+        leaflet::addProviderTiles("CartoDB.Positron") %>%
+        leaflet::addPolygons(data = baseMap, group = "Base Map", color = "#000000", weight = 1,
+          opacity = 1, fillColor = "#FFFFFF", fillOpacity = 0.5)
+      list_layers <- c("Base Map")
     }
 
-    map <- map +
-      mapview::mapview(spdf, zcol = fact, col.regions = col, legend = FALSE,
-        layer.name = paste(fact, modGraphSel, sep = " - "), popup = leafpop::popupImage(plot_name[[1]]))
+#    map <- map +
+#      mapview::mapview(spdf, zcol = fact, col.regions = col, legend = FALSE,
+#        layer.name = paste(fact, modGraphSel, sep = " - "), popup = leafpop::popupImage(plot_name[[1]]))
+    layer_name <- paste(fact, modGraphSel, sep = " - ")
+    list_layers <- c(list_layers, layer_name)
+
+    map <- map %>%
+      leaflet::addPolygons(data = spdf, group = layer_name, color = "#000000",
+        label = spdf@data[[fact]], weight = 1, opacity = 1, fillColor = col, fillOpacity = 0.75) %>%
+      leafpop::addPopupImages(plot_name[[1]], group = layer_name, width = 300)
+
     do.call(file.remove, list(list.files(plot_name[[2]], full.names = TRUE)))
     unlink(plot_name[[2]], recursive = TRUE)
 
@@ -646,6 +661,12 @@ subplotCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
     }
 
   }  # Fin de boucle graphique.
+
+  map <- map %>%
+    leaflet::addLayersControl(
+      overlayGroups = list_layers,
+      options = leaflet::layersControlOptions(collapsed = FALSE)
+    )
 
   print("Affichage de la carte...")
   print("Print map...")
@@ -1452,14 +1473,34 @@ subplotCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
     spdf <- SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
     spdf@plotOrder <- seq(length(spdf@plotOrder))
 
-    mapview::mapviewOptions(basemaps = "CartoDB.Positron")
-    map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
-      layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE) +
-      mapview::mapview(spdf, zcol = fact, col.regions = col, legend = FALSE,
-        layer.name = fact, popup = leafpop::popupImage(plot_name[[1]]))
+#    mapview::mapviewOptions(basemaps = "CartoDB.Positron")
+
+    # map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
+    #   layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE) +
+    #   mapview::mapview(spdf, zcol = fact, col.regions = col, legend = FALSE,
+    #     layer.name = fact, popup = leafpop::popupImage(plot_name[[1]]))
+
+    map <- leaflet::leaflet() %>%
+      leaflet::addTiles() %>%
+      leaflet::addProviderTiles("CartoDB.Positron") %>%
+      leaflet::addPolygons(data = baseMap, group = "Base Map", color = "#000000", weight = 1,
+        opacity = 1, fillColor = "#FFFFFF", fillOpacity = 0.5)
+
+    map <- map %>%
+      leaflet::addPolygons(data = spdf, group = fact, color = "#000000",
+        label = spdf@data[[fact]], weight = 1, opacity = 1, fillColor = col, fillOpacity = 0.75) %>%
+      leafpop::addPopupImages(plot_name[[1]], group = fact, width = 300)
+
+    list_layers <- c("Base Map", fact)
 
     do.call(file.remove, list(list.files(plot_name[[2]], full.names = TRUE)))
     unlink(plot_name[[2]], recursive = TRUE)
+
+    map <- map %>%
+      leaflet::addLayersControl(
+        overlayGroups = list_layers,
+        options = leaflet::layersControlOptions(collapsed = FALSE)
+      )
 
     # ##################################################
     # Sauvegarde des données :
