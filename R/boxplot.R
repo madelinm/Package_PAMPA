@@ -1012,7 +1012,7 @@ graphTitle.f <- function(metrique, modGraphSel, factGraph, listFact, model = NUL
       "unitobs" = mltext("graphTitle.bySt", language = lang),
       "unitobs(CL)" = mltext("graphTitle.byStSC", language = lang),
       "CL_unitobs" = mltext("graphTitle.bySCSt", language = lang),
-      "biodiv" = mltext("graphTitle.biodiv", anguage = lang),
+      "biodiv" = mltext("graphTitle.biodiv", language = lang),
       ""),
     switch(type,
       "espece" = {
