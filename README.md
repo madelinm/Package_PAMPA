@@ -4,7 +4,28 @@
 
 Package PAMPA de calculs, d'exportation et d'analyses de métriques de biodiversité.
 
+# Installation
+Install devtools with ```install.packages("devtools")``` and load it with ```library(devtools)```.
 
-# Warning
+Then, run ```devtools::install_github("madelinm/Package_PAMPA", INSTALL_opts="--no-staged-install")``` in your R session.
 
-system libraries tcl-dev and tk-dev are required for the installation.
+## Warning
+
+system libraries tcl-dev and tk-dev are required for the installation (problem encountered with Linux).
+
+
+# File type
+## Unitobs file
+
+
+## Observation file
+
+
+## Species reference table
+
+
+## Local species reference table (optional)
+
+
+## Spatial reference table (optional)
+
