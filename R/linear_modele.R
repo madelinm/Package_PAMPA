@@ -31,7 +31,7 @@
 
 #' @title Modele lineaire
 #'
-#' @description Calcul de modeles lineaires selon les paramètres fournis
+#' @description Calcul de modeles lineaires selon les parametres fournis
 #'
 #' @param agregation chr, type d'agregation, par espece (espece) ou par groupe d'espece (unitobs)
 #' @param metrique chr, metrique choisie
@@ -40,13 +40,20 @@
 #' @param listFact chr, facteur(s) de regroupement
 #' @param listFactSel list, modalite(s) selectionnee(s) pour le(s) facteur(s) de regroupement
 #' @param tableMetrique chr, nom de la table de metrique
+#' @param new_window bool, affichage des resultats dans une nouvelle fenetre ?
 #' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
 #' @examples
-#' lm.f(agregation = "espece", metrique = "density", factAna = "scient.name",
-#'   factAnaSel = "Chromis_chromis", listFact = c("year", "protection.status"),
-#'   listFactSel = list(c("2011", "2019"), NA), tableMetrique = "unitSp",
+#' lm.f(
+#'   agregation = "espece",
+#'   metrique = "density",
+#'   factAna = "family",
+#'   factAnaSel = "Acanthuridae",
+#'   listFact = c("year", "protection.status"),
+#'   listFactSel = NA,
+#'   tableMetrique = "unitSp",
+#'   new_window = TRUE,
 #'   dataEnv = .dataEnv, baseEnv = .baseEnv)
 #'
 #' @export
@@ -80,7 +87,7 @@ lm.f <- function(agregation, metrique, factAna, factAnaSel = NA, listFact, listF
     )
   }
 
-  # S'il s'agit d'un jeu de données benthos, ou qu'il n'y a pas de classes tailles disponibles :
+  # S'il s'agit d'un jeu de donnees benthos, ou qu'il n'y a pas de classes tailles disponibles :
   # If it's a benthos data set, or no size classes are available :
   if ((is.benthos.f() | nrow(get("unitSpSz", envir = dataEnv)) == 0) & tableMetrique == "unitSpSz"){
     stop(
@@ -271,7 +278,7 @@ lm.f <- function(agregation, metrique, factAna, factAnaSel = NA, listFact, listF
 #' @param dataEnv environnement de stockage des donnnées
 #' @param baseEnv environnement parent
 #'
-#' @return none
+#' @noRd
 
 modeleLineaireWP2.esp.f <- function(metrique, factAna, factAnaSel, listFact, listFactSel,
   tableMetrique, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
@@ -2735,7 +2742,7 @@ supprimeObs.f <- function(residus){
 #' @param dataEnv environnement de stockage des données
 #' @param baseEnv environnement parent
 #'
-#' @return none
+#' @noRd
 
 modeleLineaireWP2.unitobs.f <- function(metrique, factAna, factAnaSel, listFact, listFactSel,
   tableMetrique, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){

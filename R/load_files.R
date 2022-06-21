@@ -7,15 +7,15 @@
 #'
 #' Le chemin du dossier "results" est facultatif egalement. S'il n'est pas renseigne, les donnees
 #' seront enregistrees dans un dossier nomme 'results' dans le dossier de travail.
-#' Elle prend egalement en entree deux environnements, celui où stocker les donnees, et
-#' l'environnement parent. (Pas forcement tres pratique d'utilisation, a enlever plus tard ?)
+#' Elle prend egalement en entree deux environnements, celui ou stocker les donnees, et
+#' l'environnement parent. Ces environnements peuvent tous les deux correspondre a l'environnement
+#' global (.GlobalEnv).
 #'
-#' Le dossier de travail doit etre un dossier nomme 'Data' et doit etre le dossier de stockage
-#' des donnees.
+#' Le dossier de travail doit etre le dossier de stockage des donnees.
 #'
 #' Cette fonction charge les donnees a partir des chemins de fichiers donnes. Elle calcule ensuite
 #' les poids pour chaque AMP. Puis, elle calcule les tables de metriques, qu'elle enregistre dans
-#' l'environnement dataEnv afin de pouvoir les réutiliser plus tard. Elle renvoie ensuite les
+#' l'environnement dataEnv afin de pouvoir les reutiliser plus tard. Elle renvoie ensuite les
 #' differentes tables de donnees, sous forme d'une liste nommee.
 
 
@@ -50,14 +50,23 @@
 #' \itemize{refesp}{ : referentiel espece}
 #'
 #' @examples
-#' ws_path <- system.file('example_data/COTE BLEUE/Data/', package = 'PAMPA')
-#' unitobs_path <- system.file('example_data/COTE BLEUE/Data/UnitObs_Staviro_CB191110_280720.txt', package = 'PAMPA')
-#' obs_path <- system.file('example_data/COTE BLEUE/Data/Obs_Staviro_CB191110_AllIdentifiedSpecies_280720.txt', package = 'PAMPA')
-#' refesp_path <- system.file('example_data/COTE BLEUE/Data/refEspecesMed_general_270720 - Int peche est intCH_CB.txt', package = 'PAMPA')
+#' # Creation d'environnements
+#' .baseEnv <- environment()
+#' .dataEnv <- new.env()
 #'
-#' filepaths <- c(unitobs = unitobs_path, obs = obs_path, refesp =  refesp_path, refspa = NULL, ws = ws_path)
+#' assign(".baseEnv", .baseEnv, .GlobalEnv)
+#' assign(".dataEnv", .dataEnv, .GlobalEnv)
 #'
-#' load_files.f(filepaths, dminMax = 5, .dataEnv, .baseEnv)
+#' # Definition des chemins de l'environnement de travail et des fichiers
+#' ws_path <- 'inst/example_data/'
+#' unitobs_path <- 'inst/example_data/Data/UnitObs_Staviro_Example.txt'
+#' obs_path <- 'inst/example_data/Data/Obs_Staviro_Example.txt'
+#' refesp_path <- 'inst/example_data/Data/SpeciesReferenceTable_Example.txt'
+#'
+#' filePathes <- c(unitobs = unitobs_path, obs = obs_path, refesp =  refesp_path, ws = ws_path)
+#'
+#' # Lancement du chargement
+#' data <- PAMPA::load_files.f(filePathes, dminMax = 5, .dataEnv, .baseEnv)
 #'
 #' @export
 

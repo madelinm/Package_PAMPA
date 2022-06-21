@@ -12,6 +12,7 @@ permanova_pampa.f(
   method = "bray",
   nb_perm = 1000,
   square_roots = FALSE,
+  post_hoc = TRUE,
   dataEnv,
   baseEnv = .GlobalEnv
 )
@@ -34,6 +35,8 @@ Si elle est laissee nulle (la valeur par defaut), alors la fomule est cree sous 
 
 \item{square_roots}{booleen, utilisation des square roots ?}
 
+\item{post_hoc}{booleen, faire un post hoc apres la permanova ?}
+
 \item{dataEnv}{environnement de stockage des donnees}
 
 \item{baseEnv}{environnement parent}
@@ -45,7 +48,14 @@ Calcul d'une permanova selon les parametres fournis
 Cette fonction permet de faire une permanova.
 }
 \examples{
-PAMPA::permanova_pampa.f("unitSp", "pres.abs", c("site", "year"), method = "bray",
-  nb_perm = 1000, .dataEnv, .baseEnv)
+PAMPA::permanova_pampa.f(
+  metric_table = "unitSp",
+  metric = "pres_abs",
+  fact = c("site", "year"),
+  method = "bray",
+  nb_perm = 1000,
+  square_roots = FALSE,
+  post_hoc = FALSE,
+  dataEnv = .dataEnv, baseEnv = .baseEnv)
 
 }

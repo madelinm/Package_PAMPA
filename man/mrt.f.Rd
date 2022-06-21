@@ -32,6 +32,8 @@ mrt.f(
 
 \item{tableMetrique}{chr, nom de la table de metrique}
 
+\item{new_window}{bool, affichage du graphique dans une nouvelle fenetre ?}
+
 \item{dataEnv}{environnement de stockage des donnees}
 
 \item{baseEnv}{environnement parent}
@@ -64,9 +66,15 @@ parametre est facultatif. S'il est egal a NA, alors toutes les modalites du ou d
 regroupement selectionne(s) seront prises en compte.
 }
 \examples{
-mrt.f(agregation = "espece", metrique = "density", factGraph = "scient.name",
-  factGraphSel = "Chromis_chromis", listFact = c("year", "protection.status"),
-  listFactSel = list(c("2011", "2019"), NA), tableMetrique = "unitSp",
+mrt.f(
+  agregation = "espece",
+  metrique = "density",
+  factGraph = "family",
+  factGraphSel = "Acanthuridae",
+  listFact = c("year", "protection.status", "site", "species"),
+  listFactSel = NA,
+  tableMetrique = "unitSp",
+  new_window = TRUE,
   dataEnv = .dataEnv, baseEnv = .baseEnv)
 
 }

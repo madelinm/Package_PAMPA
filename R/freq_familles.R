@@ -21,13 +21,18 @@
 #' @param fact chr, facteur de regroupement
 #' @param factSel chr, modalites selectionnees pour le facteur de regroupement
 #' @param families chr, familles a prendre en compte
-#' @param new_window bool, affichage du graphique dans une nouvelle fenêtre ?
+#' @param new_window bool, affichage du graphique dans une nouvelle fenetre ?
 #' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
 #' @examples
-#' PAMPA::freq_occurrence_families.f(factGraph = "protection.status", factGraphSel = NA,
-#'   fact = "year", factSel = NA, families = NA, new_window = TRUE,
+#' PAMPA::freq_occurrence_families.f(
+#'   factGraph = "protection.status",
+#'   factGraphSel = NA,
+#'   fact = "year",
+#'   factSel = NA,
+#'   families = NA,
+#'   new_window = TRUE,
 #'   dataEnv = .dataEnv, baseEnv = .baseEnv)
 #'
 #' @export
@@ -130,7 +135,7 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
     }
   }
 
-  # ...des familles sélectionnées :
+  # ...des familles selectionnees :
   # ...the selected families :
   families_possible <- unique(selectModalites.f(tableMetrique = tableMetrique,
     facts = "family", selections = append(list(NA), NA), metrique = metrique,
@@ -179,6 +184,8 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
 #' @param families vector
 #' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
+#'
+#' @noRd
 
 barplotOccurrenceFamille.f <- function(factGraph, factGraphSel, fact, factSel, families = NA,
   new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){

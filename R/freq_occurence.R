@@ -23,14 +23,18 @@
 #' @param factGraphSel chr, selection de modalites du facteur de separation des graphiques
 #' @param listFact chr, facteur(s) de regroupement
 #' @param listFactSel list, modalite selectionnees pour le(s) facteur(s) de regroupement
-#' @param new_window bool, affichage du graphique dans une nouvelle fenêtre ?
+#' @param new_window bool, affichage du graphique dans une nouvelle fenetre ?
 #' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
 #' @examples
-#' freq_occurrences.f(agregation = "espece", factGraph = "scient.name",
-#'   factGraphSel = "Chromis_chromis", listFact = c("year", "protection.status"),
-#'   listFactSel = list(c("2011", "2019"), NA), new_window = TRUE,
+#' freq_occurrence.f(
+#'   agregation = "espece",
+#'   factGraph = "species.code",
+#'   factGraphSel = "Acanoliv",
+#'   listFact = c("year", "protection.status"),
+#'   listFactSel = NA,
+#'   new_window = TRUE,
 #'   dataEnv = .dataEnv, baseEnv = .baseEnv)
 #'
 #' @export
@@ -204,7 +208,7 @@ freq_occurrence.f <- function(agregation, factGraph = NULL, factGraphSel = NA, l
 #' @param dataEnv environnement de stockage des données
 #' @param baseEnv environnement parent
 #'
-#' @return none
+#' @noRd
 
 barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, new_window = TRUE,
   dataEnv, baseEnv = .GlobalEnv){
@@ -1421,7 +1425,7 @@ barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, 
 #' @param dataEnv environnement de stockage des données
 #' @param baseEnv environnement parent
 #'
-#' @return none
+#' @noRd
 
 barplotOccurrence.unitobs.f <- function(factGraph, factGraphSel, listFact, listFactSel,
   new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){

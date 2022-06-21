@@ -23,8 +23,14 @@
 #' @param baseEnv environnement parent
 #'
 #' @examples
-#' PAMPA::permanova_pampa.f("unitSp", "pres.abs", c("site", "year"), method = "bray",
-#'   nb_perm = 1000, .dataEnv, .baseEnv)
+#' PAMPA::permanova_pampa.f(
+#'   metric_table = "unitSp",
+#'   metric = "pres_abs",
+#'   fact = c("site", "year"),
+#'   method = "bray",
+#'   nb_perm = 1000,
+#'   square_roots = FALSE,
+#'   dataEnv = .dataEnv, baseEnv = .baseEnv)
 #'
 #' @export
 permanova_pampa.f <- function(metric_table, metric, fact, formula = NULL, method = "bray",

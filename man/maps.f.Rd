@@ -43,14 +43,6 @@ maps.f(
 \item{dataEnv}{environnement de stockage des donnees}
 
 \item{baseEnv}{environnement parent}
-
-\item{coord}{num, emprise spatiale (bounding box). Si NULL, toute la carte. Vecteur nomme :
-\itemize{
-  \item{W}{ : longitude minimale (coordonnee ouest) en degre. Negatif pour l'ouest de Greenwich.}
-  \item{E}{ : longitude maximale (coordonnee est) en degre. Negatif pour l'ouest de Greenwich.}
-  \item{N}{ : latitude maximale (coordonnee nord) en degre. Negatif pour l'hemisphere sud'}
-  \item{S}{ : latitude minimale (coordonnee sud) en degre. Negatif pour l'hemisphere sud'}
-}}
 }
 \description{
 Fonction permettant de creer des cartes en fonctions des parametres donnes
@@ -91,12 +83,4 @@ selectionnees.
 \code{listFactSel} peut prendre differentes valeurs en fonction de celle de \code{listFact}. Ce
 parametre est facultatif. S'il est egal a NA, alors toutes les modalites du ou des facteur(s) de
 regroupement selectionne(s) seront prises en compte.
-}
-\examples{
-maps.f(agregation = "espece", graphType = "barplot", metrique = "density",
-  factSpatial = "CODE.SITE", factSpatialSel = c("GN_07_02", "GN_07_04", "GN_07_05", "GN_07_06"),
-  factGraph = "family", factGraphSel = "Cheloniidae", listFact = "year", listFactSel = NA,
-  tableMetrique = "unitSp", coord = c(W = 166.15, E = 166.55, S = -22.40, N = -22.15),
-  .dataEnv, .baseEnv)
-
 }

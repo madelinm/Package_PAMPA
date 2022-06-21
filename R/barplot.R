@@ -33,16 +33,21 @@
 #' @param listFact chr, facteur(s) de regroupement
 #' @param listFactSel list, modalite selectionnees pour le(s) facteur(s) de regroupement
 #' @param tableMetrique chr, nom de la table de metrique
-#' @param new_window bool, affichage du graphique dans une nouvelle fenêtre ?
+#' @param new_window bool, affichage du graphique dans une nouvelle fenetre ?
 #' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
 #' @examples
-#' # Pour le jeu de donnees 'Cote Bleue' :
-#' barplot.f(agregation = "espece", metrique = "density", factGraph = "scient.name",
-#'   factGraphSel = "Chromis_chromis", listFact = c("year", "protection.status"),
-#'   listFactSel = list(c("2011", "2019"), NA), tableMetrique = "unitSp",
-#'   new_window = TRUE, dataEnv = .dataEnv, baseEnv = .baseEnv)
+#' barplot_pampa.f(
+#'   agregation = "espece",
+#'   metrique = "density",
+#'   factGraph = "family",
+#'   factGraphSel = "Acanthuridae",
+#'   listFact = c("year", "protection.status"),
+#'   listFactSel = NA,
+#'   tableMetrique = "unitSp",
+#'   new_window = TRUE,
+#'   dataEnv = .dataEnv, baseEnv = .baseEnv)
 #'
 #' @export
 
@@ -75,7 +80,7 @@ barplot_pampa.f <- function(agregation, metrique, factGraph = NULL, factGraphSel
     )
   }
 
-  # S'il s'agit d'un jeu de données benthos, ou qu'il n'y a pas de classes tailles disponibles :
+  # S'il s'agit d'un jeu de donnees benthos, ou qu'il n'y a pas de classes tailles disponibles :
   # If it's a benthos data set, or no size classes are available :
   if ((is.benthos.f() | nrow(get("unitSpSz", envir = dataEnv)) == 0) & tableMetrique == "unitSpSz"){
     stop(
@@ -258,7 +263,7 @@ barplot_pampa.f <- function(agregation, metrique, factGraph = NULL, factGraphSel
 #' @param dataEnv environnement de stockage des données
 #' @param baseEnv environnement parent
 #'
-#' @return none
+#' @noRd
 
 WP2barplot.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSel,
   tableMetrique, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
@@ -1781,6 +1786,8 @@ pointsSmallSample.f <- function(objBaP, nbmin = 20){
 #' @param tableMetrique chr, nom de la table de métriques
 #' @param dataEnv environnement de stockage des données
 #' @param baseEnv environnement parent
+#'
+#' @noRd
 
 WP2barplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSel,
   tableMetrique, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){

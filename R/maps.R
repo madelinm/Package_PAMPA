@@ -56,27 +56,13 @@
 #' @param listFact chr, facteur(s) de regroupement
 #' @param listFactSel chr, modalites selectionnees pour le(s) facteur(s) de regroupement
 #' @param tableMetrique chr, nom de la table de metriques
-#' @param coord num, emprise spatiale (bounding box). Si NULL, toute la carte. Vecteur nomme :
-#'   \itemize{
-#'     \item{W}{ : longitude minimale (coordonnee ouest) en degre. Negatif pour l'ouest de Greenwich.}
-#'     \item{E}{ : longitude maximale (coordonnee est) en degre. Negatif pour l'ouest de Greenwich.}
-#'     \item{N}{ : latitude maximale (coordonnee nord) en degre. Negatif pour l'hemisphere sud'}
-#'     \item{S}{ : latitude minimale (coordonnee sud) en degre. Negatif pour l'hemisphere sud'}
-#'   }
 #' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
-#'
-#' @examples
-#' maps.f(agregation = "espece", graphType = "barplot", metrique = "density",
-#'   factSpatial = "CODE.SITE", factSpatialSel = c("GN_07_02", "GN_07_04", "GN_07_05", "GN_07_06"),
-#'   factGraph = "family", factGraphSel = "Cheloniidae", listFact = "year", listFactSel = NA,
-#'   tableMetrique = "unitSp", coord = c(W = 166.15, E = 166.55, S = -22.40, N = -22.15),
-#'   .dataEnv, .baseEnv)
 #'
 #' @export
 
 maps.f <- function(agregation, graphType, metrique, factSpatial, factSpatialSel = NA,
-  factGraph = NULL, factGraphSel = NA, listFact, listFactSel = NA, tableMetrique, #coord = NULL,
+  factGraph = NULL, factGraphSel = NA, listFact, listFactSel = NA, tableMetrique,
   dataEnv, baseEnv = .GlobalEnv){
 
   barboxplot <- c("boxplot", "barplot")
@@ -127,7 +113,7 @@ maps.f <- function(agregation, graphType, metrique, factSpatial, factSpatialSel 
     )
   }
 
-  # S'il s'agit d'un jeu de données benthos, ou qu'il n'y a pas de classes tailles disponibles
+  # S'il s'agit d'un jeu de donnees benthos, ou qu'il n'y a pas de classes tailles disponibles
   # If it's a benthos data set, or no size classes are available
   if ((is.benthos.f() | nrow(get("unitSpSz", envir = dataEnv)) == 0) & tableMetrique == "unitSpSz"){
     stop(

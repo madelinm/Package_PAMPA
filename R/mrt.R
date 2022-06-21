@@ -36,13 +36,20 @@
 #' @param listFact chr, facteur(s) de regroupement
 #' @param listFactSel list, modalite(s) selectionnee(s) pour le(s) facteur(s) de regroupement
 #' @param tableMetrique chr, nom de la table de metrique
+#' @param new_window bool, affichage du graphique dans une nouvelle fenetre ?
 #' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
 #' @examples
-#' mrt.f(agregation = "espece", metrique = "density", factGraph = "scient.name",
-#'   factGraphSel = "Chromis_chromis", listFact = c("year", "protection.status"),
-#'   listFactSel = list(c("2011", "2019"), NA), tableMetrique = "unitSp",
+#' mrt.f(
+#'   agregation = "espece",
+#'   metrique = "density",
+#'   factGraph = "family",
+#'   factGraphSel = "Acanthuridae",
+#'   listFact = c("year", "protection.status", "site", "species"),
+#'   listFactSel = NA,
+#'   tableMetrique = "unitSp",
+#'   new_window = TRUE,
 #'   dataEnv = .dataEnv, baseEnv = .baseEnv)
 #'
 #' @export
@@ -73,7 +80,7 @@ mrt.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact, 
     )
   }
 
-  # S'il s'agit d'un jeu de données benthos, ou qu'il n'y a pas de classes tailles disponibles :
+  # S'il s'agit d'un jeu de donnees benthos, ou qu'il n'y a pas de classes tailles disponibles :
   # If it's a benthos data set, or no size classes are available :
   if ((is.benthos.f() | nrow(get("unitSpSz", envir = dataEnv)) == 0) & tableMetrique == "unitSpSz"){
     stop(
@@ -248,7 +255,7 @@ mrt.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact, 
 #' @param dataEnv environnement de stockage des données
 #' @param baseEnv environnement parent
 #'
-#' @return none
+#' @noRd
 
 WP2MRT.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSel, tableMetrique,
   new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
@@ -1369,7 +1376,7 @@ summary.rpart.ml <- function (object, cp = 0, digits = getOption("digits"), file
 #' @param dataEnv environnement de stockage des données
 #' @param baseEnv environnement parent
 #'
-#'@return none
+#' @noRd
 
 WP2MRT.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSel,
   tableMetrique, new_window = TRUE, dataEnv = dataEnv, baseEnv = .GlobalEnv){

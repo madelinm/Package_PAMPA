@@ -29,7 +29,7 @@ Cette fonction permet de faire la selection et le recalcul des donnees.
 Elle prend en entree le type de critere selon lequel le recalcul sera fait
 (champs du referentiel espece ou champs des unitobs).
 
-Elle prend egalement en entree deux environnements, celui ou stocker les donnees,
+Elle prend egalement en entree deux environnements, celui de stockage des donnees
 et l'environnement parent.
 
 Elle va ensuite faire la selection des donnees, en demandant a l'utilisateur
@@ -39,14 +39,14 @@ Elle retourne la table des observations modifiee, celle des uniotobs, et celle d
 spatial.
 }
 \examples{
-ws_path <- system.file('example_data/COTE BLEUE/Data/', package = 'PAMPA')
-unitobs_path <- system.file('example_data/COTE BLEUE/Data/UnitObs_Staviro_CB191110_280720.txt', package = 'PAMPA')
-obs_path <- system.file('example_data/COTE BLEUE/Data/Obs_Staviro_CB191110_AllIdentifiedSpecies_280720.txt', package = 'PAMPA')
-refesp_path <- system.file('example_data/COTE BLEUE/Data/refEspecesMed_general_270720 - Int peche est intCH_CB.txt', package = 'PAMPA')
+ws_path <- 'inst/example_data/'
+unitobs_path <- 'inst/example_data/Data/UnitObs_Staviro_Example.txt'
+obs_path <- 'inst/example_data/Data/Obs_Staviro_Example.txt'
+refesp_path <- 'inst/example_data/Data/SpeciesReferenceTable_Example.txt'
 
-filePathes <- c(unitobs = unitobs_path, obs = obs_path, refesp =  refesp_path, refspa = NULL, ws = ws_path)
+filePathes <- c(unitobs = unitobs_path, obs = obs_path, refesp =  refesp_path, ws = ws_path)
 
-data <- load_and_calc.f(filePathes, .dataEnv, .baseEnv)
+data <- PAMPA::load_files.f(filePathes, dminMax = 5, .dataEnv, .baseEnv)
 
 selection.f('unitobs', .dataEnv, .baseEnv)
 

@@ -31,21 +31,21 @@
 #' @param listFact chr, facteur(s) de regroupement
 #' @param listFactSel list, modalite(s) selectionnee(s) pour le(s) facteur(s) de regroupement
 #' @param tableMetrique chr, nom de la table de metrique
-#' @param new_window bool, affichage du graphique dans une nouvelle fenêtre ?
+#' @param new_window bool, affichage du graphique dans une nouvelle fenetre ?
 #' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
 #' @examples
-#' # Pour le jeu de donnees 'Cote Bleue' :
-#' boxplot.f(agregation = "espece", metrique = "density", factGraph = "scient.name",
-#'   factGraphSel = "Chromis_chromis", listFact = c("year", "protection.status"),
-#'   listFactSel = list(c("2011", "2019"), NA), tableMetrique = "unitSp",
-#'   new_window = TRUE, dataEnv = .dataEnv, baseEnv = .baseEnv)
-#'
-#' boxplot_pampa.f(agregation = "unitobs", metrique = "pielou", factGraph = "family",
-#'   factGraphSel = c("Labridae"), listFact = c("year", "protection.status"),
-#'   listFactSel = NA, tableMetrique = "unit",
-#'   new_window = TRUE, dataEnv = .dataEnv, baseEnv = .baseEnv)
+#' boxplot_pampa.f(
+#'   agregation = "espece",
+#'   metrique = "density",
+#'   factGraph = "species.code",
+#'   factGraphSel = c("Suffchry", "Parubarb"),
+#'   listFact = c("year", "protection.status"),
+#'   listFactSel = NA,
+#'   tableMetrique = "unitSp",
+#'   new_window = TRUE,
+#'   dataEnv = .dataEnv, baseEnv = .baseEnv)
 #'
 #' @export
 
@@ -78,7 +78,7 @@ boxplot_pampa.f <- function(agregation, metrique, factGraph =  NULL, factGraphSe
     )
   }
 
-  # S'il s'agit d'un jeu de données benthos, ou qu'il n'y a pas de classes tailles disponibles :
+  # S'il s'agit d'un jeu de donnees benthos, ou qu'il n'y a pas de classes tailles disponibles :
   # If it's a benthos data set, or no size classes are available :
   if ((is.benthos.f() | nrow(get("unitSpSz", envir = dataEnv)) == 0) & tableMetrique == "unitSpSz"){
     stop(
@@ -255,7 +255,7 @@ boxplot_pampa.f <- function(agregation, metrique, factGraph =  NULL, factGraphSe
 #' @param dataEnv : environnement de stockage des données
 #' @param baseEnv : environnement parent
 #'
-#' @return none
+#' @noRd
 
 WP2boxplot.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSel,
   tableMetrique, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){
@@ -2203,7 +2203,7 @@ UnitobsFields.aliases <- function(dataEnv, ordered = FALSE, tableMetrique = ""){
 #' @param dataEnv : environnement de stockage des données
 #' @param baseEnv : environnement parent
 #'
-#' @return none
+#' @noRd
 
 WP2boxplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSel,
   tableMetrique, new_window = TRUE, dataEnv, baseEnv = .GlobalEnv){

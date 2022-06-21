@@ -32,12 +32,14 @@ lm.f(
 
 \item{tableMetrique}{chr, nom de la table de metrique}
 
+\item{new_window}{bool, affichage des resultats dans une nouvelle fenetre ?}
+
 \item{dataEnv}{environnement de stockage des donnees}
 
 \item{baseEnv}{environnement parent}
 }
 \description{
-Calcul de modeles lineaires selon les paramètres fournis
+Calcul de modeles lineaires selon les parametres fournis
 }
 \details{
 Fonction pour calculer des modeles lineaires.
@@ -65,9 +67,15 @@ parametre est facultatif. S'il est egal a NA, alors toutes les modalites du ou d
 regroupement selectionne(s) seront prises en compte.
 }
 \examples{
-lm.f(agregation = "espece", metrique = "density", factAna = "scient.name",
-  factAnaSel = "Chromis_chromis", listFact = c("year", "protection.status"),
-  listFactSel = list(c("2011", "2019"), NA), tableMetrique = "unitSp",
+lm.f(
+  agregation = "espece",
+  metrique = "density",
+  factAna = "family",
+  factAnaSel = "Acanthuridae",
+  listFact = c("year", "protection.status"),
+  listFactSel = NA,
+  tableMetrique = "unitSp",
+  new_window = TRUE,
   dataEnv = .dataEnv, baseEnv = .baseEnv)
 
 }

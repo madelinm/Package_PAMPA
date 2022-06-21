@@ -23,7 +23,7 @@ Permet la restauration des donnees.
 \details{
 Fonction pour la restauration des donnees apres la selection et le recalcul.
 
-Permet de faire la restauration des donnees. Cela revient à re-charger les donnees, mais en plus
+Permet de faire la restauration des donnees. Cela revient a re-charger les donnees, mais en plus
 rapide.
 }
 \examples{

@@ -24,7 +24,7 @@ freq_occurrence_familles.f(
 
 \item{families}{chr, familles a prendre en compte}
 
-\item{new_window}{bool, affichage du graphique dans une nouvelle fenêtre ?}
+\item{new_window}{bool, affichage du graphique dans une nouvelle fenetre ?}
 
 \item{dataEnv}{environnement de stockage des donnees}
 
@@ -42,18 +42,21 @@ Fonction pour tracer un barplot de frequences d'occurrence de familles.
 Ce parametre est facultatif. S'il est egal a NA, toutes les modalites du facteur seront
 selectionnees.
 
-\code{fact} ne peut pas avoir plus de 1 facteur.
-
-\code{factSel} peut prendre differentes valeurs en fonction de celle de \code{listFact}. Ce
-parametre est facultatif. S'il est egal a NA, alors toutes les modalites du ou des facteur(s) de
-regroupement selectionne(s) seront prises en compte.
+\code{factSel} peut prendre differentes valeurs en fonction de celle de \code{fact}. Ce
+parametre est facultatif. S'il est egal a NA, alors toutes les modalites du facteur de
+regroupement selectionne seront prises en compte.
 
 \code{families} correspond aux familles que l'on veut etudier. Si ce parametre est egal a NA,
 alors toutes les familles seront prises en compte
 }
 \examples{
-PAMPA::freq_occurrence_families.f(factGraph = "protection.status", factGraphSel = NA,
-  fact = "year", factSel = NA, families = NA, new_window = TRUE,
+PAMPA::freq_occurrence_families.f(
+  factGraph = "protection.status",
+  factGraphSel = NA,
+  fact = "year",
+  factSel = NA,
+  families = NA,
+  new_window = TRUE,
   dataEnv = .dataEnv, baseEnv = .baseEnv)
 
 }

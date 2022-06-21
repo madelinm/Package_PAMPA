@@ -32,7 +32,7 @@ boxplot_pampa.f(
 
 \item{tableMetrique}{chr, nom de la table de metrique}
 
-\item{new_window}{bool, affichage du graphique dans une nouvelle fenêtre ?}
+\item{new_window}{bool, affichage du graphique dans une nouvelle fenetre ?}
 
 \item{dataEnv}{environnement de stockage des donnees}
 
@@ -64,15 +64,15 @@ parametre est facultatif. S'il est egal a NA, alors toutes les modalites du ou d
 regroupement selectionne(s) seront prises en compte.
 }
 \examples{
-# Pour le jeu de donnees 'Cote Bleue' :
-boxplot.f(agregation = "espece", metrique = "density", factGraph = "scient.name",
-  factGraphSel = "Chromis_chromis", listFact = c("year", "protection.status"),
-  listFactSel = list(c("2011", "2019"), NA), tableMetrique = "unitSp",
-  new_window = TRUE, dataEnv = .dataEnv, baseEnv = .baseEnv)
-
-boxplot_pampa.f(agregation = "unitobs", metrique = "pielou", factGraph = "family",
-  factGraphSel = c("Labridae"), listFact = c("year", "protection.status"),
-  listFactSel = NA, tableMetrique = "unit",
-  new_window = TRUE, dataEnv = .dataEnv, baseEnv = .baseEnv)
+boxplot_pampa.f(
+  agregation = "espece",
+  metrique = "density",
+  factGraph = "species.code",
+  factGraphSel = c("Suffchry", "Parubarb"),
+  listFact = c("year", "protection.status"),
+  listFactSel = NA,
+  tableMetrique = "unitSp",
+  new_window = TRUE,
+  dataEnv = .dataEnv, baseEnv = .baseEnv)
 
 }
