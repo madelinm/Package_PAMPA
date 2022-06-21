@@ -87,7 +87,14 @@ load_files.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv){
   if (is.na(filePathes["results"])){
     filePathes["results"] <- ifelse(as.logical(length(grep("Data/$|Data$", filePathes["ws"]))),
       sub("Data/$|Data$", "Results/", filePathes["ws"]),
-      paste(filePathes["ws"], "Results/", sep = ""))
+      ifelse(as.logical(length(grep("/$", filePathes["ws"]))),
+        paste(filePathes["ws"], "Results/", sep = ""),
+        paste(filePathes["ws"], "/Results/", sep = "")
+      )
+    )
+  }
+  if (!dir.exists(filePathes["results"])){
+    dir.create(filePathes["results"])
   }
   assign("filePathes", filePathes, envir = dataEnv)
 
