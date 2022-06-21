@@ -40,7 +40,7 @@ permanova_pampa.f <- function(metric_table, metric, fact, formula = NULL, method
     "pres_abs" = "pres.abs",
     "abundance" = "abundance.prop.SC",
     stop(
-      "Veuillez choisir une valeur de 'metric' parmi 'presabs' ou 'abundance'.",
+      "Veuillez choisir une valeur de 'metric' parmi 'pres_abs' ou 'abundance'.",
       "Please, choose a metric between 'presabs' and 'abundance'."
     )
   )
@@ -50,6 +50,17 @@ permanova_pampa.f <- function(metric_table, metric, fact, formula = NULL, method
   unitobs <- get("unitobs", envir = dataEnv)
   metricTable <- get(metric_table, envir = dataEnv)
   refesp <- get("refesp", envir = dataEnv)
+
+  obs_unit_unitobs <- as.character(unique(unitobs$observation.unit))
+  obs_unit_metric_table <- as.character(unique(metricTable$observation.unit))
+
+  if (length(obs_unit_unitobs) > length(obs_unit_metric_table)){
+    supp_obs_unit <- obs_unit_unitobs[which(!is.element(obs_unit_unitobs, obs_unit_metric_table))]
+    unitobs <- unitobs[-which(unitobs$observation.unit %in% supp_obs_unit),]
+  } else if (length(obs_unit_metric_table) > length(obs_unit_unitobs)){
+    supp_obs_unit <- obs_unit_metric_table[which(!is.element(obs_unit_metric_table, obs_unit_unitobs))]
+    metricTable <- metricTable[-which(metricTable$observation.unit %in% supp_obs_unit),]
+  }
 
   # On ne garde que les donnees qui nous interessent, on joint les tableau
   # et on enleve les colonnes devenues inutiles
