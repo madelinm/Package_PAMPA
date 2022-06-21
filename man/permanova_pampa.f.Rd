@@ -5,27 +5,36 @@
 \title{Permanova}
 \usage{
 permanova_pampa.f(
-  tableMetrique,
-  etude,
+  metric_table,
+  metric,
   fact,
+  formula = NULL,
   method = "bray",
   nb_perm = 1000,
+  square_roots = FALSE,
   dataEnv,
   baseEnv = .GlobalEnv
 )
 }
 \arguments{
-\item{tableMetrique}{chr, le nom de la table de metrique}
+\item{metric_table}{chr, le nom de la table de metrique}
 
-\item{etude}{chr, donnees etudiees (presences/absence (pres.abs) ou abondance ("abundance.prop.SC"))}
+\item{metric}{chr, donnees etudiees (pres_abs ou abundance ("abundance.prop.SC"))}
 
 \item{fact}{chr, liste des facteurs explicatifs}
+
+\item{formula}{..., formule du modele. Le LHS doit etre "dissimilarity_matrix" afin que la
+matrice de dissimilarite creee soit utilisee. Le RHS defini les variables independantes.
+Si elle est laissee nulle (la valeur par defaut), alors la fomule est cree sous la forme
+\code{dissimilarity_matrix ~ fact1 * fact2 * ... * factn}.}
 
 \item{method}{chr, methode utilisee pour la creation de la matrice de dissimilarites}
 
 \item{nb_perm}{int, nombre de permutations}
 
-\item{dataEnv}{environnemant de stockage des donnees}
+\item{square_roots}{booleen, utilisation des square roots ?}
+
+\item{dataEnv}{environnement de stockage des donnees}
 
 \item{baseEnv}{environnement parent}
 }
