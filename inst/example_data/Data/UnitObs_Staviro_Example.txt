@@ -1,0 +1,197 @@
+AMP	UnitObs	type	site	station	carac1	carac2	fraction	jour	mois	an	heure	nebulosite	dirVent	forceVent	etatmer	courant	maree	lune	latitude	longitude	statut_protection	avant_apres	biotope1	biotope2	habitat1	habitat2	habitat3	visibilite	prof_min	prof_max	DimObs1	DimObs2	nb_observateur	observateur
+NC	Pt10	SVR	Radiale	Rd	NA	NA	100.00	19	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.31693	166.3042	HR	AP	Floor	NA	Algues	Sable	Herbier	6.00	NA		7.18	NA	1	Leleu
+NC	Pt100	SVR	Larégnère	LA	ilot	NA	100.00	27	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.33078	166.32748	RE	AP	Floor	NA	Sable	Débris corallien	Corail	7.00	7.70		10.26	NA	1	Leleu
+NC	Pt101	SVR	Larégnère	LA	ilot	NA	100.00	27	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.33082	166.32918	RE	AP	Floor	NA	Sable	Débris corallien	Corail	7.00	6.70		10.26	NA	1	Leleu
+NC	Pt102	SVR	Larégnère	LA	ilot	NA	100.00	27	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.33121	166.33079	RE	AP	Floor	NA	Sable	Débris corallien	Roche	7.00	7.40		11.32	NA	1	Leleu
+NC	Pt103	SVR	Larégnère	LA	ilot	NA	100.00	27	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.33168	166.33245	RE	AP	Floor	NA	Sable	Roche	Corail	7.00	7.00		11.13	NA	1	Leleu
+NC	Pt104	SVR	Larégnère	LA	ilot	NA	100.00	27	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.3317	166.33409	RE	AP	Floor	NA	Sable	Débris corallien	NA	8.00	5.40		9.57	NA	1	Leleu
+NC	Pt106	SVR	Larégnère	LA	ilot	NA	66.66	28	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.3243	166.33174	RE	AP	Floor	NA	Sable	NA	Débris corallien	7.00	4.10		8.56	NA	1	Leleu
+NC	Pt107	SVR	Larégnère	LA	ilot	NA	83.33	28	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32436	166.33046	RE	AP	Floor	NA	Algues	Sable	NA	6.00	3.10		11.31	NA	1	Leleu
+NC	Pt108	SVR	Larégnère	LA	ilot	NA	100.00	28	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32424	166.32901	RE	AP	Floor	NA	Algues	Sable	NA	7.00	3.50		12.12	NA	1	Leleu
+NC	Pt11	SVR	Radiale	Rd	NA	NA	100.00	19	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.31975	166.30565	HR	AP	Floor	NA	Algues	Herbier	Sable	7.00	NA		7.58	NA	1	Leleu
+NC	Pt110	SVR	Larégnère	LA	ilot	NA	100.00	28	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32405	166.32594	RE	AP	Floor	NA	Herbier	Sable	NA	5.00	3.90		11.00	NA	1	Leleu
+NC	Pt111	SVR	Larégnère	LA	ilot	NA	100.00	28	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.3238	166.32427	RE	AP	Floor	NA	Algues	Sable	Herbier	6.00	3.40		10.27	NA	1	Leleu
+NC	Pt112	SVR	Larégnère	LA	ilot	NA	88.88	28	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32395	166.32279	RE	AP	Floor	NA	Algues	Sable	Herbier	6.00	3.20		13.09	NA	1	Leleu
+NC	Pt114	SVR	Larégnère	LA	ilot	NA	100.00	28	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32483	166.31983	RE	AP	Floor	NA	Sable	Roche	Corail	7.00	1.80		17.06	NA	1	Leleu
+NC	Pt115	SVR	Larégnère	LA	ilot	NA	100.00	28	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32558	166.31909	RE	AP	Floor	NA	Herbier	Roche	Corail	6.00	1.90		11.33	NA	1	Leleu
+NC	Pt116	SVR	Larégnère	LA	ilot	NA	100.00	28	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32637	166.31816	RE	AP	Floor	NA	Dalle et Sable	Roche	Corail	5.00	1.70		11.00	NA	1	Leleu
+NC	Pt117	SVR	Larégnère	LA	ilot	NA	100.00	28	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32586	166.31661	RE	AP	Floor	NA	Sable	NA	Corail	6.00	2.00		10.30	NA	1	Leleu
+NC	Pt118	SVR	Larégnère	LA	ilot	NA	100.00	28	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32509	166.31807	RE	AP	Floor	NA	Herbier	Sable	NA	5.00	3.90		12.08	NA	1	Leleu
+NC	Pt119	SVR	Larégnère	LA	ilot	NA	100.00	28	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32365	166.31853	RE	AP	Floor	NA	Herbier	Sable	Algues	6.00	3.30		10.29	NA	1	Leleu
+NC	Pt12	SVR	Radiale	Rd	NA	NA	100.00	19	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32247	166.30753	HR	AP	Floor	NA	Herbier	Sable	Algues	6.00	NA		9.00	NA	1	Leleu
+NC	Pt120	SVR	Larégnère	LA	ilot	NA	100.00	28	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32209	166.31921	RE	AP	Floor	NA	Algues	Sable	NA	9.00	3.00		11.03	NA	1	Leleu
+NC	Pt121	SVR	Larégnère	LA	ilot	NA	100.00	2	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.32593	166.3369	RE	AP	Floor	NA	Algues	Herbier	Sable	6.00	13.40		8.19	NA	1	Leleu
+NC	Pt122	SVR	Larégnère	LA	ilot	NA	83.33	2	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.32739	166.33776	RE	AP	Floor	NA	Algues	Herbier	Sable	5.00	12.80		13.44	NA	1	Leleu
+NC	Pt123	SVR	Larégnère	LA	ilot	NA	83.33	2	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.32918	166.3387	RE	AP	Floor	NA	Algues	Sable	Herbier	7.00	12.40		7.30	NA	1	Leleu
+NC	Pt124	SVR	Larégnère	LA	ilot	NA	83.33	2	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33101	166.33913	RE	AP	Floor	NA	Sable	Algues	NA	6.00	10.90		10.32	NA	1	Leleu
+NC	Pt125	SVR	Larégnère	LA	ilot	NA	100.00	2	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33268	166.33915	RE	AP	Floor	NA	Algues	Sable	NA	6.00	12.30		9.00	NA	1	Leleu
+NC	Pt126	SVR	Larégnère	LA	ilot	NA	77.77	2	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33437	166.33602	RE	AP	Floor	NA	Algues	Sable	NA	5.00	13.30		10.36	NA	1	Leleu
+NC	Pt13	SVR	Larégnère	LA	ilot	NA	100.00	19	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.3254	166.30908	RE	AP	Floor	NA	Algues	Herbier	Sable	6.00	NA		8.44	NA	1	Leleu
+NC	Pt139bis	SVR	Récif_Larégnère	RL	recif	NA	100.00	2	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33127	166.30779	HR	AP	Floor	NA	Algues	Sable	NA	6.00	10.40		8.29	NA	1	Leleu
+NC	Pt14	SVR	Larégnère	LA	ilot	NA	100.00	19	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32753	166.31062	RE	AP	Floor	NA	Dalle et Sable	Débris corallien	Roche	6.00	NA		8.19	NA	1	Leleu
+NC	Pt141	SVR	Récif_Larégnère	RL	recif	NA	100.00	2	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.32912	166.30352	HR	AP	Floor	NA	Herbier	Algues	Sable	5.00	9.20		8.01	NA	1	Leleu
+NC	Pt142	SVR	Signal	SI	ilot	NA	100.00	2	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.32814	166.30159	RE	AP	Floor	NA	Sable	Herbier	Algues	6.00	5.30		8.31	NA	1	Leleu
+NC	Pt15	SVR	Larégnère	LA	ilot	NA	100.00	19	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.3268	166.31217	RE	AP	Floor	NA	Dalle et Sable	NA	Corail	5.00	NA		8.00	NA	1	Leleu
+NC	Pt151	SVR	Signal	SI	ilot	NA	100.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30041	166.28919	RE	AP	Floor	NA	Débris corallien	Roche	Corail	8.00	6.30		8.08	NA	1	Leleu
+NC	Pt152	SVR	Signal	SI	ilot	NA	66.66	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30191	166.28962	RE	AP	Floor	NA	Dalle et Débris corallien	Roche	Corail	8.00	6.40		13.08	NA	1	Leleu
+NC	Pt153	SVR	Signal	SI	ilot	NA	100.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30355	166.2901	RE	AP	Flat	NA	Dalle et Débris corallien	NA	Roche	8.00	7.40		9.00	NA	1	Leleu
+NC	Pt154	SVR	Signal	SI	ilot	NA	83.33	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30518	166.29079	RE	AP	Floor	NA	Dalle et Débris corallien	Roche	Corail	7.00	10.90		16.08	NA	1	Leleu
+NC	Pt155	SVR	Signal	SI	ilot	NA	100.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30647	166.29235	RE	AP	Flat	NA	Dalle et Débris corallien	Roche	Corail	7.00	6.90		8.34	NA	1	Leleu
+NC	Pt156	SVR	Signal	SI	ilot	NA	-10000.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.3066	166.29422	RE	AP	Floor	NA	Dalle et Débris corallien	Roche	Corail	7.00	8.40		9.31	NA	1	Leleu
+NC	Pt157	SVR	Signal	SI	ilot	NA	100.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.3057	166.29596	RE	AP	Floor	NA	Dalle et Débris corallien	Roche	Corail	8.00	7.60		8.30	NA	1	Leleu
+NC	Pt159	SVR	Signal	SI	ilot	NA	133.33	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.3028	166.29876	RE	AP	Flat	NA	Dalle et Débris corallien	Roche	Corail	6.00	6.50		11.01	NA	1	Leleu
+NC	Pt16	SVR	Larégnère	LA	ilot	NA	100.00	19	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32603	166.31383	RE	AP	Floor	NA	Dalle et Sable	Corail	Débris corallien	6.00	NA		10.35	NA	1	Leleu
+NC	Pt160	SVR	Signal	SI	ilot	NA	100.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30082	166.29937	RE	AP	Gentle slope	NA	Dalle	Débris corallien	Corail	7.00	6.70		9.00	NA	1	Leleu
+NC	Pt161	SVR	Signal	SI	ilot	NA	100.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.2987	166.29952	RE	AP	Floor	NA	Herbier	Roche	Sable	8.00	6.80		8.00	NA	1	Leleu
+NC	Pt163	SVR	Signal	SI	ilot	NA	100.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29473	166.29664	RE	AP	Floor	NA	Herbier	Sable	NA	7.00	7.40		7.54	NA	1	Leleu
+NC	Pt164	SVR	Signal	SI	ilot	NA	100.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29326	166.295	RE	AP	Floor	NA	Herbier	Sable	NA	8.00	6.40		10.35	NA	1	Leleu
+NC	Pt165	SVR	Signal	SI	ilot	NA	100.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29416	166.29578	RE	AP	Floor	NA	Herbier	Sable	Corail	7.00	6.00		7.30	NA	1	Leleu
+NC	Pt166	SVR	Récif_Sénez	RS	recif	NA	100.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29266	166.29394	HR	AP	Floor	NA	Sable	Algues	Herbier	8.00	4.00		11.11	NA	1	Leleu
+NC	Pt167	SVR	Récif_Sénez	RS	recif	NA	100.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29556	166.33023	HR	AP	Floor	NA	Débris corallien	Sable	Herbier	7.00	9.70		9.00	NA	1	Leleu
+NC	Pt168	SVR	Récif_Sénez	RS	recif	NA	100.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29635	166.33105	HR	AP	Floor	NA	Algues	Sable	Herbier	7.00	7.20		7.54	NA	1	Leleu
+NC	Pt169	SVR	Récif_Sénez	RS	recif	NA	100.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29629	166.33191	HR	AP	Flat	NA	Débris corallien	Corail	NA	7.00	2.70		8.30	NA	1	Leleu
+NC	Pt17	SVR	Larégnère	LA	ilot	NA	100.00	19	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32563	166.3156	RE	AP	Floor	NA	Sable	Roche	Corail	5.00	NA		7.59	NA	1	Leleu
+NC	Pt170	SVR	Récif_Sénez	RS	recif	NA	100.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29608	166.33301	HR	AP	Steep slope	NA	Dalle et Sable	Débris corallien	Corail	6.00	6.00		8.30	NA	1	Leleu
+NC	Pt171	SVR	Récif_Sénez	RS	recif	NA	100.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29522	166.33315	HR	AP	Floor	NA	Dalle et Débris corallien	Algues	NA	8.00	4.90		8.31	NA	1	Leleu
+NC	Pt172	SVR	Radiale	Rd	NA	NA	100.00	3	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29383	166.33268	HR	AP	Floor	NA	Herbier	Sable	Algues	6.00	7.60		9.00	NA	1	Leleu
+NC	Pt173	SVR	Radiale	Rd	NA	NA	100.00	4	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.31942	166.31685	HR	AP	Floor	NA	Herbier	Sable	Algues	6.00	8.80		9.10	NA	1	Leleu
+NC	Pt174	SVR	Radiale	Rd	NA	NA	100.00	4	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.31696	166.31468	HR	AP	Floor	NA	Algues	Sable	Herbier	6.00	10.60		8.54	NA	1	Leleu
+NC	Pt175	SVR	Radiale	Rd	NA	NA	100.00	4	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.31433	166.31256	HR	AP	Floor	NA	Algues	Sable	NA	6.00	13.50		8.31	NA	1	Leleu
+NC	Pt176	SVR	Radiale	Rd	NA	NA	100.00	4	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.31161	166.31042	HR	AP	Floor	NA	Algues	Sable	Herbier	7.00	13.60		8.24	NA	1	Leleu
+NC	Pt177	SVR	Signal	SI	ilot	NA	100.00	4	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30873	166.30849	RE	AP	Floor	NA	Herbier	Sable	Algues	7.00	13.40		8.30	NA	1	Leleu
+NC	Pt18	SVR	Larégnère	LA	ilot	NA	100.00	19	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32557	166.32158	RE	AP	Floor	NA	Herbier	Sable	Algues	6.00	NA		8.56	NA	1	Leleu
+NC	Pt181	SVR	Signal	SI	ilot	NA	100.00	4	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29763	166.30041	RE	AP	Floor	NA	Herbier	Sable	Algues	6.00	11.60		8.55	NA	1	Leleu
+NC	Pt184	SVR	Signal	SI	ilot	NA	100.00	4	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29307	166.28886	RE	AP	Floor	NA	Herbier	Sable	Algues	7.00	12.00		7.56	NA	1	Leleu
+NC	Pt185	SVR	Signal	SI	ilot	NA	100.00	4	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29212	166.29027	RE	AP	Floor	NA	Herbier	Sable	NA	7.00	9.40		10.54	NA	1	Leleu
+NC	Pt186	SVR	Récif_Sénez	RS	recif	NA	100.00	4	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29196	166.29184	HR	AP	Floor	NA	Algues	Sable	NA	7.00	3.50		8.48	NA	1	Leleu
+NC	Pt187	SVR	Récif_Sénez	RS	recif	NA	100.00	4	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29511	166.33024	HR	AP	Flat	NA	Dalle et Débris corallien	NA	Corail	8.00	5.50		9.30	NA	1	Leleu
+NC	Pt188	SVR	Récif_Sénez	RS	recif	NA	100.00	4	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29454	166.33158	HR	AP	Floor	NA	Algues	Sable	Débris corallien	6.00	4.70		9.00	NA	1	Leleu
+NC	Pt189	SVR	Signal	SI	ilot	NA	100.00	4	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29565	166.33147	RE	AP	Flat	NA	Corail	Débris corallien	Dalle	5.00	1.60		8.29	NA	1	Leleu
+NC	Pt190	SVR	Signal	SI	ilot	NA	66.66	5	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29631	166.29938	RE	AP	Floor	NA	Algues	Sable	Herbier	6.00	15.30		9.33	NA	1	Leleu
+NC	Pt191	SVR	Radiale	Rd	NA	NA	100.00	5	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29962	166.30093	HR	AP	Floor	NA	Algues	NA	Débris corallien	6.00	9.80		8.30	NA	1	Leleu
+NC	Pt193	SVR	Radiale	Rd	NA	NA	83.33	5	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30298	166.30011	HR	AP	Floor	NA	Algues	Sable	NA	5.00	16.30		11.06	NA	1	Leleu
+NC	Pt195	SVR	Signal	SI	ilot	NA	90.00	5	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30626	166.29806	RE	AP	Floor	NA	Herbier	Débris corallien	Algues	6.00	13.80		13.14	NA	1	Leleu
+NC	Pt197	SVR	Signal	SI	ilot	NA	90.00	5	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30799	166.29458	RE	AP	Floor	NA	Herbier	Sable	NA	7.00	15.90		12.11	NA	1	Leleu
+NC	Pt199	SVR	Signal	SI	ilot	NA	100.00	5	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30706	166.29078	RE	AP	Floor	NA	Herbier	Sable	NA	5.00	16.50		13.36	NA	1	Leleu
+NC	Pt2	SVR	Signal	SI	ilot	NA	100.00	18	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.2944	166.29053	RE	AP	Floor	NA	Dalle et Débris corallien	Corail	Roche	7.00	NA		7.35	NA	1	Leleu
+NC	Pt20	SVR	Larégnère	LA	ilot	NA	100.00	19	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32617	166.32555	RE	AP	Gentle slope	NA	Corail	Sable	NA	8.00	NA		8.10	NA	1	Leleu
+NC	Pt201	SVR	Radiale	Rd	NA	NA	100.00	5	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.3039	166.2885	HR	AP	Floor	NA	Sable	NA	Algues	5.00	19.20		12.21	NA	1	Leleu
+NC	Pt204	SVR	Radiale	Rd	NA	NA	83.33	5	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.31334	166.29803	HR	AP	Floor	NA	Algues	Sable	NA	7.00	18.80		11.43	NA	1	Leleu
+NC	Pt206	SVR	Radiale	Rd	NA	NA	83.33	5	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.31913	166.30104	HR	AP	Floor	NA	Algues	Sable	Herbier	7.00	15.20		11.20	NA	1	Leleu
+NC	Pt208	SVR	Larégnère	LA	ilot	NA	100.00	5	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.32478	166.30454	RE	AP	Floor	NA	Herbier	Sable	Algues	5.00	9.20		12.41	NA	1	Leleu
+NC	Pt209	SVR	Récif_Larégnère	RL	recif	NA	100.00	5	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.32756	166.30578	HR	AP	Floor	NA	Algues	Sable	NA	7.00	10.20		8.30	NA	1	Leleu
+NC	Pt211	SVR	Récif_Larégnère	RL	recif	NA	100.00	5	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33223	166.30366	HR	AP	Floor	NA	Sable	NA	Algues	4.00	11.70		8.30	NA	1	Leleu
+NC	Pt213	SVR	Larégnère	LA	ilot	NA	100.00	5	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.32958	166.3003	RE	AP	Floor	NA	Dalle et Sable	Roche	NA	6.00	5.10		11.40	NA	1	Leleu
+NC	Pt215	SVR	Larégnère	LA	ilot	NA	100.00	5	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.32312	166.32414	RE	AP	Floor	NA	Algues	Sable	NA	6.00	3.60		12.53	NA	1	Leleu
+NC	Pt216	SVR	Radiale	Rd	NA	NA	100.00	5	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.31966	166.32348	HR	AP	Floor	NA	Algues	Sable	NA	5.00	9.80		8.30	NA	1	Leleu
+NC	Pt219	SVR	Radiale	Rd	NA	NA	88.88	6	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30306	166.30433	HR	AP	Floor	NA	Algues	Herbier	Sable	7.00	14.90		11.51	NA	1	Leleu
+NC	Pt220	SVR	Signal	SI	ilot	NA	77.77	6	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30031	166.30235	RE	AP	Floor	NA	Algues	Sable	NA	7.00	16.40		10.19	NA	1	Leleu
+NC	Pt221	SVR	Signal	SI	ilot	NA	83.33	6	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.29188	166.29656	RE	AP	Floor	NA	Algues	Sable	NA	7.00	18.60		10.36	NA	1	Leleu
+NC	Pt222	SVR	Radiale	Rd	NA	NA	88.88	6	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30171	166.30043	HR	AP	Floor	NA	Algues	Sable	Herbier	7.00	15.50		11.20	NA	1	Leleu
+NC	Pt223	SVR	Radiale	Rd	NA	NA	88.88	6	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30694	166.29662	HR	AP	Floor	NA	Herbier	Sable	Algues	6.00	15.50		11.27	NA	1	Leleu
+NC	Pt224	SVR	Signal	SI	ilot	NA	94.44	6	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30504	166.29925	RE	AP	Floor	NA	Herbier	Sable	Algues	6.00	15.60		12.53	NA	1	Leleu
+NC	Pt225	SVR	Signal	SI	ilot	NA	100.00	6	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30787	166.2924	RE	AP	Floor	NA	Algues	Sable	Herbier	5.00	17.20		12.54	NA	1	Leleu
+NC	Pt226	SVR	Signal	SI	ilot	NA	100.00	6	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30577	166.28939	RE	AP	Floor	NA	Sable	Algues	Herbier	7.00	19.80		12.52	NA	1	Leleu
+NC	Pt227	SVR	Radiale	Rd	NA	NA	94.44	6	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.3021	166.28794	HR	AP	Floor	NA	Sable	Roche	Corail	6.00	18.20		13.16	NA	1	Leleu
+NC	Pt228	SVR	Radiale	Rd	NA	NA	90.00	6	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.30993	166.29569	HR	AP	Floor	NA	Herbier	Sable	NA	7.00	13.50		11.51	NA	1	Leleu
+NC	Pt229	SVR	Radiale	Rd	NA	NA	90.00	6	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.31618	166.29922	HR	AP	Floor	NA	Algues	Sable	NA	8.00	18.60		12.33	NA	1	Leleu
+NC	Pt230	SVR	Récif_Larégnère	RL	recif	NA	83.33	6	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.32189	166.3025	HR	AP	Floor	NA	Algues	Sable	NA	7.00	13.90		10.13	NA	1	Leleu
+NC	Pt231	SVR	Récif_Larégnère	RL	recif	NA	94.44	6	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.3338	166.29889	HR	AP	Floor	NA	Débris corallien	Sable	Roche	7.00	9.20		12.39	NA	1	Leleu
+NC	Pt232	SVR	Larégnère	LA	ilot	NA	83.33	6	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33374	166.29488	RE	AP	Floor	NA	Débris corallien	Dalle et Sable	NA	8.00	13.50		11.56	NA	1	Leleu
+NC	Pt233	SVR	Larégnère	LA	ilot	NA	100.00	30	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33275	166.31002	RE	AP	Floor	NA	Algues	Sable	NA	7.00	11.00		14.58	NA	1	Leleu
+NC	Pt234	SVR	Larégnère	LA	ilot	NA	77.77	30	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33444	166.33373	RE	AP	Floor	NA	Algues	Sable	NA	7.00	13.30		13.20	NA	1	Leleu
+NC	Pt235	SVR	Larégnère	LA	ilot	NA	100.00	30	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33415	166.33118	RE	AP	Floor	NA	Algues	Sable	NA	6.00	12.10		13.38	NA	1	Leleu
+NC	Pt236	SVR	Larégnère	LA	ilot	NA	100.00	30	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33353	166.32871	RE	AP	Floor	NA	Algues	Sable	NA	7.00	10.90		12.22	NA	1	Leleu
+NC	Pt237	SVR	Larégnère	LA	ilot	NA	88.88	30	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33295	166.32369	RE	AP	Floor	NA	Sable	Algues	NA	7.00	10.40		12.19	NA	1	Leleu
+NC	Pt238	SVR	Larégnère	LA	ilot	NA	100.00	30	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33339	166.32091	RE	AP	Floor	NA	Algues	Sable	NA	7.00	10.10		13.04	NA	1	Leleu
+NC	Pt239	SVR	Larégnère	LA	ilot	NA	100.00	30	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33313	166.31879	RE	AP	Floor	NA	Algues	Sable	NA	7.00	10.20		12.53	NA	1	Leleu
+NC	Pt24	SVR	Signal	SI	ilot	NA	100.00	20	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.3013	166.28945	RE	AP	Steep slope	NA	Débris corallien	Roche	NA	7.00	7.10		7.05	NA	1	Leleu
+NC	Pt240	SVR	Larégnère	LA	ilot	NA	100.00	30	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33321	166.31588	RE	AP	Floor	NA	Algues	Sable	NA	7.00	10.40		13.00	NA	1	Leleu
+NC	Pt241	SVR	Larégnère	LA	ilot	NA	100.00	30	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33163	166.31411	RE	AP	Floor	NA	Débris corallien	Sable	Corail	6.00	10.60		12.51	NA	1	Leleu
+NC	Pt242	SVR	Larégnère	LA	ilot	NA	100.00	30	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33317	166.31277	RE	AP	Floor	NA	Sable	NA	Algues	8.00	7.10		12.23	NA	1	Leleu
+NC	Pt243	SVR	Larégnère	LA	ilot	NA	88.88	30	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33118	166.31022	RE	AP	Floor	NA	Algues	Sable	Débris corallien	5.00	8.00		11.58	NA	1	Leleu
+NC	Pt244	SVR	Larégnère	LA	ilot	NA	90.00	30	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.32963	166.30918	RE	AP	Floor	NA	Algues	Sable	NA	5.00	7.70		12.31	NA	1	Leleu
+NC	Pt245	SVR	Radiale	Rd	NA	NA	88.88	30	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.32843	166.30957	HR	AP	Floor	NA	Sable	NA	Roche	6.00	7.20		12.41	NA	1	Leleu
+NC	Pt247	SVR	Radiale	Rd	NA	NA	100.00	30	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.3202	166.31149	HR	AP	Floor	NA	Herbier	Algues	Sable	7.00	9.70		12.24	NA	1	Leleu
+NC	Pt248	SVR	Récif_Larégnère	RL	recif	NA	94.44	30	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.317	166.30979	HR	AP	Floor	NA	Algues	Sable	Herbier	7.00	11.20		10.49	NA	1	Leleu
+NC	Pt249	SVR	Récif_Larégnère	RL	recif	NA	100.00	31	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33098	166.30192	HR	AP	Floor	NA	Herbier	Algues	Sable	7.00	7.80		14.25	NA	1	Leleu
+NC	Pt250	SVR	Larégnère	LA	ilot	NA	83.33	31	7	2007		NA	NA	NA	NA	NA	NA	NA	-22.33238	166.30029	RE	AP	Floor	NA	Débris corallien	Roche	Sable	7.00	5.50		12.57	NA	1	Leleu
+NC	Pt257	SVR	Larégnère	LA	ilot	NA	100.00	29	10	2007		NA	NA	NA	NA	NA	NA	NA	-22.3241	166.31422	RE	AP	Floor	NA	Herbier	Sable	NA	7.00	6.40		8.34	NA	1	Leleu
+NC	Pt258	SVR	Larégnère	LA	ilot	NA	100.00	8	11	2007		NA	NA	NA	NA	NA	NA	NA	-22.32439	166.33328	RE	AP	Floor	NA	Algues	Sable	NA	8.00	10.40		10.50	NA	1	Leleu
+NC	Pt259	SVR	Récif_Larégnère	RL	recif	NA	100.00	8	11	2007		NA	NA	NA	NA	NA	NA	NA	-22.33157	166.33516	HR	AP	Gentle slope	NA	Débris corallien	Roche	Sable	7.00	6.20		13.12	NA	1	Leleu
+NC	Pt26	SVR	Radiale	Rd	NA	NA	100.00	20	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.3056	166.30327	HR	AP	Floor	NA	Sable	Algues	Herbier	7.00	15.60		8.26	NA	1	Leleu
+NC	Pt260	SVR	Récif_Larégnère	RL	recif	NA	100.00	8	11	2007		NA	NA	NA	NA	NA	NA	NA	-22.3337	166.30154	HR	AP	Floor	NA	Algues	Sable	NA	7.00	11.50		13.58	NA	1	Leleu
+NC	Pt261	SVR	Récif_Larégnère	RL	recif	NA	94.44	8	11	2007		NA	NA	NA	NA	NA	NA	NA	-22.33509	166.29959	HR	AP	Floor	NA	Sable	Algues	NA	8.00	12.80		12.28	NA	1	Leleu
+NC	Pt262	SVR	Récif_Larégnère	RL	recif	NA	100.00	8	11	2007		NA	NA	NA	NA	NA	NA	NA	-22.33547	166.29651	HR	AP	Floor	NA	Sable	Algues	NA	8.00	14.10		13.21	NA	1	Leleu
+NC	Pt263	SVR	Récif_Larégnère	RL	recif	NA	100.00	8	11	2007		NA	NA	NA	NA	NA	NA	NA	-22.33486	166.29358	HR	AP	Floor	NA	Algues	Sable	NA	7.00	18.00		13.13	NA	1	Leleu
+NC	Pt264	SVR	Larégnère	LA	ilot	NA	100.00	8	11	2007		NA	NA	NA	NA	NA	NA	NA	-22.33128	166.2937	RE	AP	Floor	NA	Dalle et Sable	Roche	Corail	6.00	14.00		13.50	NA	1	Leleu
+NC	Pt265	SVR	Récif_Larégnère	RL	recif	NA	100.00	8	11	2007		NA	NA	NA	NA	NA	NA	NA	-22.32277	166.31329	HR	AP	Floor	NA	Herbier	Sable	NA	6.00	8.10		13.54	NA	1	Leleu
+NC	Pt27	SVR	Radiale	Rd	NA	NA	100.00	20	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.3085	166.3049	HR	AP	Floor	NA	Algues	Herbier	Sable	7.00	15.00		8.29	NA	1	Leleu
+NC	Pt270	SVR	Récif_Larégnère	RL	recif	NA	100.00	16	11	2007		NA	NA	NA	NA	NA	NA	NA	-22.32796	166.29865	HR	AP	Floor	NA	Sable	Algues	Corail	8.00	NA		9.42	NA	1	Leleu
+NC	Pt272	SVR	Signal	SI	ilot	NA	100.00	16	11	2007		NA	NA	NA	NA	NA	NA	NA	-22.32433	166.29845	RE	AP	Floor	NA	Sable	Algues	NA	8.00	NA		10.47	NA	1	Leleu
+NC	Pt276	SVR	Signal	SI	ilot	NA	100.00	29	11	2007		NA	NA	NA	NA	NA	NA	NA	-22.29645	166.2897	RE	AP	Floor	NA	Corail	Sable	NA	6.00	NA		9.41	NA	1	Leleu
+NC	Pt277	SVR	Larégnère	LA	ilot	NA	100.00	29	11	2007		NA	NA	NA	NA	NA	NA	NA	-22.29911	166.28903	RE	AP	Flat	NA	Dalle	Roche	Débris corallien	7.00	NA		9.10	NA	1	Leleu
+NC	Pt279	SVR	Larégnère	LA	ilot	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.33289	166.32611	RE	AP	Floor	NA	Sable	NA	Algues	6.00	11.40		10.30	NA	1	Leleu
+NC	Pt28	SVR	Radiale	Rd	NA	NA	83.33	20	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.31183	166.30675	HR	AP	Floor	NA	Sable	Algues	Herbier	7.00	14.90		6.16	NA	1	Leleu
+NC	Pt280	SVR	Larégnère	LA	ilot	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.33103	166.32005	RE	AP	Floor	NA	Débris corallien	NA	Corail	8.00	7.50		8.37	NA	1	Leleu
+NC	Pt282	SVR	Larégnère	LA	ilot	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.33021	166.30731	RE	AP	Floor	NA	Algues	Sable	Herbier	5.00	12.50		11.35	NA	1	Leleu
+NC	Pt283	SVR	Récif_Larégnère	RL	recif	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.33191	166.30568	HR	AP	Floor	NA	Sable	NA	Algues	6.00	11.60		7.39	NA	1	Leleu
+NC	Pt285bis	SVR	Récif_Larégnère	RL	recif	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.32858	166.2944	HR	AP	Floor	NA	Sable	Roche	NA	5.00	13.00		11.00	NA	1	Leleu
+NC	Pt286	SVR	Récif_Larégnère	RL	recif	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.33009	166.29395	HR	AP	Floor	NA	Sable	Roche	NA	6.00	6.50		11.37	NA	1	Leleu
+NC	Pt287	SVR	Récif_Larégnère	RL	recif	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.32698	166.29559	HR	AP	Floor	NA	Herbier	Sable	NA	7.00	13.70		7.04	NA	1	Leleu
+NC	Pt288	SVR	Récif_Larégnère	RL	recif	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.32587	166.29521	HR	AP	Floor	NA	Herbier	Sable	NA	6.00	13.80		8.50	NA	1	Leleu
+NC	Pt289	SVR	Récif_Larégnère	RL	recif	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.32454	166.2968	HR	AP	Floor	NA	Herbier	Sable	Algues	7.00	11.90		11.38	NA	1	Leleu
+NC	Pt29	SVR	Radiale	Rd	NA	NA	100.00	20	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.31458	166.30843	HR	AP	Floor	NA	Algues	Herbier	Sable	8.00	13.70		9.32	NA	1	Leleu
+NC	Pt290	SVR	Récif_Larégnère	RL	recif	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.32312	166.29955	HR	AP	Floor	NA	Algues	Sable	Herbier	6.00	13.80		11.40	NA	1	Leleu
+NC	Pt291	SVR	Récif_Larégnère	RL	recif	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.32634	166.29973	HR	AP	Floor	NA	Sable	Algues	Herbier	8.00	14.30		8.37	NA	1	Leleu
+NC	Pt292	SVR	Récif_Larégnère	RL	recif	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.32756	166.29794	HR	AP	Floor	NA	Dalle et Sable	Roche	Débris corallien	8.00	4.50		7.51	NA	1	Leleu
+NC	Pt294	SVR	Récif_Larégnère	RL	recif	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.33158	166.30096	HR	AP	Floor	NA	Herbier	Sable	Algues	7.00	7.00		10.27	NA	1	Leleu
+NC	Pt295	SVR	Récif_Larégnère	RL	recif	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.3304	166.30191	HR	AP	Floor	NA	Herbier	Sable	Algues	8.00	8.00		7.54	NA	1	Leleu
+NC	Pt296	SVR	Larégnère	LA	ilot	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.33015	166.3042	RE	AP	Floor	NA	Sable	Algues	Herbier	7.00	11.00		8.17	NA	1	Leleu
+NC	Pt297	SVR	Larégnère	LA	ilot	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.33018	166.306	RE	AP	Floor	NA	Algues	Sable	Herbier	5.00	11.80		11.42	NA	1	Leleu
+NC	Pt298	SVR	Larégnère	LA	ilot	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.329	166.30763	RE	AP	Floor	NA	Sable	Algues	Herbier	4.00	11.50		11.06	NA	1	Leleu
+NC	Pt299	SVR	Récif_Larégnère	RL	recif	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.32881	166.30597	HR	AP	Floor	NA	Algues	Sable	NA	7.00	11.10		8.15	NA	1	Leleu
+NC	Pt300	SVR	Récif_Larégnère	RL	recif	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.32933	166.30362	HR	AP	Floor	NA	Herbier	Sable	Algues	7.00	10.00		11.06	NA	1	Leleu
+NC	Pt301	SVR	Larégnère	LA	ilot	NA	100.00	25	1	2008		NA	NA	NA	NA	NA	NA	NA	-22.32885	166.3011	RE	AP	Floor	NA	Algues	Sable	Herbier	8.00	6.30		9.30	NA	1	Leleu
+NC	Pt304	SVR	Larégnère	LA	ilot	NA	100.00	21	3	2008		NA	NA	NA	NA	NA	NA	NA	-22.32294	166.32069	RE	AP	Floor	NA	Sable	NA	Algues	7.00	3.40		10.51	NA	1	Leleu
+NC	Pt305	SVR	Larégnère	LA	ilot	NA	100.00	21	3	2008		NA	NA	NA	NA	NA	NA	NA	-22.32241	166.32713	RE	AP	Floor	NA	Algues	Herbier	Sable	6.00	5.10		9.18	NA	1	Leleu
+NC	Pt306	SVR	Larégnère	LA	ilot	NA	100.00	21	3	2008		NA	NA	NA	NA	NA	NA	NA	-22.32264	166.32254	RE	AP	Floor	NA	Herbier	Algues	Sable	6.00	4.00		9.15	NA	1	Leleu
+NC	Pt307	SVR	Larégnère	LA	ilot	NA	100.00	21	3	2008		NA	NA	NA	NA	NA	NA	NA	-22.32275	166.32744	RE	AP	Floor	NA	Sable	Algues	Herbier	6.00	4.80		9.15	NA	1	Leleu
+NC	Pt308	SVR	Larégnère	LA	ilot	NA	100.00	21	3	2008		NA	NA	NA	NA	NA	NA	NA	-22.32267	166.32912	RE	AP	Floor	NA	Algues	NA	Sable	7.00	4.20		8.38	NA	1	Leleu
+NC	Pt309	SVR	Larégnère	LA	ilot	NA	100.00	21	3	2008		NA	NA	NA	NA	NA	NA	NA	-22.32321	166.33046	RE	AP	Floor	NA	Algues	NA	Sable	6.00	4.50		8.44	NA	1	Leleu
+NC	Pt310	SVR	Larégnère	LA	ilot	NA	100.00	21	3	2008		NA	NA	NA	NA	NA	NA	NA	-22.32103	166.32747	RE	AP	Floor	NA	Herbier	Sable	Algues	5.00	5.70		9.14	NA	1	Leleu
+NC	Pt311	SVR	Larégnère	LA	ilot	NA	100.00	21	3	2008		NA	NA	NA	NA	NA	NA	NA	-22.32099	166.32549	RE	AP	Floor	NA	Herbier	Sable	Algues	5.00	6.80		9.13	NA	1	Leleu
+NC	Pt312	SVR	Larégnère	LA	ilot	NA	100.00	21	3	2008		NA	NA	NA	NA	NA	NA	NA	-22.32103	166.32336	RE	AP	Floor	NA	Herbier	Sable	Algues	7.00	3.00		9.17	NA	1	Leleu
+NC	Pt313	SVR	Radiale	Rd	NA	NA	100.00	21	3	2008		NA	NA	NA	NA	NA	NA	NA	-22.32114	166.3212	HR	AP	Floor	NA	Algues	Sable	Herbier	7.00	2.90		8.46	NA	1	Leleu
+NC	Pt314	SVR	Larégnère	LA	ilot	NA	100.00	21	3	2008		NA	NA	NA	NA	NA	NA	NA	-22.31966	166.32016	RE	AP	Floor	NA	Herbier	Sable	Algues	6.00	6.90		9.44	NA	1	Leleu
+NC	Pt315	SVR	Larégnère	LA	ilot	NA	100.00	21	3	2008		NA	NA	NA	NA	NA	NA	NA	-22.32611	166.32977	RE	AP	Flat	NA	Corail	Débris corallien	Roche	7.00	2.40		10.15	NA	1	Leleu
+NC	Pt316	SVR	Larégnère	LA	ilot	NA	100.00	21	3	2008		NA	NA	NA	NA	NA	NA	NA	-22.32543	166.33167	RE	AP	Floor	NA	Corail	Sable	Débris corallien	7.00	2.50		8.38	NA	1	Leleu
+NC	Pt33	SVR	Larégnère	LA	ilot	NA	100.00	20	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32452	166.31657	RE	AP	Floor	NA	Herbier	Sable	NA	5.00	5.00		9.00	NA	1	Leleu
+NC	Pt34	SVR	Larégnère	LA	ilot	NA	100.00	20	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32613	166.32725	RE	AP	Floor	NA	Sable	Corail	Débris corallien	7.00	3.00		8.55	NA	1	Leleu
+NC	Pt35	SVR	Larégnère	LA	ilot	NA	100.00	20	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32553	166.3312	RE	AP	Floor	NA	Dalle et Sable	Corail	NA	7.00	2.70		10.01	NA	1	Leleu
+NC	Pt37	SVR	Larégnère	LA	ilot	NA	100.00	20	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32558	166.33282	RE	AP	Floor	NA	Dalle et Débris corallien	Corail	NA	7.00	4.10		8.30	NA	1	Leleu
+NC	Pt38	SVR	Larégnère	LA	ilot	NA	100.00	20	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.3265	166.33462	RE	AP	Floor	NA	Dalle et Débris corallien	NA	Corail	7.00	6.00		9.30	NA	1	Leleu
+NC	Pt40	SVR	Signal	SI	ilot	NA	100.00	21	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.29543	166.29675	RE	AP	Floor	NA	Dalle et Sable	Débris corallien	Corail	7.00	5.60		8.30	NA	1	Leleu
+NC	Pt42	SVR	Signal	SI	ilot	NA	100.00	21	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.29688	166.29815	RE	AP	Floor	NA	Dalle et Sable	Débris corallien	NA	8.00	6.90		9.29	NA	1	Leleu
+NC	Pt45	SVR	Signal	SI	ilot	NA	100.00	21	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.30003	166.29947	RE	AP	Floor	NA	Dalle et Débris corallien	NA	Roche	5.00	6.40		8.01	NA	1	Leleu
+NC	Pt46	SVR	Signal	SI	ilot	NA	100.00	21	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.30175	166.2992	RE	AP	Floor	NA	Dalle et Sable	NA	Corail	7.00	7.90		8.30	NA	1	Leleu
+NC	Pt49	SVR	Signal	SI	ilot	NA	100.00	21	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.30462	166.29783	RE	AP	Floor	NA	Dalle et Débris corallien	NA	Roche	6.00	7.00		8.01	NA	1	Leleu
+NC	Pt5	SVR	Signal	SI	ilot	NA	100.00	18	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.293	166.29137	RE	AP	Flat	NA	Corail	Sable	Débris corallien	7.00	NA		6.02	NA	1	Leleu
+NC	Pt59	SVR	Signal	SI	ilot	NA	100.00	21	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.2955	166.28992	RE	AP	Floor	NA	Herbier	Sable	NA	5.00	6.10		9.55	NA	1	Leleu
+NC	Pt60	SVR	Larégnère	LA	ilot	NA	100.00	22	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32777	166.33598	RE	AP	Floor	NA	Dalle et Débris corallien	Corail	Sable	7.00	5.80		7.28	NA	1	Leleu
+NC	Pt61	SVR	Larégnère	LA	ilot	NA	100.00	22	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.32915	166.33725	RE	AP	Floor	NA	Corail	Dalle et Sable	Débris corallien	7.00	6.00		8.29	NA	1	Leleu
+NC	Pt62	SVR	Larégnère	LA	ilot	NA	100.00	22	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.33083	166.3373	RE	AP	Flat	NA	Dalle	Corail	Algues	5.00	7.80		8.30	NA	1	Leleu
+NC	Pt7	SVR	Radiale	Rd	NA	NA	100.00	19	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.30793	166.29937	HR	AP	Floor	NA	Herbier	Sable	NA	6.00	NA		7.25	NA	1	Leleu
+NC	Pt78	SVR	Signal	SI	ilot	NA	100.00	25	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.29322	166.29297	RE	AP	Flat	NA	Corail	NA	NA	5.00	2.10		11.57	NA	1	Leleu
+NC	Pt79	SVR	Signal	SI	ilot	NA	100.00	25	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.29356	166.2945	RE	AP	Gentle slope	NA	Corail	Débris corallien	Sable	7.00	3.10		14.24	NA	1	Leleu
+NC	Pt8	SVR	Radiale	Rd	NA	NA	100.00	19	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.31102	166.30128	HR	AP	Floor	NA	Algues	Sable	Herbier	7.00	NA		8.01	NA	1	Leleu
+NC	Pt80	SVR	Signal	SI	ilot	NA	83.33	25	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.29463	166.29572	RE	AP	Floor	NA	Débris corallien	NA	Corail	8.00	4.00		13.13	NA	1	Leleu
+NC	Pt81	SVR	Signal	SI	ilot	NA	100.00	25	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.29768	166.28913	RE	AP	Floor	NA	Herbier	Sable	NA	5.00	4.40		11.26	NA	1	Leleu
+NC	Pt82	SVR	Signal	SI	ilot	NA	100.00	25	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.29808	166.28766	RE	AP	Floor	NA	Sable	Herbier	Algues	4.00	15.10		13.12	NA	1	Leleu
+NC	Pt83	SVR	Signal	SI	ilot	NA	83.33	25	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.29662	166.28791	RE	AP	Floor	NA	Herbier	Sable	NA	5.00	13.40		14.49	NA	1	Leleu
+NC	Pt85	SVR	Signal	SI	ilot	NA	100.00	26	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.29501	166.28797	RE	AP	Floor	NA	Herbier	Sable	NA	6.00	13.00		10.18	NA	1	Leleu
+NC	Pt9	SVR	Radiale	Rd	NA	NA	100.00	19	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.31397	166.30297	HR	AP	Floor	NA	Herbier	Sable	Algues	7.00	NA		8.59	NA	1	Leleu
+NC	Pt95	SVR	Larégnère	LA	ilot	NA	66.66	27	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.33159	166.31222	RE	AP	Floor	NA	Dalle et Sable	Débris corallien	NA	6.00	7.00		12.28	NA	1	Leleu
+NC	Pt97	SVR	Larégnère	LA	ilot	NA	66.66	27	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.33147	166.31627	RE	AP	Gentle slope	NA	Débris corallien	Corail	Roche	7.00	7.20		12.41	NA	1	Leleu
+NC	Pt98	SVR	Larégnère	LA	ilot	NA	100.00	27	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.33082	166.32389	RE	AP	Floor	NA	Sable	Débris corallien	NA	6.00	8.40		11.00	NA	1	Leleu
+NC	Pt99	SVR	Larégnère	LA	ilot	NA	100.00	27	6	2007		NA	NA	NA	NA	NA	NA	NA	-22.33063	166.32526	RE	AP	Flat	NA	Débris corallien	Corail	Roche	7.00	8.20		9.52	NA	1	Leleu
