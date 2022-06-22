@@ -430,7 +430,7 @@ subplotCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
       listFact = listFact,
       dataEnv = dataEnv,
       ext = "wmf",
-      prefix = paste("carte_", ifelse(graphType == "boxplot", "boxplot", "barplot"), sep = ""),
+      prefix = paste("carte_", graphType, sep = ""),
       sufixe = ifelse(getOption("P.plusieursGraphPage") && (length(iFactGraphSel) > 1 || iFactGraphSel[1] == ""),
         "%03d",
         ""),
@@ -442,11 +442,11 @@ subplotCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
     if (!is.null(graphFileTmp)) graphFile <- graphFileTmp
 
     # Paramètres graphiques :
-    par(mar = c(2, 2,
-      ifelse(( ! getOption("P.graphPaper")) && getOption("P.title"),
-        8, 1),
-      1),
-      mgp = c(3.5, 1, 0))
+#    par(mar = c(2, 2,
+#      ifelse(( ! getOption("P.graphPaper")) && getOption("P.title"),
+#        8, 1),
+#      1),
+#      mgp = c(3.5, 1, 0))
     ##################################################
 
     # Titre (d'après les métriques, modalité du facteur de séparation et facteurs de regroupement) :
@@ -939,34 +939,34 @@ boxplotCarto.generic.f <- function(polyZones, Data, factSpatial, exprBP){
 
   env <- environment()
 
-  # Barycentres des zones... corrigés pour tenir dans les graphiques :
-  if (length(polyZones) > 1){
-    zonesCoord <- sweep(coordinates(polyZones), 2,
-      list(range(par("usr")[1:2]), range(par("usr")[3:4])),
-      function(x, y){
-        ymin <- apply(y, 2, sapply, min)
-        ymax <- apply(y, 2, sapply, max)
-        ydiff <- ymax - ymin
-        ymin <- ymin + sweep(ydiff, 2, c(0.08, 0.11), "*")
-        ymax <- ymax - sweep(ydiff, 2, c(0.08, 0.11), "*")
-        #
-        res <- x
-        res[x < ymin] <- ymin[x < ymin] # + 0.05 * ydiff[x < ymin]
-        res[x > ymax] <- ymax[x > ymax] # - 0.05 * ydiff[x > ymax]
-        #
-        return(res)
-      })
-  }
-  else{
-    zonesCoord <- coordinates(polyZones)
-  }
+#  # Barycentres des zones... corrigés pour tenir dans les graphiques :
+#  if (length(polyZones) > 1){
+#    zonesCoord <- sweep(coordinates(polyZones), 2,
+#      list(range(par("usr")[1:2]), range(par("usr")[3:4])),
+#      function(x, y){
+#        ymin <- apply(y, 2, sapply, min)
+#        ymax <- apply(y, 2, sapply, max)
+#        ydiff <- ymax - ymin
+#        ymin <- ymin + sweep(ydiff, 2, c(0.08, 0.11), "*")
+#        ymax <- ymax - sweep(ydiff, 2, c(0.08, 0.11), "*")
+#        #
+#        res <- x
+#        res[x < ymin] <- ymin[x < ymin] # + 0.05 * ydiff[x < ymin]
+#        res[x > ymax] <- ymax[x > ymax] # - 0.05 * ydiff[x > ymax]
+#        #
+#        return(res)
+#      })
+#  }
+#  else{
+#    zonesCoord <- coordinates(polyZones)
+#  }
 
   # Données séparées par subplot :
   tmpData <- split(Data, Data[ , factSpatial])
 
   # Couleurs de différentiation des zones :
   colZones <- PAMPAcolors.f(n = length(polyZones), palette = getOption("P.zonesPalette"))
-  names(colZones) <- row.names(zonesCoord)
+  names(colZones) <- row.names(coordinates(polyZones))
 #  names(colZones) <- as.vector(polyZones)
 
   metrique <- as.character(exprBP)[2]
@@ -979,7 +979,7 @@ boxplotCarto.generic.f <- function(polyZones, Data, factSpatial, exprBP){
 #  plot_name <- lapply(seq(length(as.vector(polyZones))), function(aaa){
 #    flnm <- paste(file_temp, paste("boxplot_", aaa, ".png", sep = ""), sep = "/")
 #  plot_name <- lapply(as.vector(polyZones), function(i){
-  plot_name <- lapply(row.names(zonesCoord), function(i){
+  plot_name <- lapply(row.names(coordinates(polyZones)), function(i){
 #    x <- which(polyZones == i)
     flnm <- paste(file_temp, paste("boxplot_", as.integer(runif(n = 1, min = 1, max = 500)), ".png", sep = ""), sep = "/")
     png(filename = flnm)
@@ -1059,27 +1059,27 @@ barplotCarto.generic.f <- function(polyZones, Data, factSpatial, metrique, listF
 
   env <- environment()
 
-  # Barycentres des zones... corrigés pour tenir dans les graphiques :
-  if (length(polyZones) > 1){
-    zonesCoord <- sweep(coordinates(polyZones), 2,
-      list(range(par("usr")[1:2]), range(par("usr")[3:4])),
-      function(x, y){
-        ymin <- apply(y, 2, sapply, min)
-        ymax <- apply(y, 2, sapply, max)
-        ydiff <- ymax - ymin
-        ymin <- ymin + sweep(ydiff, 2, c(0.08, 0.11), "*")
-        ymax <- ymax - sweep(ydiff, 2, c(0.08, 0.11), "*")
-        #
-        res <- x
-        res[x < ymin] <- ymin[x < ymin] # + 0.05 * ydiff[x < ymin]
-        res[x > ymax] <- ymax[x > ymax] # - 0.05 * ydiff[x > ymax]
-        #
-        return(res)
-      })
-  }
-  else{
-    zonesCoord <- coordinates(polyZones)
-  }
+#  # Barycentres des zones... corrigés pour tenir dans les graphiques :
+#  if (length(polyZones) > 1){
+#    zonesCoord <- sweep(coordinates(polyZones), 2,
+#      list(range(par("usr")[1:2]), range(par("usr")[3:4])),
+#      function(x, y){
+#        ymin <- apply(y, 2, sapply, min)
+#        ymax <- apply(y, 2, sapply, max)
+#        ydiff <- ymax - ymin
+#        ymin <- ymin + sweep(ydiff, 2, c(0.08, 0.11), "*")
+#        ymax <- ymax - sweep(ydiff, 2, c(0.08, 0.11), "*")
+#        #
+#        res <- x
+#        res[x < ymin] <- ymin[x < ymin] # + 0.05 * ydiff[x < ymin]
+#        res[x > ymax] <- ymax[x > ymax] # - 0.05 * ydiff[x > ymax]
+#        #
+#        return(res)
+#      })
+#  }
+#  else{
+#    zonesCoord <- coordinates(polyZones)
+#  }
 
 
   # Données séparées par subplot :
@@ -1087,7 +1087,7 @@ barplotCarto.generic.f <- function(polyZones, Data, factSpatial, metrique, listF
 
   # Couleurs de différentiation des zones :
   colZones <- PAMPAcolors.f(n = length(polyZones), palette = getOption("P.zonesPalette"))
-  names(colZones) <- row.names(zonesCoord)
+  names(colZones) <- row.names(coordinates(polyZones))
 
 
   # Rectangles pour avoir un fond (transparent) aux subplots.
@@ -1096,7 +1096,7 @@ barplotCarto.generic.f <- function(polyZones, Data, factSpatial, metrique, listF
   dir.create(file_temp)
 
 #  for (i in row.names(zonesCoord)){#browser()
-  plot_name <- lapply(row.names(zonesCoord), function(i){
+  plot_name <- lapply(row.names(coordinates(polyZones)), function(i){
     flnm <- paste(file_temp, paste("barplot_", as.integer(runif(n = 1, min = 1, max = 500)), ".png", sep = ""), sep = "/")
     png(filename = flnm)
 
@@ -1305,7 +1305,7 @@ subplotCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
       listFact = listFact,
       dataEnv = dataEnv,
       ext = "wmf",
-      prefix = paste("carte_", ifelse(graphType == "boxplot", "boxplot", "barplot"), sep = ""),
+      prefix = paste("carte_", graphType, sep = ""),
       sufixe = ifelse(getOption("P.plusieursGraphPage") && (length(iFactGraphSel) > 1 || iFactGraphSel[1] == ""),
         "%03d",
         ""),
@@ -1313,11 +1313,11 @@ subplotCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
         "CL_unitobs",
         "unitobs"))
 
-    # Paramètres graphiques :
-    par(mar = c(2, 2,
-      ifelse(( ! getOption("P.graphPaper")) && getOption("P.title"), 8, 1),
-      1),
-      mgp = c(3.5, 1, 0))
+#    # Paramètres graphiques :
+#    par(mar = c(2, 2,
+#      ifelse(( ! getOption("P.graphPaper")) && getOption("P.title"), 8, 1),
+#      1),
+#      mgp = c(3.5, 1, 0))
 
     # Titre (d'après les métriques, modalité du facteur de séparation et facteurs de regroupement) :[!!!]
     mainTitle <- graphTitle.carto.f(metrique = metrique,
@@ -1641,7 +1641,7 @@ symbColCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
       listFact = factSpatial,
       dataEnv = dataEnv,
       ext = "wmf",
-      prefix = paste("carte_", ifelse(graphType == "symboles", "symboles", "couleurs"), sep = ""),
+      prefix = paste("carte_", graphType, sep = ""),
       sufixe = ifelse(getOption("P.plusieursGraphPage") && (length(iFactGraphSel) > 1 || iFactGraphSel[1] == ""),
         "%03d",
         ""),
@@ -1655,17 +1655,17 @@ symbColCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
     # graphFile uniquement si nouveau fichier :
     if (!is.null(graphFileTmp)) graphFile <- graphFileTmp
 
-    # espace à droite pour légende des niveaux de couleurs :
-    if (graphType == "couleurs"){
-      layout(mat = matrix(c(1, 2), nrow = 1), width = c(10, 0.8))
-    }else{}
+#    # espace à droite pour légende des niveaux de couleurs :
+#    if (graphType == "couleurs"){
+#      layout(mat = matrix(c(1, 2), nrow = 1), width = c(10, 0.8))
+#    }else{}
 
-    # Paramètres graphiques :
-    par(mar = c(2, 2,
-      ifelse(( ! getOption("P.graphPaper")) && getOption("P.title"),
-        6.5, 1),
-      1),
-      mgp = c(3.5, 1, 0))
+#    # Paramètres graphiques :
+#    par(mar = c(2, 2,
+#      ifelse(( ! getOption("P.graphPaper")) && getOption("P.title"),
+#        6.5, 1),
+#      1),
+#      mgp = c(3.5, 1, 0))
     # ################################################
 
     # Titre (d'après les métriques, modalité du facteur de séparation et facteurs de regroupement) :
@@ -1804,7 +1804,7 @@ symbColCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
           label = fact, popup = metrique)
     }
     else{
-      x <- tmpDataMod2[order(tmpDataMod2[fact]),]
+      x <- tmpDataMod2[order(tmpDataMod2[,fact]),]
       df <- as.data.frame(x)
 
       spdf <- SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
@@ -2357,7 +2357,7 @@ symbColCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
       listFact = factSpatial,
       dataEnv = dataEnv,
       ext = "wmf",
-      prefix = paste("carte_", ifelse(graphType == "symboles", "symboles", "couleurs"), sep = ""),
+      prefix = paste("carte_", graphType, sep = ""),
       sufixe = ifelse(getOption("P.plusieursGraphPage") && (length(iFactGraphSel) > 1 || iFactGraphSel[1] == ""),
         "%03d",
         ""),
@@ -2366,18 +2366,18 @@ symbColCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
         "unitobs")
     )
 
-    # espace à droite pour légende des niveaux de couleurs :
-    if (graphType == "couleurs") {
-      layout(mat = matrix(c(1, 2), nrow = 1), width = c(10, 0.8))
-    }else{}
+#    # espace à droite pour légende des niveaux de couleurs :
+#    if (graphType == "couleurs") {
+#      layout(mat = matrix(c(1, 2), nrow = 1), width = c(10, 0.8))
+#    }else{}
 
-    # Paramètres graphiques :
-    par(mar = c(2, 2,
-      ifelse(( ! getOption("P.graphPaper")) && getOption("P.title"),
-        6.5,
-        1),
-      1),
-      mgp = c(3.5, 1, 0))
+#    # Paramètres graphiques :
+#    par(mar = c(2, 2,
+#      ifelse(( ! getOption("P.graphPaper")) && getOption("P.title"),
+#        6.5,
+#        1),
+#      1),
+#      mgp = c(3.5, 1, 0))
 
     # Titre (d'après les métriques, modalité du facteur de séparation et facteurs de regroupement) :[!!!]
     mainTitle <- graphTitle.carto.f(metrique = metrique,
@@ -2512,7 +2512,7 @@ symbColCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
           layer.name = metrique, grid = FALSE, label = fact, popup = metrique)
     }
     else{
-      x <- tmpData2[order(tmpData2[fact]),]
+      x <- tmpData2[order(tmpData2[,fact]),]
       df <- as.data.frame(x)
 
       spdf <- SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
