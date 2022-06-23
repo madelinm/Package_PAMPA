@@ -20,7 +20,7 @@ permanova_pampa.f(
 \arguments{
 \item{metric_table}{chr, le nom de la table de metrique}
 
-\item{metric}{chr, donnees etudiees (pres_abs ou abundance ("abundance.prop.SC"))}
+\item{metric}{chr, donnees etudiees ("pres_abs" (presence-absence), "abundance" (abondance) ou "density" (densite))}
 
 \item{fact}{chr, liste des facteurs explicatifs}
 

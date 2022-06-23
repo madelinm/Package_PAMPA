@@ -10,7 +10,7 @@
 #' @description Calcul d'une permanova selon les parametres fournis
 #'
 #' @param metric_table chr, le nom de la table de metrique
-#' @param metric chr, donnees etudiees (pres_abs ou abundance ("abundance.prop.SC"))
+#' @param metric chr, donnees etudiees ("pres_abs" (presence-absence), "abundance" (abondance) ou "density" (densite))
 #' @param fact chr, liste des facteurs explicatifs
 #' @param formula ..., formule du modele. Le LHS doit etre "dissimilarity_matrix" afin que la
 #' matrice de dissimilarite creee soit utilisee. Le RHS defini les variables independantes.
@@ -39,9 +39,10 @@ permanova_pampa.f <- function(metric_table, metric, fact, formula = NULL, method
   metric_studied <- switch(metric,
     "pres_abs" = "pres.abs",
     "abundance" = "abundance.prop.SC",
+    "density" = "density",
     stop(
-      "Veuillez choisir une valeur de 'metric' parmi 'pres_abs' ou 'abundance'.",
-      "Please, choose a metric between 'presabs' and 'abundance'."
+      "Veuillez choisir une valeur de 'metric' parmi 'pres_abs', 'abundance' et 'density'.",
+      "Please, choose a metric between 'presabs', 'abundance' and 'density'."
     )
   )
 
@@ -70,19 +71,19 @@ permanova_pampa.f <- function(metric_table, metric, fact, formula = NULL, method
 
   data <- dplyr::left_join(data_metric, data_refesp, by = "species.code")
 
-  data <- data[, c("scient.name", "observation.unit", metric_studied)]
+  data <- data[, c("species.code", "observation.unit", metric_studied)]
 
-  # On trie le tableau par scient.name puis par observation.unit
-  # Sort the data set by scient.name and by observation.unit
+  # On trie le tableau par species.code puis par observation.unit
+  # Sort the data set by species.code and by observation.unit
   data <- data[order(data$observation.unit),]
-  data <- data[order(data$scient.name),]
+  data <- data[order(data$species.code),]
 
   # On cree la matrice et on renomme les colonnes et les lignes
   # Create the matrix and rename columns and rows
   matrix_data <- matrix(data[,metric_studied], nrow = length(unique(data$observation.unit)),
-    ncol = length(unique(data$scient.name)), byrow = TRUE)
+    ncol = length(unique(data$species.code)), byrow = TRUE)
   row.names(matrix_data) <- unique(data$observation.unit)
-  colnames(matrix_data) <- unique(data$scient.name)
+  colnames(matrix_data) <- unique(data$species.code)
 
   # On enleve les lignes ne contenant que des 0 ou des NA
   # Remove rows with only 0 or NAs
