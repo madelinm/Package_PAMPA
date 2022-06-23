@@ -11,11 +11,10 @@
 #'
 #' @param metric_table chr, le nom de la table de metrique
 #' @param metric chr, donnees etudiees ("pres_abs" (presence-absence), "abundance" (abondance) ou "density" (densite))
-#' @param fact chr, liste des facteurs explicatifs
-#' @param formula ..., formule du modele. Le LHS doit etre "dissimilarity_matrix" afin que la
-#' matrice de dissimilarite creee soit utilisee. Le RHS defini les variables independantes.
-#' Si elle est laissee nulle (la valeur par defaut), alors la fomule est cree sous la forme
-#' \code{dissimilarity_matrix ~ fact1 * fact2 * ... * factn}.
+#' @param fact chr, liste des facteurs explicatifs. Utilise si aucune formule n'est renseignee.
+#' La fomule est cree sous la forme \code{dissimilarity_matrix ~ fact1 * fact2 * ... * factn}.
+#' @param formula chr, RHS de la formule du modele. Si elle est laissee nulle (la valeur par defaut),
+#' alors les facteurs explicatifs sont utilises pour creer la formule.
 #' @param method chr, methode utilisee pour la creation de la matrice de dissimilarites
 #' @param nb_perm int, nombre de permutations
 #' @param square_roots booleen, utilisation des square roots ?
@@ -45,6 +44,20 @@ permanova_pampa.f <- function(metric_table, metric, fact, formula = NULL, method
       "Please, choose a metric between 'presabs', 'abundance' and 'density'."
     )
   )
+
+  if (is.null(fact) & is.null(formula)){
+    stop(
+      "Un ou plusieurs facteur(s) explicatif(s) ou une formule sont requis",
+      "Explanatory factor(s) or formula are required."
+    )
+  }
+
+  if (nb_perm < 1){
+    stop(
+      "Le nombre de permutations ne peut pas être nul ou inférieur à 0.",
+      "Number of permutations can be null or under 0."
+    )
+  }
 
   # Recuperation des donnees
   # Get the data
@@ -117,9 +130,12 @@ permanova_pampa.f <- function(metric_table, metric, fact, formula = NULL, method
   # If formula is null, get the formula from the list of factors and launch the function
   # else, the given formula is used
   if (is.null(formula)){
-    formula <- parse(text = paste("dissimilarity_matrix ~ ", paste(fact, collapse = " * "), sep = ""))[[1]]
+    model_formula <- paste("dissimilarity_matrix ~ ", paste(fact, collapse = " * "), sep = "")
+  } else {
+    model_formula <- paste("dissimilarity_matrix ~ ", formula)
   }
-  permanova <- vegan::adonis2(eval(formula), data = data_unitobs, permutations = nb_perm, method = method, sqrt.dist = square_roots)
+  permanova <- vegan::adonis2(eval(parse(text = model_formula)[[1]]), data = data_unitobs,
+    permutations = nb_perm, method = method, sqrt.dist = square_roots)
 
   filename <- resFilePerm.f(metric_studied, metric_table, fact, method, dataEnv, ext = "csv")
 

@@ -7,7 +7,7 @@
 permanova_pampa.f(
   metric_table,
   metric,
-  fact,
+  fact = NULL,
   formula = NULL,
   method = "bray",
   nb_perm = 1000,
@@ -22,12 +22,11 @@ permanova_pampa.f(
 
 \item{metric}{chr, donnees etudiees ("pres_abs" (presence-absence), "abundance" (abondance) ou "density" (densite))}
 
-\item{fact}{chr, liste des facteurs explicatifs}
+\item{fact}{chr, liste des facteurs explicatifs. Utilise si aucune formule n'est renseignee.
+La fomule est cree sous la forme \code{dissimilarity_matrix ~ fact1 * fact2 * ... * factn}.}
 
-\item{formula}{..., formule du modele. Le LHS doit etre "dissimilarity_matrix" afin que la
-matrice de dissimilarite creee soit utilisee. Le RHS defini les variables independantes.
-Si elle est laissee nulle (la valeur par defaut), alors la fomule est cree sous la forme
-\code{dissimilarity_matrix ~ fact1 * fact2 * ... * factn}.}
+\item{formula}{chr, RHS de la formule du modele. Si elle est laissee nulle (la valeur par defaut),
+alors les facteurs explicatifs sont utilises pour creer la formule.}
 
 \item{method}{chr, methode utilisee pour la creation de la matrice de dissimilarites}
 
