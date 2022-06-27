@@ -91,6 +91,11 @@ load_files.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv){
   ##         - unit : table agrégée /unitobs.
   ## ---------------------------------------------------------------------------
 
+  # Lecture du fichier de configuration
+  # Read the configuration file
+
+  source(system.file("package_config/config.R", package = "PAMPA"))
+
   # Faire plus de vérifications ?
 
   if (is.na(filePathes["results"])){

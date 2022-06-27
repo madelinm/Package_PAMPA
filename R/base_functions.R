@@ -5,17 +5,6 @@
 #' @import tkrplot
 
 
-PAMPAhome <- ifelse(Sys.getenv("PAMPA_HOME") == "",
-  normalizePath(file.path(Sys.getenv("HOME"), "PAMPA", fsep = "/"),
-    winslash = "/", mustWork = FALSE),
-  normalizePath(Sys.getenv("PAMPA_HOME"),
-    winslash = "/", mustWork = FALSE))
-if (!dir.exists(PAMPAhome)){
-  dir.create(PAMPAhome)
-  print(paste("The directory 'PAMPA' was created at '", PAMPAhome, "'", sep = ""))
-}
-
-
 aliases <- function(fieldID, language = tolower(getOption("P.GUIlang")), reverse = FALSE){
 
   ## Purpose:

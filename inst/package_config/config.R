@@ -1,3 +1,17 @@
+# Création du repertoire PAMPA_package qui contient les logs
+# Creation of the directory PAMPA_package which contains logs
+
+PAMPAhome <- ifelse(Sys.getenv("PAMPA_HOME") == "",
+  normalizePath(file.path(Sys.getenv("HOME"), "PAMPA_package", fsep = "/"),
+    winslash = "/", mustWork = FALSE),
+  normalizePath(Sys.getenv("PAMPA_HOME"),
+    winslash = "/", mustWork = FALSE))
+if (!dir.exists(PAMPAhome)){
+  dir.create(PAMPAhome)
+  print(paste("The directory 'PAMPA' was created at '", PAMPAhome, "'", sep = ""))
+}
+
+
 # Liste des options nécessaires au bon fonctionnement de l'application
 # Avant chaque option est précisé le fichier et/ou la fonction qui l'utilise.
 
