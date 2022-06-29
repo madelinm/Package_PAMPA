@@ -1588,6 +1588,27 @@ symbColCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
   # Boucle de création des graphiques (par facteur de séparation) :
   # ###############################################################
   # Boucle de création des graphiques (par facteur de séparation) :
+
+  mean_metrics <- sapply(as.character(unique(tmpData[, factGraph])), function(fact_agr){
+    sapply(as.character(unique(tmpData[which(tmpData[,factGraph] == fact_agr), factSpatial])), function(fact_spa){
+      mean(tmpData[which(tmpData[,factGraph] == fact_agr & tmpData[,factSpatial] == fact_spa), metrique])
+    })
+  })
+
+  max_metric <- max(mean_metrics)
+  zoom_factor <- 0
+  if (max_metric*10 < 50){
+    while (max_metric*10 < 50){
+      max_metric <- max_metric*10
+      zoom_factor <- zoom_factor + 1
+    }
+  } else if (max_metric > 50){
+    while (max_metric > 50){
+      max_metric <- max_metric/10
+      zoom_factor <- zoom_factor - 1
+    }
+  }
+
   for (modGraphSel in iFactGraphSel){
     if (length(iFactGraphSel) > 1){
       print(paste("Création de la couche pour ", factGraph, " == '", modGraphSel, "'...", sep = ""))
@@ -1791,17 +1812,34 @@ symbColCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
       colnames(map_data) <- c(metrique, fact, "x", "y")
 
       if (!exists("map")){
-        mapview::mapviewOptions(basemaps = "CartoDB.Positron")
-        map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
-          layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE)
+#        mapview::mapviewOptions(basemaps = "CartoDB.Positron")
+#        map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
+#          layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE)
+        map <- leaflet::leaflet() %>%
+          leaflet::addTiles() %>%
+          leaflet::addProviderTiles("CartoDB.Positron") %>%
+          leaflet::addPolygons(data = baseMap, group = "Base Map", color = "#000000", weight = 1,
+             opacity = 1, fillColor = "#FFFFFF", fillOpacity = 0.5)
+        map <- map %>%
+          leaflet::addPolygons(data = spdf, group = fact, color = "#000000",
+            label = spdf@data[[fact]], weight = 1, opacity = 1, fillColor = col, fillOpacity = 0.75)
+        list_layers <- c("Base Map", fact)
       }
 
-      map <- map +
-        mapview::mapview(spdf, zcol = fact, col.regions = col, legend = FALSE,
-          layer.name = fact, label = fact, popup = NULL) +
-        mapview(map_data, xcol = "x", ycol = "y", zcol = fact, col.regions = col, cex = metrique,
-          layer.name = paste(fact, modGraphSel, sep = " - "), grid = FALSE,
-          label = fact, popup = metrique)
+#      map <- map +
+#        mapview::mapview(spdf, zcol = fact, col.regions = col, legend = FALSE,
+#          layer.name = fact, label = fact, popup = NULL) +
+#        mapview(map_data, xcol = "x", ycol = "y", zcol = fact, col.regions = col, cex = metrique,
+#          layer.name = paste(fact, modGraphSel, sep = " - "), grid = FALSE,
+#          label = fact, popup = metrique)
+      layer_name <- paste(fact, modGraphSel, sep = " - ")
+      list_layers <- c(list_layers, layer_name)
+
+      map <- map %>%
+        leaflet::addCircleMarkers(lng = ~x, lat = ~y, radius = map_data[,metrique]*10**zoom_factor,
+          group = layer_name, label = spdf@data[[fact]], popup = paste("<div>", metrique, " = ",
+          map_data[,metrique], "</div>", sep = ""), color = "#000000", weight = 1, opacity = 1,
+          fillColor = col, fillOpacity = 0.75, data = map_data)
     }
     else{
       x <- tmpDataMod2[order(tmpDataMod2[,fact]),]
@@ -1810,22 +1848,44 @@ symbColCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
       spdf <- SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
       spdf@plotOrder <- seq(length(spdf@plotOrder))
 
-      at <- lattice::do.breaks(c(
-        round(min(tmpDataMod2[ , metrique], na.rm = TRUE), digits = 2),
-        round(max(tmpDataMod2[ , metrique], na.rm = TRUE), digits = 2)
-      ), nint = 11)
+#      at <- lattice::do.breaks(c(
+#        round(min(tmpDataMod2[ , metrique], na.rm = TRUE), digits = 2),
+#        round(max(tmpDataMod2[ , metrique], na.rm = TRUE), digits = 2)
+#      ), nint = 11)
 
-      rgb.palette <- colorRampPalette(gray.colors(n = 2), space = "rgb")
+#      rgb.palette <- colorRampPalette(gray.colors(n = 2), space = "rgb")
 
       if (!exists("map")){
-        mapview::mapviewOptions(basemaps = "CartoDB.Positron")
-        map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
-          layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE)
+#        mapview::mapviewOptions(basemaps = "CartoDB.Positron")
+#        map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
+#          layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE)
+        map <- leaflet::leaflet() %>%
+          leaflet::addTiles() %>%
+          leaflet::addProviderTiles("CartoDB.Positron") %>%
+          leaflet::addPolygons(data = baseMap, group = "Base Map", color = "#000000", weight = 1,
+            opacity = 1, fillColor = "#FFFFFF", fillOpacity = 0.5)
+#        map <- map %>%
+#          leaflet::addPolygons(data = spdf, group = fact, color = "#000000",
+#            label = spdf@data[[fact]], weight = 1, opacity = 1, fillColor = col, fillOpacity = 0.75)
+        list_layers <- c("Base Map")
       }
-      map <- map +
-        mapview::mapview(spdf, zcol = metrique, col.regions = rgb.palette, alpha.regions = 1,
-          at = at, legend = TRUE, legend.opacity = 1,
-          layer.name = paste(fact, modGraphSel, sep = " - "), label = fact, popup = metrique)
+#      map <- map +
+#        mapview::mapview(spdf, zcol = metrique, col.regions = rgb.palette, alpha.regions = 1,
+#          at = at, legend = TRUE, legend.opacity = 1,
+#          layer.name = paste(fact, modGraphSel, sep = " - "), label = fact, popup = metrique)
+      rampcols = colorRampPalette(colors = c("white", "black"), space="Lab")(nrow(spdf@data)/2)
+      pal <- colorNumeric(
+        palette = rampcols, #"Blues", #YlGnBu,YlOrRd
+        domain = spdf@data[, metrique])
+
+      layer_name <- paste(fact, modGraphSel, sep = " - ")
+      list_layers <- c(list_layers, layer_name)
+      map <- map %>%
+        leaflet::addPolygons(data = spdf, group = layer_name, color = "#000000",
+          label = spdf@data[[fact]], popup = paste("<div>", metrique, " = ", spdf@data[, metrique], "</div>", sep = ""),
+          weight = 1, opacity = 1, fillColor = ~pal(spdf@data[, metrique]), fillOpacity = 1) %>%
+        leaflet::addLegend("bottomright", group = layer_name, pal = pal, values = spdf@data[, metrique],
+          title = metrique, labFormat = leaflet::labelFormat(), opacity = 1)
     }
 
     # ###################################################
@@ -1873,6 +1933,25 @@ symbColCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
       }else{}
     }
   }  # Fin de boucle graphique.
+
+  map <- map %>%
+    leaflet::addLayersControl(
+      overlayGroups = list_layers,
+      options = leaflet::layersControlOptions(collapsed = FALSE)
+    )
+
+  if (graphType == "symboles"){
+    labels <- c(5/10**zoom_factor, 15/10**zoom_factor, 25/10**zoom_factor)
+    colors <- rep("#000000", times = length(labels))
+    sizes <- c(10, 30, 50)
+    map <- map %>%
+      leaflet::addLegend(
+        title = metrique,
+        colors = paste0(colors, "; border-radius: 50%; width:", sizes, "px; height:", sizes, "px"),
+        labels = paste0("<div style='display: inline-block; height: ", sizes,
+          "px; margin-top: 4px; line-height: ", sizes, "px;'>", labels, "</div>"),
+        opacity = 0.75)
+  }
   return(map)
 }
 
@@ -2503,13 +2582,42 @@ symbColCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
       map_data <- cbind(tmpData2, coordinates(polyZones))
       colnames(map_data) <- c(metrique, fact, "x", "y")
 
-      mapview::mapviewOptions(basemaps = "CartoDB.Positron")
-      map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
-          layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE) +
-        mapview::mapview(spdf, zcol = fact, col.regions = col, legend = FALSE,
-          layer.name = fact, label = fact, popup = NULL) +
-        mapview::mapview(map_data, xcol = "x", ycol = "y", zcol = fact, col.regions = col, cex = metrique,
-          layer.name = metrique, grid = FALSE, label = fact, popup = metrique)
+#      mapview::mapviewOptions(basemaps = "CartoDB.Positron")
+#      map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
+#          layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE) +
+#        mapview::mapview(spdf, zcol = fact, col.regions = col, legend = FALSE,
+#          layer.name = fact, label = fact, popup = NULL) +
+#        mapview::mapview(map_data, xcol = "x", ycol = "y", zcol = fact, col.regions = col, cex = metrique,
+#          layer.name = metrique, grid = FALSE, label = fact, popup = metrique)
+      map <- leaflet::leaflet() %>%
+        leaflet::addTiles() %>%
+        leaflet::addProviderTiles("CartoDB.Positron") %>%
+        leaflet::addPolygons(data = baseMap, group = "Base Map", color = "#000000", weight = 1,
+          opacity = 1, fillColor = "#FFFFFF", fillOpacity = 0.5)
+      map <- map %>%
+        leaflet::addPolygons(data = spdf, group = fact, color = "#000000",
+          label = spdf@data[[fact]], weight = 1, opacity = 1, fillColor = col, fillOpacity = 0.75)
+      list_layers <- c("Base Map", fact)
+
+      max_metric <- max(map_data[, metrique])
+      zoom_factor <- 0
+      if (max_metric*10 < 50){
+        while (max_metric*10 < 50){
+          max_metric <- max_metric*10
+          zoom_factor <- zoom_factor + 1
+        }
+      } else if (max_metric > 50){
+        while (max_metric > 50){
+          max_metric <- max_metric/10
+          zoom_factor <- zoom_factor - 1
+        }
+      }
+
+      map <- map %>%
+        leaflet::addCircleMarkers(lng = ~x, lat = ~y, radius = map_data[,metrique]*10**zoom_factor,
+          group = metrique, label = spdf@data[[fact]], popup = paste("<div>", metrique, " = ", map_data[, metrique], "</div>", sep = ""),
+          color = "#000000", weight = 1, opacity = 1, fillColor = col, fillOpacity = 0.75, data = map_data)
+      list_layers <- c(list_layers, metrique)
     }
     else{
       x <- tmpData2[order(tmpData2[,fact]),]
@@ -2518,19 +2626,37 @@ symbColCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
       spdf <- SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
       spdf@plotOrder <- seq(length(spdf@plotOrder))
 
-      at <- lattice::do.breaks(c(
-        round(min(tmpData2[ , metrique], na.rm = TRUE), digits = 2),
-        round(max(tmpData2[ , metrique], na.rm = TRUE), digits = 2)
-      ), nint = 11)
+#      at <- lattice::do.breaks(c(
+#        round(min(tmpData2[ , metrique], na.rm = TRUE), digits = 2),
+#        round(max(tmpData2[ , metrique], na.rm = TRUE), digits = 2)
+#      ), nint = 11)
 
-      rgb.palette <- colorRampPalette(gray.colors(n = 2), space = "rgb")
+#      rgb.palette <- colorRampPalette(gray.colors(n = 2), space = "rgb")
 
-      mapview::mapviewOptions(basemaps = "CartoDB.Positron")
-      map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
-          layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE) +
-        mapview::mapview(spdf, zcol = metrique, col.regions = rgb.palette, alpha.regions = 1,
-          at = at, legend = TRUE, legend.opacity = 1,
-          layer.name = fact, label = fact, popup = metrique)
+#      mapview::mapviewOptions(basemaps = "CartoDB.Positron")
+#      map <- mapview::mapview(baseMap, col.regions = "#FFFFFF", legend = FALSE,
+#          layer.name = "BaseMap", popup = NULL, label = FALSE, homebutton = FALSE) +
+#        mapview::mapview(spdf, zcol = metrique, col.regions = rgb.palette, alpha.regions = 1,
+#          at = at, legend = TRUE, legend.opacity = 1,
+#          layer.name = fact, label = fact, popup = metrique)
+
+      map <- leaflet::leaflet() %>%
+        leaflet::addTiles() %>%
+        leaflet::addProviderTiles("CartoDB.Positron") %>%
+        leaflet::addPolygons(data = baseMap, group = "Base Map", color = "#000000", weight = 1,
+          opacity = 1, fillColor = "#FFFFFF", fillOpacity = 0.5)
+      list_layers <- c("Base Map")
+
+      rampcols = colorRampPalette(colors = c("white", "black"), space = "Lab")(nrow(spdf@data)/2)
+      pal <- colorNumeric(palette = rampcols, domain = spdf@data[, metrique])
+
+      list_layers <- c(list_layers, metrique)
+      map <- map %>%
+        leaflet::addPolygons(data = spdf, group = metrique, color = "#000000",
+          label = spdf@data[[fact]], popup = paste("<div>", metrique, " = ", spdf@data[, metrique], "</div>", sep = ""),
+          weight = 1, opacity = 1, fillColor = ~pal(spdf@data[, metrique]), fillOpacity = 1) %>%
+        leaflet::addLegend("bottomright", group = metrique, pal = pal, values = spdf@data[, metrique],
+          title = metrique, labFormat = leaflet::labelFormat(), opacity = 1)
     }
 
     # ##################################################
@@ -2570,6 +2696,24 @@ symbColCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
         savePlot(graphFile, type = "wmf", device = dev.cur())
       }else{}
     }
+    map <- map %>%
+      leaflet::addLayersControl(
+        overlayGroups = list_layers,
+        options = leaflet::layersControlOptions(collapsed = FALSE)
+      )
+
+    if (graphType == "symboles"){
+      labels <- c(5/10**zoom_factor, 15/10**zoom_factor, 25/10**zoom_factor)
+      colors <- rep("#000000", times = length(labels))
+      sizes <- c(10, 30, 50)
+      map <- map %>%
+        leaflet::addLegend(
+          colors = paste0(colors, "; border-radius: 50%; width:", sizes, "px; height:", sizes, "px"),
+          labels = paste0("<div style='display: inline-block; height: ", sizes,
+            "px; margin-top: 4px; line-height: ", sizes, "px;'>", labels, "</div>"),
+          opacity = 0.75)
+    }
+
     return(map)
   }
 }
