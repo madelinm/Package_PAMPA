@@ -18,6 +18,7 @@
 #' @param method chr, methode utilisee pour la creation de la matrice de dissimilarites
 #' @param nb_perm int, nombre de permutations
 #' @param square_roots booleen, utilisation des square roots ?
+#' @param post_hoc booleen, faire un post hoc apres la permanova ?
 #' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
@@ -29,11 +30,12 @@
 #'   method = "bray",
 #'   nb_perm = 1000,
 #'   square_roots = FALSE,
+#'   post_hoc = FALSE,
 #'   dataEnv = .dataEnv, baseEnv = .baseEnv)
 #'
 #' @export
-permanova_pampa.f <- function(metric_table, metric, fact, formula = NULL, method = "bray",
-  nb_perm = 1000, square_roots = FALSE, dataEnv, baseEnv = .GlobalEnv){
+permanova_pampa.f <- function(metric_table, metric, fact = NULL, formula = NULL, method = "bray",
+  nb_perm = 1000, square_roots = FALSE, post_hoc = TRUE, dataEnv, baseEnv = .GlobalEnv){
 
   metric_studied <- switch(metric,
     "pres_abs" = "pres.abs",
@@ -148,7 +150,10 @@ permanova_pampa.f <- function(metric_table, metric, fact, formula = NULL, method
       message(mltext("writeData.f.msg"), filename)
   })
 
-  return(permanova)
+  if (!post_hoc) return(permanova)
+
+  posthoc <- pairwiseAdonis::pairwise.adonis(dissimilarity_matrix, row.names(matrix_data))
+
 }
 
 resFilePerm.f <- function(metric, tableMetrique, fact, method, dataEnv, ext = "txt"){
