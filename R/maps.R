@@ -571,7 +571,7 @@ subplotCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
     df <- as.data.frame(cbind(x, y))
     colnames(df) <- c(fact, "row")
 
-    spdf <- SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
+    spdf <- sp::SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
     spdf@plotOrder <- seq(length(spdf@plotOrder))
 
     if (!exists("map")){
@@ -1456,7 +1456,7 @@ subplotCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
     df <- as.data.frame(cbind(x, y))
     colnames(df) <- c(fact, "row")
 
-    spdf <- SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
+    spdf <- sp::SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
     spdf@plotOrder <- seq(length(spdf@plotOrder))
 
 #    mapview::mapviewOptions(basemaps = "CartoDB.Positron")
@@ -1805,7 +1805,7 @@ symbColCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
       df <- as.data.frame(cbind(x, y))
       colnames(df) <- c(fact, "row")
 
-      spdf <- SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
+      spdf <- sp::SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
       spdf@plotOrder <- seq(length(spdf@plotOrder))
 
       map_data <- cbind(tmpDataMod2, coordinates(polyZones))
@@ -1845,7 +1845,7 @@ symbColCarto.esp.f <- function(graphType, metrique, factSpatial, factSpatialSel,
       x <- tmpDataMod2[order(tmpDataMod2[,fact]),]
       df <- as.data.frame(x)
 
-      spdf <- SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
+      spdf <- sp::SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
       spdf@plotOrder <- seq(length(spdf@plotOrder))
 
 #      at <- lattice::do.breaks(c(
@@ -2576,7 +2576,7 @@ symbColCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
       df <- as.data.frame(cbind(x, y))
       colnames(df) <- c(fact, "row")
 
-      spdf <- SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
+      spdf <- sp::SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
       spdf@plotOrder <- seq(length(spdf@plotOrder))
 
       map_data <- cbind(tmpData2, coordinates(polyZones))
@@ -2623,7 +2623,7 @@ symbColCarto.unitobs.f <- function(graphType, metrique, factSpatial, factSpatial
       x <- tmpData2[order(tmpData2[,fact]),]
       df <- as.data.frame(x)
 
-      spdf <- SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
+      spdf <- sp::SpatialPolygonsDataFrame(polyZones, df, match.ID = FALSE)
       spdf@plotOrder <- seq(length(spdf@plotOrder))
 
 #      at <- lattice::do.breaks(c(
