@@ -96,6 +96,15 @@ load_files.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv){
 
   source(system.file("package_config/config.R", package = "PAMPA"))
 
+  assign("varNames",
+    read.csv(system.file(
+      paste("file_translation/VariableNames_", tolower(ifelse(is.null(getOption("P.lang")), "en",
+        getOption("P.lang"))), ".csv", sep = ""),
+      package = "PAMPA"),
+      header = TRUE, row.names = 1, stringsAsFactors = FALSE,
+      fileEncoding = "latin1", quote = "\""),
+    envir = .GlobalEnv)
+
   # Faire plus de vérifications ?
 
   if (is.na(filePathes["results"])){

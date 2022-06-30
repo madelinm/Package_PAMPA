@@ -210,16 +210,6 @@ mltext <- function(msgid, language = tolower(getOption("P.GUIlang"))){
 #                          row.names = 1)
 #colnames(.translations) <- tolower(colnames(.translations))
 
-
-assign("varNames",
-  read.csv(system.file(
-    paste("file_translation/VariableNames_", tolower(ifelse(is.null(getOption("P.lang")), "en",
-      getOption("P.lang"))), ".csv", sep = ""),
-    package = "PAMPA"),
-    header = TRUE, row.names = 1, stringsAsFactors = FALSE,
-    fileEncoding = "latin1", quote = "\""),
-  envir = .GlobalEnv)
-
 #assign("varNames",
 #  read.csv(system.file(
 #    paste("file_translation/VariableNames_", "fr", ".csv", sep = ""),
