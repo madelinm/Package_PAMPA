@@ -1,7 +1,6 @@
 # Fonctions pour les statistiques descriptives
 
 
-#' @import mapview
 #' @import maptools
 #' @import rgeos
 #' @import leafpop

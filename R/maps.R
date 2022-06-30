@@ -35,9 +35,7 @@
 
 
 #' @import maptools
-#' @import mapview
 #' @import leafpop
-#' @import lattice
 #' @import leaflet
 
 
