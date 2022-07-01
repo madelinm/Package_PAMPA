@@ -67,33 +67,33 @@ options(
   P.colPalette = ifelse(( ! is.null(getOption("P.GUIlang")) &&
     tolower(getOption("P.GUIlang")) == "fr"),
     "défaut", "default"),                 # Type de palette de couleur.
-#  P.statusOrder = c("RI", "RE", "IN",     # Ordre des niveaux de protection pour les graphiques et analyses.
-#    "Z1", "I1",
-#    "PP", "RP",
-#    "Z2", "I2",
-#    "Z3", "I3",
-#    "HR", "OUT",
-#    "Z4"),
-#  P.interestOrder = c("TR", "AR",         # Ordre des modalités d'intérêts (pour des types de pêche).
-#    "CA", "NC"),
-#  P.mobilityOrder = c("TM", "MO", "SE"),  # Ordre des modalités de mobilité.
-#  P.positionOrder = c("surface",          # Ordre des modalités de la position dans la colonne d'eau.
-#    "milieu/surface",
-#    "P", "milieu",
-#    "D", "benthique",
-#    "B"),
-#  P.tideOrder = c("MM", "HM",             # Ordre des modalités des phases de marée.
-#    "MD", "BM"),
-#  P.moonOrder = c("NJ", "PC", "PQ",       # Ordre des modalités des phases lunaires.
-#    "LM", "PL", "LD",
-#    "DQ", "DC"),
-#  P.depthOrder = c("peu profond",         # Ordre des modalités de profondeur.
-#    "variable",
-#    "profond"),
-#  P.protection2Order = c("RNI", "RN",     # Ordre des modalités du statut de protection
-#    "RSF", "AGDR", # (classification alternative).
-#    "PMP", "HR"),
-#  P.sizeOrder = c("P", "M", "G"),         # Ordre des modalités de classes de taille.
+  P.statusOrder = c("RI", "RE", "IN",     # Ordre des niveaux de protection pour les graphiques et analyses.
+    "Z1", "I1",
+    "PP", "RP",
+    "Z2", "I2",
+    "Z3", "I3",
+    "HR", "OUT",
+    "Z4"),
+  P.interestOrder = c("TR", "AR",         # Ordre des modalités d'intérêts (pour des types de pêche).
+    "CA", "NC"),
+  P.mobilityOrder = c("TM", "MO", "SE"),  # Ordre des modalités de mobilité.
+  P.positionOrder = c("surface",          # Ordre des modalités de la position dans la colonne d'eau.
+    "milieu/surface",
+    "P", "milieu",
+    "D", "benthique",
+    "B"),
+  P.tideOrder = c("MM", "HM",             # Ordre des modalités des phases de marée.
+    "MD", "BM"),
+  P.moonOrder = c("NJ", "PC", "PQ",       # Ordre des modalités des phases lunaires.
+    "LM", "PL", "LD",
+    "DQ", "DC"),
+  P.depthOrder = c("peu profond",         # Ordre des modalités de profondeur.
+    "variable",
+    "profond"),
+  P.protection2Order = c("RNI", "RN",     # Ordre des modalités du statut de protection
+    "RSF", "AGDR", # (classification alternative).
+    "PMP", "HR"),
+  P.sizeOrder = c("P", "M", "G"),         # Ordre des modalités de classes de taille.
   P.graphPaper = FALSE,                   # Graphiques adaptés pour la publication (pas de titre, format plus
                                             # petit,...) ?
   P.warnings = TRUE,                      # Affichage des avertissement (graph tronqué, petits effectifs) ?
@@ -102,17 +102,7 @@ options(
   P.cex = 1,                              # Taille générale des caractères.
   P.graphWMF = FALSE,                     # Sauvegarde des graphiques affichés à l'écran en WMF (Windows) ?
   P.pdfEmbedFonts = TRUE,                 # Inclusion des polices dans les pdfs ?
-#  P.lang = ifelse(test = ! is.null(getOption("P.lang")),
-#    yes = tolower(getOption("P.lang")),
-#    no = ifelse(test = ( ! is.null(getOption("P.GUIlang")) &&
-#      tolower(getOption("P.GUIlang")) == "fr"),
-#      yes = "fr", no = "en")),
-#      # Langage for the variable labels ("fr" or "en").
-#  P.GUIlang =  ifelse(( ! is.null(getOption("defaultLang")) &&
-#    is.null(getOption("P.GUIlang"))),
-#    tolower(getOption("defaultLang")),
-#    "en"),          # Language for the GUI.
-  P.barplotStat = "mean",              # Statistique des barplots
+  P.barplotStat = "mean",                 # Statistique des barplots
                                           # ("mean", "moyenne", "médiane" ou "median").
   P.barplotErrorBar = TRUE,               # Doit-on afficher les barres d'erreur
                                           # (sd/quantiles) sur les barplots?
@@ -155,10 +145,10 @@ options(
 
 # Variables de fichiers requises:
 options(
-#  P.requiredVar = c(unitobs = "fileNameUnitobs",
-#    obs = "fileNameObs",
-#    refesp = "fileNameRefesp",
-#    ws = "nameWorkspace")
+  P.requiredVar = c(unitobs = "fileNameUnitobs",
+    obs = "fileNameObs",
+    refesp = "fileNameRefesp",
+    ws = "nameWorkspace")
 )
 
 # Options du référentiel spatial :
