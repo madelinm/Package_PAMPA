@@ -998,14 +998,6 @@ graphTitle.f <- function(metrique, modGraphSel, factGraph, listFact, model = NUL
     ifelse(test = graphType == "barplot",
       yes = ")",
       no = ""),
-    # ifelse(is.element(type, c("espece", "unitobs", "CL_espece", "unitobs(CL)")),
-    #   paste(mltext("graphTitle.agg", language = lang),
-    #     switch(varNames[metrique, "genre"], # for languages with genre concordence.
-    #       f = mltext("graphTitle.f", language = lang),
-    #       fp = mltext("graphTitle.fp", language = lang),
-    #       mp = mltext("graphTitle.mp", language = lang), ""),
-    #     sep = ""),
-    #   ""),
     switch(type,
       "espece" = mltext("graphTitle.bySpSt", language = lang),
       "CL_espece" = mltext("graphTitle.bySCSpSt", language = lang),
@@ -1752,14 +1744,6 @@ infoStats.f <- function(filename, Data, agregLevel = c("species", "unitobs"), ty
     tryCatch(isOpen(File),
       error = function(e)return(FALSE))) close(File))
 
-  # Informations générales sur les données :
-#  printGeneralDataInfo.f(dataEnv = dataEnv, baseEnv = baseEnv, File = File)
-
-  # Informations sur les métriques et facteurs du graphique :
-#  printSelectionInfo.f(metrique = metrique, factGraph = factGraph, factGraphSel = factGraphSel,
-#    listFact = listFact, listFactSel = listFactSel, File = File,
-#    agregLevel = agregLevel, type = type)
-
   # Statistiques :
   if (class(Data) == "list"){
     cat("\n###################################################",
@@ -1866,36 +1850,16 @@ selectModalites.f <- function(tableMetrique, facts = NULL, selections = NULL,
   ## ----------------------------------------------------------------------
   ## Author: Yves Reecht, Date:  4 août 2010, 14:21
 
-#  factGraphAliases <- get("factGraphAliases", envir = env) # to get the column name from the alias.
   factGraphAliases <- spRefFields.aliases(site = getOption("P.MPA"), dataEnv = dataEnv,
     ordered = TRUE, tableMetrique = tableMetrique, nextStep = nextStep)
 
-#  listFacteursAliases <- get("listFacteursAliases", envir = env)
   listFacteursAliases <- refTablesFields.aliases(nomTable = tableMetrique, dataEnv = dataEnv,
     nextStep = nextStep)
-
-#  facts <- c(factGraphAliases[tcltk::tclvalue(get("FacteurGraph", envir = env))],
-#    sapply(get("listFacteurs", envir = env),
-#      function(x){
-#        ifelse(is.na(listFacteursAliases[tcltk::tclvalue(x)]),
-#          "",
-#          listFacteursAliases[tcltk::tclvalue(x)])
-#  }))
-
-#  selections <- c(list(get("factGraphSel", envir = env)), # Liste des modalités déjà sélectionnées
-#    get("listFactSel", envir = env))
 
   preselect <- NULL                   # sélections persistantes d'une fois sur l'autre
   if (!is.na(selections[level + 1])){
     preselect <- selections[[level + 1]]
   }
-
-  # Table réduite :
-#  metricsAliases <- get("metricsAliases" , envir = env)
-#  metricsAliases <- ChoixMetriques
-#  metrique <- ifelse(nchar(tcltk::tclvalue(get("MetriqueChoisie" , envir = env))),
-#    metricsAliases[tcltk::tclvalue(get("MetriqueChoisie" , envir = env))],
-#    "")
 
   # Pour les indices de biodiversité recalculés, il faut utiliser "unitSp" et une métrique adaptée.
   if (is.element(nextStep, c("boxplot.unitobs", "modele_lineaire.unitobs",
@@ -1911,21 +1875,6 @@ selectModalites.f <- function(tableMetrique, facts = NULL, selections = NULL,
 
 
   return(tmp)
-#  # Sélection des modalités
-#  sel <- selectModWindow.f(champ = factor, data = tmp, selectmode = "extended", preselect = preselect)
-#
-#  if (!is.null(sel) & length(sel) > 0){
-#    # Expression à évaluer (stockage des modalités sélectionnées) :
-#    exprModSel <- ifelse(level == 0,
-#      paste("factGraphSel <- c(\"", # Cas du facteur de séparation des graphiques
-#        paste(sel, collapse = "\", \""),
-#        "\")", sep = ""),
-#      paste("listFactSel[[", level, "]] <- c(\"", # Facteurs de regroupement
-#         paste(sel, collapse = "\", \""),
-#         "\")", sep = ""))
-#
-#    eval(parse(text = exprModSel), envir = env)
-#  }
 }
 
 updateFactGraph.f <- function(nomTable, env){
@@ -2221,8 +2170,6 @@ WP2boxplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, li
   ## ----------------------------------------------------------------------
   ## Author: Yves Reecht, Date:  6 août 2010, 16:34
 
-#  pampaProfilingStart.f()
-
   # Nettoyage des facteurs (l'interface de sélection produit des valeurs vides) :
   listFactSel <- listFactSel[unlist(listFact) != ""]
   listFactSel <- listFactSel[length(listFactSel):1]
@@ -2457,8 +2404,6 @@ WP2boxplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, li
       }else{}
     }
   }  # Fin de graphique.
-
-#  pampaProfilingEnd.f()
 }
 
 
@@ -2478,11 +2423,6 @@ agregationTableParCritere.f <- function(Data, metrique, facteurs, dataEnv, listF
   ## Output: une data.frame agrégée.
   ## ----------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 18 oct. 2010, 15:47
-
-  # Récupération des données
-
-  # Informations (l'étape peut être longue) :
-#  WinInfo <- agregation.info.f()
 
   # traitements selon le type de métrique :
   casMetrique <- c("number" = "sum",
@@ -2513,7 +2453,6 @@ agregationTableParCritere.f <- function(Data, metrique, facteurs, dataEnv, listF
     "spawnings" = "sum",
     "readable.tracks" = "sum",
     "tracks.number" = "sum")
-
 
   # Ajout de "readable.tracks" pour le pourcentage de ponte :
   if (any(casMetrique[metrique] == "%.nesting")){
@@ -2806,10 +2745,6 @@ agregationTableParCritere.f <- function(Data, metrique, facteurs, dataEnv, listF
       }
     }, simplify = FALSE))
 
-
-  # Fermeture de la fenêtre d'information
-#  close.info.f(WinInfo)
-
   # Vérification des facteurs supplémentaires agrégés.
   # Il ne doit pas y avoir d'élément nul (la fonction précédente renvoie NULL si plusieurs
   # niveaux de facteurs, i.e. le facteur est un sous ensemble d'un des facteurs d'agrégation
@@ -2915,9 +2850,6 @@ agregationTableParCritere.f <- function(Data, metrique, facteurs, dataEnv, listF
 #     return(Data)
 #
 #     if (printInfo){
-# #      infoLoading.f(msg = paste(mltext("calcBiodiv.f.info.1")# ,
-# #        # "\n   La table de contingence n'a pas été calculée."
-# #      ), icon = "warning")
 #       print(mltext("calcBiodiv.f.info.1"))
 #     }else{}
 #
@@ -2929,17 +2861,6 @@ agregationTableParCritere.f <- function(Data, metrique, facteurs, dataEnv, listF
 #   if (printInfo){
 #     if (nlevels(DataTmp[ , code.especes]) > nlevels(Data[ , code.especes])){
 #       nsup <- nlevels(DataTmp[ , code.especes]) - nlevels(Data[ , code.especes])
-# #      infoLoading.f(msg = paste(
-# #        nsup, " \"species.code\" ",
-# #        ifelse(nsup > 1 ,
-# #          mltext("calcBiodiv.f.info.2.p"),
-# #          mltext("calcBiodiv.f.info.2.s")),
-# #        mltext("calcBiodiv.f.info.3"),
-# #        ifelse(nsup > 1,
-# #          mltext("calcBiodiv.f.info.4.p"),
-# #          mltext("calcBiodiv.f.info.4.s")),
-# #        mltext("calcBiodiv.f.info.5"),
-# #        sep = ""))
 #
 #       print(paste(
 #         nsup, " \"species.code\" ",
@@ -3100,15 +3021,6 @@ agregationTableParCritere.f <- function(Data, metrique, facteurs, dataEnv, listF
 #       df.biodiv[ , ind] <- NULL
 #     }else{}
 #   }
-#
-#   # # On retablit les niveaux de facteurs:
-#   # colFact <- colnames(df.biodiv)[is.element(sapply(df.biodiv, class), "factor")]
-#
-#   # for (col in colFact)
-#   # {
-#   #     levels(df.biodiv[ , colFact]) <- levels(DataTmp[ , colFact])
-#   # }
-#
 #   return(df.biodiv)
 # }
 #

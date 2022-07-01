@@ -11,7 +11,6 @@ aliases <- function(fieldID, language = tolower(getOption("P.GUIlang")), reverse
   ## ----------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 12 Dec 2018, 23:19
 
-#  aliases <- get(".aliases", envir = .GlobalEnv)
   aliases <- read.csv(system.file("file_translation/Field_aliases.csv", package = "PAMPA"),
     stringsAsFactor = FALSE, row.names = 1)
   colnames(aliases) <- tolower(colnames(aliases))
@@ -42,10 +41,6 @@ aliases <- function(fieldID, language = tolower(getOption("P.GUIlang")), reverse
 
   return(als)
 }
-
-#.aliases <- read.csv("C:/PAMPA/Scripts_Biodiv/Field_aliases.csv", stringsAsFactor = FALSE, row.names = 1)
-#colnames(.aliases) <- tolower(colnames(.aliases))
-#assign(".aliases", .aliases, envir = .GlobalEnv)
 
 
 Capitalize.f <- function(x, words = FALSE){
@@ -170,7 +165,6 @@ mltext <- function(msgid, language = tolower(getOption("P.GUIlang"))){
   transl <- read.csv(system.file("file_translation/Translations.csv", package = "PAMPA"),
     stringsAsFactor = FALSE, row.names = 1)
   colnames(transl) <- tolower(colnames(transl))
-#  transl <- get(".translations", envir = .GlobalEnv)
 
   lang <- ifelse(isTRUE(language %in% colnames(transl)),
     language,
@@ -203,18 +197,6 @@ mltext <- function(msgid, language = tolower(getOption("P.GUIlang"))){
     return(unname(msg))
 }
 
-#.translations <- read.csv("C:/PAMPA/Scripts_Biodiv/Translations.csv",
-#                          stringsAsFactor = FALSE,
-#                          row.names = 1)
-#colnames(.translations) <- tolower(colnames(.translations))
-
-#assign("varNames",
-#  read.csv(system.file(
-#    paste("file_translation/VariableNames_", "fr", ".csv", sep = ""),
-#    package = "PAMPA"),
-#    header = TRUE, row.names = 1, stringsAsFactors = FALSE,
-#    fileEncoding = "latin1", quote = "\""),
-#  envir = .GlobalEnv)
 
 varNames.f <- function(fields, info = "name", quote = TRUE){
 
@@ -350,8 +332,6 @@ runLog.f <- function(msg, niv = -1){
 
   logFile <- file(description = file.path(logDir, logFileName),
                   open = "a", encoding = "latin1")
-
-  # on.exit(close(logFile))
 
   callingFct <- ifelse(is.null(niv),
     "",

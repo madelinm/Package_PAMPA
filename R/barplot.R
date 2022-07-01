@@ -283,8 +283,6 @@ WP2barplot.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFa
   ## ----------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 23 août 2012, 10:39
 
-#  pampaProfilingStart.f()
-
   # Nettoyage des facteurs (l'interface de sélection produit des valeurs vides) :
   listFactSel <- listFactSel[unlist(listFact) != ""]
   listFactSel <- listFactSel[length(listFactSel):1]
@@ -300,10 +298,6 @@ WP2barplot.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFa
   # Données pour la série de boxplots :
   tmpData <- subsetToutesTables.f(metrique = metrique, facteurs = facteurs, selections = selections,
     dataEnv = dataEnv, tableMetrique = tableMetrique, exclude = NULL)
-
-  # # Construction de la formule du boxplot :
-  # exprBP <- eval(parse(text = paste(metrique, "~", paste(listFact, collapse = " + "))))
-  # [!!!]
 
   # Identification des différents graphiques à générer:
   if (factGraph == ""){                   # Pas de facteur de séparation des graphiques.
@@ -559,8 +553,6 @@ WP2barplot.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFa
         dataEnv = dataEnv, baseEnv = baseEnv)
     }else{}
   }else{}
-
-  #    pampaProfilingEnd.f()
 }
 
 
@@ -987,14 +979,6 @@ WP2barplot.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFa
 #     ifelse(test = graphType == "barplot",
 #       yes = ")",
 #       no = ""),
-#     # ifelse(is.element(type, c("espece", "unitobs", "CL_espece", "unitobs(CL)")),
-#     #   paste(mltext("graphTitle.agg", language = lang),
-#     #     switch(varNames[metrique, "genre"], # for languages with genre concordence.
-#     #       f = mltext("graphTitle.f", language = lang),
-#     #       fp = mltext("graphTitle.fp", language = lang),
-#     #       mp = mltext("graphTitle.mp", language = lang), ""),
-#     #     sep = ""),
-#     #   ""),
 #     switch(type,
 #       "espece" = mltext("graphTitle.bySpSt", language = lang),
 #       "CL_espece" = mltext("graphTitle.bySCSpSt", language = lang),
@@ -1182,8 +1166,6 @@ barplotPAMPA.f <- function(metrique, listFact, Data, main = NULL, cex = getOptio
     },
     control = list(abstol = 0.01))    # Tolérance.
 
-  #browser()
-
   # On retire les noms de colonnes de "heights" pour les rajouter manuellement ensuite sur le
   # graphique (meilleurs contrôle) ; uniquement si deux dimensions :
 
@@ -1314,8 +1296,6 @@ strDimRotation.f <- function(x, srt = 0, unit = "user", cex = getOption("P.cex")
   ##            ... : arguments supplémentaires passés à str(height|width).
   ## ----------------------------------------------------------------------
   ## Author: Yves Reecht, Date:  9 févr. 2011, 16:15
-
-  # browser()
 
   # Dimensions en pouces :
   W.inches <- strwidth(x, unit = "inches", cex = cex, ...)
@@ -1806,8 +1786,6 @@ WP2barplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, li
   ## ----------------------------------------------------------------------
   ## Author: Yves Reecht, Date:  5 sept. 2012, 16:10
 
-#  pampaProfilingStart.f()
-
   # Nettoyage des facteurs (l'interface de sélection produit des valeurs vides) :
   listFactSel <- listFactSel[unlist(listFact) != ""]
   listFactSel <- listFactSel[length(listFactSel):1]
@@ -2007,8 +1985,6 @@ WP2barplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, li
       }else{}
     }
   }  # Fin de graphique.
-
-#  pampaProfilingEnd.f()
 }
 
 
@@ -2028,11 +2004,6 @@ WP2barplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, li
 #   ## Output: une data.frame agrégée.
 #   ## ----------------------------------------------------------------------
 #   ## Author: Yves Reecht, Date: 18 oct. 2010, 15:47
-#
-#   # Récupération des données
-#
-#   # Informations (l'étape peut être longue) :
-# #  WinInfo <- agregation.info.f()
 #
 #   # traitements selon le type de métrique :
 #   casMetrique <- c("number" = "sum",
@@ -2063,7 +2034,6 @@ WP2barplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, li
 #     "spawnings" = "sum",
 #     "readable.tracks" = "sum",
 #     "tracks.number" = "sum")
-#
 #
 #   # Ajout de "readable.tracks" pour le pourcentage de ponte :
 #   if (any(casMetrique[metrique] == "%.nesting")){
@@ -2465,9 +2435,6 @@ WP2barplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, li
 #     return(Data)
 #
 #     if (printInfo){
-# #      infoLoading.f(msg = paste(mltext("calcBiodiv.f.info.1")# ,
-# #        # "\n   La table de contingence n'a pas été calculée."
-# #      ), icon = "warning")
 #       print(mltext("calcBiodiv.f.info.1"))
 #     }else{}
 #
@@ -2479,17 +2446,6 @@ WP2barplot.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, li
 #   if (printInfo){
 #     if (nlevels(DataTmp[ , code.especes]) > nlevels(Data[ , code.especes])){
 #       nsup <- nlevels(DataTmp[ , code.especes]) - nlevels(Data[ , code.especes])
-# #      infoLoading.f(msg = paste(
-# #        nsup, " \"species.code\" ",
-# #        ifelse(nsup > 1 ,
-# #          mltext("calcBiodiv.f.info.2.p"),
-# #          mltext("calcBiodiv.f.info.2.s")),
-# #        mltext("calcBiodiv.f.info.3"),
-# #        ifelse(nsup > 1,
-# #          mltext("calcBiodiv.f.info.4.p"),
-# #          mltext("calcBiodiv.f.info.4.s")),
-# #        mltext("calcBiodiv.f.info.5"),
-# #        sep = ""))
 #
 #       print(paste(
 #         nsup, " \"species.code\" ",

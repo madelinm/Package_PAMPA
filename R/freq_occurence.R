@@ -255,7 +255,6 @@ barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, 
     }
   }
 
-
   # Sauvegarde temporaire des données utilisées pour les graphiques
   # (attention : écrasée à chaque nouvelle série de graphiques) :
   DataBackup <<- list()
@@ -956,14 +955,6 @@ barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, 
 #     ifelse(test = graphType == "barplot",
 #       yes = ")",
 #       no = ""),
-#     # ifelse(is.element(type, c("espece", "unitobs", "CL_espece", "unitobs(CL)")),
-#     #   paste(mltext("graphTitle.agg", language = lang),
-#     #     switch(varNames[metrique, "genre"], # for languages with genre concordence.
-#     #       f = mltext("graphTitle.f", language = lang),
-#     #       fp = mltext("graphTitle.fp", language = lang),
-#     #       mp = mltext("graphTitle.mp", language = lang), ""),
-#     #     sep = ""),
-#     #   ""),
 #     switch(type,
 #       "espece" = mltext("graphTitle.bySpSt", language = lang),
 #       "CL_espece" = mltext("graphTitle.bySCSpSt", language = lang),
@@ -1052,8 +1043,6 @@ barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, 
 #   ##            ... : arguments supplémentaires passés à str(height|width).
 #   ## ----------------------------------------------------------------------
 #   ## Author: Yves Reecht, Date:  9 févr. 2011, 16:15
-#
-#   # browser()
 #
 #   # Dimensions en pouces :
 #   W.inches <- strwidth(x, unit = "inches", cex = cex, ...)
@@ -1312,14 +1301,6 @@ barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, 
 #   on.exit(if (exists("filename") &&
 #     tryCatch(isOpen(File),
 #       error = function(e)return(FALSE))) close(File))
-#
-#   # Informations générales sur les données :
-# #  printGeneralDataInfo.f(dataEnv = dataEnv, baseEnv = baseEnv, File = File)
-#
-#   # Informations sur les métriques et facteurs du graphique :
-# #  printSelectionInfo.f(metrique = metrique, factGraph = factGraph, factGraphSel = factGraphSel,
-# #    listFact = listFact, listFactSel = listFactSel, File = File,
-# #    agregLevel = agregLevel, type = type)
 #
 #   # Statistiques :
 #   if (class(Data) == "list"){
@@ -1674,11 +1655,6 @@ barplotOccurrence.unitobs.f <- function(factGraph, factGraphSel, listFact, listF
 #   ## Output: une data.frame agrégée.
 #   ## ----------------------------------------------------------------------
 #   ## Author: Yves Reecht, Date: 18 oct. 2010, 15:47
-#
-#   # Récupération des données
-#
-#   # Informations (l'étape peut être longue) :
-# #  WinInfo <- agregation.info.f()
 #
 #   # traitements selon le type de métrique :
 #   casMetrique <- c("number" = "sum",

@@ -296,10 +296,8 @@ modeleLineaireWP2.esp.f <- function(metrique, factAna, factAnaSel, listFact, lis
 
   # Nettoyage des facteurs (l'interface de sélection produit des valeurs vides) :
   listFactSel <- listFactSel[unlist(listFact) != ""]
-  # listFactSel <- listFactSel[length(listFactSel):1]
 
   listFact <- listFact[unlist(listFact) != ""]
-  # listFact <- listFact[length(listFact):1]
 
   # Concaténation
   facteurs <- c(factAna, unlist(listFact)) # Concaténation des facteurs
@@ -714,10 +712,6 @@ choixDistri.f <- function(metrique, Data){
 
   # Pour les données entières seulement :
   if (is.integer(Data[ , metrique])){
-    # tcltk::tkgrid(Img.Pois, columnspan = 2)
-    # tcltk::tkgrid(RB.Pois, sticky = "e")
-    # tcltk::tkgrid(tcltk::tklabel(FramePois, text = " Modèle : GLM, famille 'Poisson'", fg = "red"),
-    #   row = 1, column = 1, sticky = "w")
     tcltk::tkgrid(Img.NBinom, columnspan = 2)
     tcltk::tkgrid(RB.NBinom, sticky = "e")
     tcltk::tkgrid(tcltk::tklabel(FrameNBinom, text = mltext("choixDistri.model.dist.NB"), fg = "red"),
@@ -728,9 +722,6 @@ choixDistri.f <- function(metrique, Data){
     tcltk::tkgrid(tcltk::tklabel(WinDistri, text = " "))
 
     # Évènements : sélections en cliquant sur les graphiques :
-    # tcltk::tkbind(Img.Pois, "<Button-1>", function(){
-    #   tcltk::tclvalue(LoiChoisie) <- "PO"
-    # })
     tcltk::tkbind(Img.NBinom, "<Button-1>", function(){
       tcltk::tclvalue(LoiChoisie) <- "NBI"
     })
@@ -754,10 +745,6 @@ choixDistri.f <- function(metrique, Data){
 
   # Présélection de la distribution avec le plus petit AIC :
   tcltk::tclvalue(LoiChoisie) <- names(distList)[which.min(sapply(distList, function(x){x$aic}))]
-  # flush.console()
-
-  # Placement et mise au premier plan de la fenêtre :
-#  winSmartPlace.f(WinDistri)
 
   tcltk::tkwait.variable(Done)               # Attente d'une action de l'utilisateur.
 
@@ -819,7 +806,6 @@ plotDist.f <- function(y, family, metrique, env = NULL, ...){
   # browser(condition = (family == "NBI"))  ## [!!!] attention, il arrive que les calculs bloquent
   # ici lors du premier lancement. (origine inconnue)
   # On ajuste la distribution :
-  # browser()
 
   coefLoi <- tryCatch(fitdistr(na.omit(y), densfun = loi$densfunName, start = loi$start),
     error = function(e){
@@ -852,7 +838,6 @@ plotDist.f <- function(y, family, metrique, env = NULL, ...){
       1.05 * max(c(histTmp$density, yi), na.rm = TRUE))),
     xlim = c(min(y, na.rm = TRUE), max(y, na.rm = TRUE)),
     main = paste("", loi$name, sep = ""),
-    # cex.main = 0.9,
     xlab = Capitalize.f(varNames[metrique, "nom"]),
     ylab = mltext("plotDist.ylab"),
     col = "lightgray")
@@ -996,7 +981,6 @@ sortiesLM.f <- function(objLM, formule, metrique, factAna, modSel, listFact, lis
   # ##################################################
   # Comparaisons multiples :
 
-  # if (all(is.element(c("year", "protection.status"), listFact)))
   if (length(listFact) == 2){
     WinInfo <- tcltk::tktoplevel()
     on.exit(tcltk::tkdestroy(WinInfo))
@@ -1015,10 +999,7 @@ sortiesLM.f <- function(objLM, formule, metrique, factAna, modSel, listFact, lis
       sticky = "w")
 
     tcltk::tkfocus(WinInfo)
-#    winSmartPlace.f(WinInfo)
 
-    # compMultiplesLM.f(objLM = objLM, Data = Data, factSpatial = "protection.status",
-    #  factTemp = "year", resFile = resFile)
     compMultiplesLM.f(objLM = objLM, Data = Data, fact1 = listFact[1], fact2 = listFact[2],
       resFile = resFile, exclude = factAna, Log = Log)
 
@@ -1116,8 +1097,6 @@ sortiesLM.f <- function(objLM, formule, metrique, factAna, modSel, listFact, lis
       listFact = listFact, listFactSel = listFactSel,
       dataEnv = dataEnv, baseEnv = baseEnv)
   }else{}
-
-  # flush.console()
 }
 
 
@@ -1655,7 +1634,6 @@ compMultiplesLM.f <- function(objLM, Data, fact1, fact2, resFile, exclude, Log =
 
   # Calculs des matrices de différences :
   for (i in seq(along = facts)){
-    # fact <- get(paste("fact", i, sep = ""))
     if (tempFact[i]){                # Si le facteur inclus est temporel :
       assign(paste("diff", i, sep = ""),
         diffTemporelles.f(objLM = objLM,
@@ -1999,7 +1977,6 @@ diffSpatiales.f <- function(objLM, factSpatial, factTemp, Data, exclude){
 
 print.summary.glht.red <- function (x, digits = max(3, getOption("digits") - 3), ...){
 
-  # cat("\n\t", "Simultaneous Tests for General Linear Hypotheses\n\n")
   if (!is.null(x$observation.type))
     cat(mltext("print.summary.glht.red.KW.multComp"), x$observation.type,
       mltext("print.summary.glht.red.KW.contrast"), "\n\n\n")
@@ -2008,11 +1985,6 @@ print.summary.glht.red <- function (x, digits = max(3, getOption("digits") - 3),
   }else{
     x$model$call
   }
-  # if (!is.null(call)) {
-  #     cat("Fit: ")
-  #     print(call)
-  #     cat("\n")
-  # }
   cat("\n")
   pq <- x$test
   mtests <- cbind(pq$coefficients, pq$sigma, pq$tstat, pq$pvalues)
@@ -2497,7 +2469,6 @@ plot.lm.ml <- function (x, which = c(1L:3L, 5L),
 #     row.names = FALSE),
 #     error = function(e){
 #       message(mltext("writeData.f.msg"), filename)
-# #     errorLog.f(error = e, niv = -4)
 #   })
 # }
 #
@@ -2536,14 +2507,6 @@ plot.lm.ml <- function (x, which = c(1L:3L, 5L),
 #   on.exit(if (exists("filename") &&
 #     tryCatch(isOpen(File),
 #       error = function(e)return(FALSE))) close(File))
-#
-#   # Informations générales sur les données :
-# #  printGeneralDataInfo.f(dataEnv = dataEnv, baseEnv = baseEnv, File = File)
-#
-#   # Informations sur les métriques et facteurs du graphique :
-# #  printSelectionInfo.f(metrique = metrique, factGraph = factGraph, factGraphSel = factGraphSel,
-# #    listFact = listFact, listFactSel = listFactSel, File = File,
-# #    agregLevel = agregLevel, type = type)
 #
 #   # Statistiques :
 #   if (class(Data) == "list"){
@@ -2681,8 +2644,6 @@ supprimeObs.f <- function(residus){
   })
 
   tcltk::tkfocus(WinSuppr)
-  # Placement et mise au premier plan de la fenêtre :
-#  winSmartPlace.f(WinSuppr)
 
   tcltk::tkwait.variable(Done)
 
@@ -2766,11 +2727,8 @@ modeleLineaireWP2.unitobs.f <- function(metrique, factAna, factAnaSel, listFact,
 
   # Nettoyage des facteurs (l'interface de sélection produit des valeurs vides) :
   listFactSel <- listFactSel[unlist(listFact) != ""]
-  # listFactSel <- listFactSel[length(listFactSel):1]
 
   listFact <- listFact[unlist(listFact) != ""]
-  # listFact <- listFact[length(listFact):1]
-
   # Concaténation
   facteurs <- c(factAna, unlist(listFact)) # Concaténation des facteurs
 
@@ -2949,11 +2907,6 @@ modeleLineaireWP2.unitobs.f <- function(metrique, factAna, factAnaSel, listFact,
 #   ## Output: une data.frame agrégée.
 #   ## ----------------------------------------------------------------------
 #   ## Author: Yves Reecht, Date: 18 oct. 2010, 15:47
-#
-#   # Récupération des données
-#
-#   # Informations (l'étape peut être longue) :
-# #  WinInfo <- agregation.info.f()
 #
 #   # traitements selon le type de métrique :
 #   casMetrique <- c("number" = "sum",
@@ -3277,10 +3230,6 @@ modeleLineaireWP2.unitobs.f <- function(metrique, factAna, factAnaSel, listFact,
 #       }
 #     }, simplify = FALSE))
 #
-#
-#   # Fermeture de la fenêtre d'information
-# #  close.info.f(WinInfo)
-#
 #   # Vérification des facteurs supplémentaires agrégés.
 #   # Il ne doit pas y avoir d'élément nul (la fonction précédente renvoie NULL si plusieurs
 #   # niveaux de facteurs, i.e. le facteur est un sous ensemble d'un des facteurs d'agrégation
@@ -3386,9 +3335,6 @@ modeleLineaireWP2.unitobs.f <- function(metrique, factAna, factAnaSel, listFact,
 #     return(Data)
 #
 #     if (printInfo){
-# #      infoLoading.f(msg = paste(mltext("calcBiodiv.f.info.1")# ,
-# #        # "\n   La table de contingence n'a pas été calculée."
-# #      ), icon = "warning")
 #       print(mltext("calcBiodiv.f.info.1"))
 #     }else{}
 #
@@ -3400,18 +3346,6 @@ modeleLineaireWP2.unitobs.f <- function(metrique, factAna, factAnaSel, listFact,
 #   if (printInfo){
 #     if (nlevels(DataTmp[ , code.especes]) > nlevels(Data[ , code.especes])){
 #       nsup <- nlevels(DataTmp[ , code.especes]) - nlevels(Data[ , code.especes])
-# #      infoLoading.f(msg = paste(
-# #        nsup, " \"species.code\" ",
-# #        ifelse(nsup > 1 ,
-# #          mltext("calcBiodiv.f.info.2.p"),
-# #          mltext("calcBiodiv.f.info.2.s")),
-# #        mltext("calcBiodiv.f.info.3"),
-# #        ifelse(nsup > 1,
-# #          mltext("calcBiodiv.f.info.4.p"),
-# #          mltext("calcBiodiv.f.info.4.s")),
-# #        mltext("calcBiodiv.f.info.5"),
-# #        sep = ""))
-#
 #       print(paste(
 #         nsup, " \"species.code\" ",
 #         ifelse(nsup > 1 ,

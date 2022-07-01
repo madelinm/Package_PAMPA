@@ -33,23 +33,11 @@ restoreData.f <- function(dataEnv, baseEnv){
 
   listInEnv.f(list = get("backup", envir = dataEnv), env = dataEnv)
 
-#  updateInterface.restore.f(criterion = "Tout",
-#    tabObs = get("obs", envir = dataEnv),
-#    baseEnv = baseEnv)
-
   options(P.selection = FALSE)
 
-#  add.logFrame.f(msgID = "restauration", env = baseEnv)
-
-#  tcltk::tkmessageBox(message = paste0(mltext("restoreData.info")# , dim(obs)[1],
-#    # "enregistrements dans la table des observations"
-#    ))
-
   print(mltext("restoreData.info"))
+
   return(get("backup", envir = dataEnv))
-
-#  gestionMSGaide.f("SelectionOuTraitement", env = baseEnv
-
 }
 
 

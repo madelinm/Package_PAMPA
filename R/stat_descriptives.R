@@ -147,25 +147,6 @@ map_station_year.f <- function(data, dataEnv, baseEnv = .GlobalEnv){
   ## ----------------------------------------------------------------------
   ## Author: Yves Reecht, Date:  7 fevr. 2013, 17:18
 
-#    graphFileTmp <- resFileGraph.f(
-#      metrique = metrique,
-#      factGraph = factGraph,
-#      modSel = iFactGraphSel,
-#      listFact = listFact,
-#      dataEnv = dataEnv,
-#      ext = "wmf",
-#      prefix = paste("carte_", ifelse(graphType == "boxplot", "boxplot", "barplot"), sep = ""),
-#      sufixe = ifelse(getOption("P.plusieursGraphPage") && (length(iFactGraphSel) > 1 || iFactGraphSel[1] == ""),
-#        "%03d",
-#        ""),
-#      type = ifelse(tableMetrique == "unitSpSz" && factGraph != "size.class",
-#        "CL_unitobs",
-#        "unitobs"))
-#
-#    # graphFile uniquement si nouveau fichier :
-#    # grahFile only if new file
-#    if (!is.null(graphFileTmp)) graphFile <- graphFileTmp
-
     refspa <- get("refspa", envir = dataEnv)
     unitobs <- get("unitobs", envir = dataEnv)
     fact <- "SITE"                                # Le mettre en argument ?
@@ -267,93 +248,6 @@ map_station_year.f <- function(data, dataEnv, baseEnv = .GlobalEnv){
     print("You can switch between layer with the button at the left.")
 
     unlink(file_temp, recursive = TRUE)
-
-#    # ###################################################
-#    # Fermeture de graphiques et sauvegarde de fichiers :
-#
-#    # On ferme les périphériques PNG en mode fichier individuel :
-#    if (isTRUE(getOption("P.graphPNG"))){
-#      if (plotted){
-#        dev.off()
-#
-#        # Sauvegarde des données :
-#        if (getOption("P.saveData")){
-#          writeData.f(filename = graphFile, Data = tmpData, cols = NULL)
-#        }else{}
-#
-#        # Sauvegarde des statistiques :
-#        if (getOption("P.saveStats")){
-#          infoStats.f(filename = graphFile, Data = tmpData, agregLevel = "species", type = "graph",
-#            metrique = metrique, factGraph = factGraph, factGraphSel = modGraphSel,
-#            listFact = c(factSpatial, rev(listFact)),
-#            listFactSel = c(list(factSpatialSel), rev(listFactSel)), # On les remets dans un ordre intuitif.
-#            dataEnv = dataEnv, baseEnv = baseEnv)
-#        }else{}
-#      }else{}
-#    }else{
-#      # Sauvegarde en wmf si pertinent et souhaité :
-#      if (plotted && ! getOption("P.graphPDF")){
-#        if (.Platform$OS.type == "windows" && isTRUE(getOption("P.graphWMF"))){
-#          savePlot(graphFile, type = "wmf", device = dev.cur())
-#        }else{}
-#
-#        # Sauvegarde des données :
-#        if (getOption("P.saveData")){
-#          writeData.f(filename = graphFile, Data = tmpData, cols = NULL)
-#        }else{}
-#
-#        # Sauvegarde des statistiques :
-#        if (getOption("P.saveStats")){
-#          infoStats.f(filename = graphFile, Data = tmpData, agregLevel = "species", type = "graph",
-#            metrique = metrique, factGraph = factGraph, factGraphSel = modGraphSel,
-#            listFact = c(factSpatial, rev(listFact)),
-#            listFactSel = c(list(factSpatialSel), rev(listFactSel)), # On les remets dans un ordre
-#            # intuitif.
-#            dataEnv = dataEnv, baseEnv = baseEnv)
-#        }else{}
-#      }else{}
-#    }
-#
-#  }  # Fin de boucle graphique.
-#
-#   # On ferme les périphériques PDF ou PNG restants :
-#   if (getOption("P.graphPDF") && plotted) {
-#     dev.off()
-#
-#     # Sauvegarde des données :
-#     if (getOption("P.saveData")) {
-#       writeData.f(filename = sub("\\%03d", "00X", graphFile), Data = DataBackup, cols = NULL)
-#     }else{}
-#
-#     # Sauvegarde des statistiques :
-#     if (getOption("P.saveStats")){
-#       infoStats.f(filename = sub("\\%03d", "00X", graphFile), Data = DataBackup,
-#         agregLevel = "species", type = "graph",
-#         metrique = metrique, factGraph = factGraph, factGraphSel = factGraphSel,
-#         listFact = c(factSpatial, rev(listFact)),
-#         listFactSel = c(list(factSpatialSel), rev(listFactSel)), # On les remets dans un ordre intuitif.
-#         dataEnv = dataEnv, baseEnv = baseEnv)
-#     }else{}
-#
-#     # Inclusion des fontes dans le(s) pdf(s) si souhaité :
-#     if (getOption("P.graphPDF") && getOption("P.pdfEmbedFonts")){
-#       i <- 1
-#
-#       # On parcours tous les fichiers qui correspondent au motif :
-#       tmpFile <- sub("\\%03d", formatC(i, width = 3, flag = "0"), graphFile)
-#       while (is.element(basename(tmpFile), dir(dirname(graphFile))) &&
-#         # Si pas de remplacement effectif, application pour i == 1 uniquement :
-#         (i == 1 || grepl(pattern = "\\%03d", graphFile)))
-#       {
-#         tryCatch(embedFonts(file = tmpFile),
-#           error = function(e){
-#             warning(mltext("WP2boxplot.W.pdfFonts"))
-#         })
-#
-#         i <- i + 1
-#       }
-#     }else{}
-#   }else{}
 }
 
 

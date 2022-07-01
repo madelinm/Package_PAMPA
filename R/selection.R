@@ -66,8 +66,6 @@ selectionOnRefesp.f <- function(dataEnv, baseEnv){
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date:  4 janv. 2012, 14:54
 
-#  on.exit(winRaise.f(get("W.main", envir = baseEnv)))
-
   runLog.f(msg = c(mltext("logmsg.selectionOnRefesp")))
 
   # Récupération des données :
@@ -75,7 +73,7 @@ selectionOnRefesp.f <- function(dataEnv, baseEnv){
   unitobs <- get("unitobs", envir = dataEnv)
   refesp <- get("refesp", envir = dataEnv)
 
-#  filePathes <- get("filePathes", envir = dataEnv)
+  filePathes <- get("filePathes", envir = dataEnv)
 
   if (exists(".NombresSVR", envir = dataEnv)){ # SVR !
     .NombresSVR <- get(".NombresSVR", envir = dataEnv)
@@ -89,20 +87,12 @@ selectionOnRefesp.f <- function(dataEnv, baseEnv){
 
   unitSp <- get("unitSp", envir = dataEnv)
 
-#  ## Objets tcltk :
-#  W.main <- get("W.main", envir = baseEnv)
-
   # Sélection des observations :
   selection <- selectionEsp.f(refesp = refesp, obs = obs)
-
-#  infoGeneral.f(msg = mltext("selectionOnRefesp.info.1"),
-#    waitCursor = TRUE,
-#    font = tcltk::tkfont.create(weight = "bold", size = 9), foreground = "darkred")
 
   print(mltext("selectionOnRefesp.info.1"))
 
   if (!is.null(selection)){
-    # assign("obs", obs <- selection[["obs"]], envir = .GlobalEnv)
     obs <- selection[["obs"]]
 
     keptEspeces <- as.character(refesp[is.element(refesp[ , selection[["facteur"]]],
@@ -164,36 +154,12 @@ selectionOnRefesp.f <- function(dataEnv, baseEnv){
       obs = obs, unitobs = unitobs, refesp = refesp,
       filePathes = filePathes, baseEnv = baseEnv)
 
-#    # Information de l'utilisateur :
-#    infoLoading.f(msg = paste(
-#      mltext("selectionOnRef.info.2"),
-#      mltext("selectionOnRefesp.info.3"),
-#      sep = ""), icon = "info", font = tcltk::tkfont.create(weight = "bold", size = 9))
     print(paste(
       mltext("selectionOnRef.info.2"),
       mltext("selectionOnRefesp.info.3"),
       sep = ""))
 
-
-#    # Recréation des tables de calcul :
-#    # creationTablesCalcul.f()
-#    updateInterface.select.f(criterion = paste(selection[["facteur"]], ":",
-#      paste(selection[["selection"]], collapse = ", ")),
-#      tabObs = obs,
-#      baseEnv = baseEnv)
-
-#    # Ajout d'info dans le log de sélection :
-#    add.logFrame.f(msgID = "selection", env  =  baseEnv,
-#      facteur = selection[["facteur"]], selection = selection[["selection"]],
-#      results = filePathes["results"], referentiel = "unitobs",
-#      has.SzCl = ( ! is.null(unitSpSz) && prod(dim(unitSpSz))))
-
-#    gestionMSGaide.f("etapeselected", env = baseEnv)
-
-#    infoLoading.f(button = TRUE, WinRaise = W.main)
   }else{
-#    infoLoading.f(msg = mltext("selectionOnRef.info.4"))
-#    infoLoading.f(button = TRUE, WinRaise = W.main)
     print(mltext("selectionOnRef.info.4"))
   }
 
@@ -224,7 +190,6 @@ selectionEsp.f <- function(refesp, obs){
     levelsTmp <- levels(obs[ , "species.code"])
 
     selectfactSp <- selectModWindow.f(factSp, obs, selectmode = "extended")
-    # assign("selectfactSp", selectfactSp, envir = .GlobalEnv)
   }
 
   if (!is.null(selectfactSp)){
@@ -263,26 +228,6 @@ chooseRefespField.f <- function(refesp, obs){
 
   runLog.f(msg = c(mltext("logmsg.chooseRefespField")))
 
-#  Done <- tcltk::tclVar("0")                 # Variable de statut d'exécution.
-#
-#  W.selRef <- tcltk::tktoplevel()
-#  tcltk::tkwm.title(W.selRef, mltext("chooseRefespField.title"))
-#
-#  # Ascenceur :
-#  SCR <- tcltk::tkscrollbar(W.selRef, repeatinterval = 5,
-#    command = function(...)tcltk::tkyview(LI.fields, ...))
-#
-#  LI.fields <- tcltk::tklistbox(W.selRef, height = 20, width = 50, selectmode = "single",
-#    yscrollcommand = function(...)tcltk::tkset(SCR, ...),
-#    background = "white")
-#
-#  # Placement des éléments :
-#  tcltk::tkgrid(tcltk::tklabel(W.selRef, text = mltext("chooseRefespField.LB.1")))
-#
-#  tcltk::tkgrid(LI.fields, SCR)
-#  tcltk::tkgrid.configure(SCR, rowspan = 4, sticky = "ensw")
-#  tcltk::tkgrid.configure(LI.fields, rowspan = 4, sticky = "ensw")
-
   # Réduction aux facteurs contenant de l'information : [yr: 30/09/2010]
   esptmp <- refesp[is.element(refesp[ , "species.code"],
     obs[ , "species.code"]), ] # sélection des lignes correspondant aux obs.
@@ -312,34 +257,6 @@ chooseRefespField.f <- function(refesp, obs){
 
   factesp <- svDialogs::dlg_list(liste_choix, multiple = FALSE,
     title = mltext("chooseRefespField.title"))$res
-#  # Frame pour les boutons :
-#  F.button <- tcltk::tkframe(W.selRef)
-#
-#  # Bouton OK :
-#  B.OK <- tcltk::tkbutton(F.button, text = mltext("OK.button"),
-#    command = function(){
-#      assign("factesp",
-#        facts[as.numeric(tcltk::tkcurselection(LI.fields))+1],
-#        parent.env(environment()))
-#
-#      tcltk::tclvalue(Done) <- 1
-#  })
-#
-#  # Bouton d'annulation :
-#  B.Cancel <- tcltk::tkbutton(F.button, text = mltext("Cancel.button"),
-#    command = function(){tcltk::tclvalue(Done) <- 2})
-#
-#  tcltk::tkgrid(B.OK, tcltk::tklabel(F.button, text = "\t"), B.Cancel, padx = 10)
-#  tcltk::tkgrid(F.button, pady = 5, ## sticky = "we",
-#    columnspan = 2)
-#
-#  tcltk::tkbind(W.selRef, "<Destroy>", function(){tcltk::tclvalue(Done) <- 2})
-#
-#  winSmartPlace.f(W.selRef)
-#  tcltk::tkfocus(LI.fields)
-#
-#  # Attente d'une action de l'utilisateur :
-#  tcltk::tkwait.variable(Done)
 
   # On retourne la sélection :
   if (exists("factesp") && length(factesp)){
@@ -377,63 +294,6 @@ selectModWindow.f <- function(champ, data, selectmode = "multiple", sort = TRUE,
   }
   selection <- NULL
 
-  #  # ########## Définition des éléments graphiques ##########
-  #  winfac <- tcltk::tktoplevel()   # (width = 80)
-  #
-  #  if (is.null(title)){
-  #    tcltk::tkwm.title(winfac, paste(mltext("selectModWindow.f.title"), aliases(champ), sep = ""))
-  #  }else{
-  #    tcltk::tkwm.title(winfac, title)
-  #  }
-  #
-  #  # Assenceur vertical :
-  #  SCR.y <- tcltk::tkscrollbar(winfac, repeatinterval = 5, command = function(...){tcltk::tkyview(LB, ...)})
-  #
-  #  # List Box de sélection :
-  #  LB <- tcltk::tklistbox(winfac, height = 20, width = 50, selectmode = selectmode,
-  #    yscrollcommand = function(...)tcltk::tkset(SCR.y, ...), background = "white")
-  #
-  #  # Boutons :
-  #  FrameB <- tcltk::tkframe(winfac)
-  #  B.OK <- tcltk::tkbutton(FrameB, text = mltext("OK.button"), command = function(){
-  #    assign("selection", listMod[as.numeric(tcltk::tkcurselection(LB))+1], parent.env(environment()))
-  #    # assign("tmptk", tcltk::tkcurselection(LB), envir = .GlobalEnv)
-  #    tcltk::tkdestroy(winfac)
-  #  })
-  #  B.Cancel <- tcltk::tkbutton(FrameB, text = mltext("Cancel.button"), command = function(){
-  #    assign("selection", NULL, parent.env(environment()))
-  #    tcltk::tkdestroy(winfac)
-  #  })
-
-  #  # ########## Placement des éléments sur la grille ##########
-  #  # Explications :
-  #  if (is.null(label)){
-  #    tcltk::tkgrid(tcltk::tklabel(winfac, text = paste(mltext("selectModWindow.f.CB.1"), aliases(champ),
-  #      mltext("selectModWindow.f.CB.2"),
-  #      sep = "")), columnspan = 2)
-  #  }else{
-  #    tcltk::tkgrid(tcltk::tklabel(winfac, text = label), columnspan = 2)
-  #  }
-  #
-  #  # Avertissement 'plusieurs sélections possibles' :
-  #  if (is.element(selectmode, c("extended", "multiple"))){
-  #    tcltk::tkgrid(tcltk::tklabel(winfac, text = mltext("selectModWindow.f.CB.3")), columnspan = 2)
-  #  }else{}
-  #
-  #  # Avertissement mode de sélection étendu :
-  #  if (selectmode == "extended"){
-  #    tcltk::tkgrid(tcltk::tklabel(winfac,
-  #      text = paste(mltext("selectModWindow.f.info.1"),
-  #        mltext("selectModWindow.f.info.2"),
-  #        mltext("selectModWindow.f.info.3"), sep = ""),
-  #        fg = "red"), columnspan = 2, rowspan = 2)
-  #  }else{}
-  #
-  #  tcltk::tkgrid(LB, SCR.y)
-  #  tcltk::tkgrid.configure(SCR.y, rowspan = 4, sticky = "nsw")
-  #  tcltk::tkgrid(FrameB, columnspan = 2, sticky = "")
-  #  tcltk::tkgrid(B.OK, tcltk::tklabel(FrameB, text = "        "), B.Cancel, sticky = "", pady = 5)
-
   # Configuration de la liste :
   if (sort){
     listMod <- unique(as.character(sort(data[ , champ])))
@@ -448,28 +308,6 @@ selectModWindow.f <- function(champ, data, selectmode = "multiple", sort = TRUE,
 
   selection <- svDialogs::dlg_list(liste_choix, multiple = TRUE,
     title = paste(mltext("selectModWindow.f.title"), aliases(champ), sep = ""))$res
-  #  invisible(sapply(listMod, function(x){tcltk::tkinsert(LB, "end", x)}))
-  #
-  #  # Sélections persistantes :
-  #  if (!is.null(preselect)){
-  #    sapply(which(is.element(listMod, preselect)) - 1,
-  #           function(i){tcltk::tkselection.set(LB, i)})
-  #  }
-  #  # tcltk::tkselection.set(LB, 0)
-  #
-  #  tcltk::tkbind(winfac, "<Control-a>",       # Tout sélectionner
-  #    function(){
-  #      sapply(seq(from = 0, length.out = length(listMod)),
-  #        function(i) {tcltk::tkselection.set(LB, i)})
-  #    })
-  #
-  #  # Affichage/attente :
-  #  tcltk::tkfocus(LB)
-  #
-  #  tcl("update")
-  #  winSmartPlace.f(winfac, xoffset = 50, yoffset = -100)
-  #
-  #  tcltk::tkwait.window(winfac)
   if (exists("selection") && length(selection)){
     return(selection)
   }else{
@@ -677,8 +515,6 @@ selectionOnUnitobs.f <- function(dataEnv, baseEnv){
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date:  5 janv. 2012, 21:02
 
-#  on.exit(winRaise.f(get("W.main", envir = baseEnv)))
-
   runLog.f(msg = c(mltext("logmsg.selectionOnUnitobs")))
 
   # Récupération des données :
@@ -702,14 +538,7 @@ selectionOnUnitobs.f <- function(dataEnv, baseEnv){
   unitSp <- get("unitSp", envir = dataEnv)
   unit <- get("unit", envir = dataEnv)
 
-#  ## Objets tcltk :
-#  W.main <- get("W.main", envir = baseEnv)
-
   selection <- selectionUnitobs.f(unitobs = unitobs, obs = obs)
-
-#  infoGeneral.f(msg = mltext("selectionOnUnitobs.info.1"),
-#    waitCursor = TRUE,
-#    font = tcltk::tkfont.create(weight = "bold", size = 9), foreground = "darkred")
 
   if (!is.null(selection)){
     obs <- selection[["obs"]]
@@ -774,31 +603,12 @@ selectionOnUnitobs.f <- function(dataEnv, baseEnv){
       filePathes = filePathes, baseEnv = baseEnv)
 
     # Information de l'utilisateur :
-#    infoLoading.f(msg = paste(
-#      mltext("selectionOnRef.info.2"),
-#      mltext("selectionOnUnitobs.info.3"),
-#      sep = ""), icon = "info", font = tcltk::tkfont.create(weight = "bold", size = 9))
     print(paste(
       mltext("selectionOnRef.info.2"),
       mltext("selectionOnUnitobs.info.3"),
       sep = ""))
 
-#    updateInterface.select.f(criterion = paste(selection[["facteur"]], ":",
-#      paste(selection[["selection"]], collapse = ", ")),
-#      tabObs = obs, baseEnv = baseEnv)
-
-#    # Ajout d'info dans le log de sélection :
-#    add.logFrame.f(msgID = "selection", env = baseEnv,
-#      facteur = selection[["facteur"]], selection = selection[["selection"]],
-#      results = filePathes["results"], referentiel = "unitobs",
-#      has.SzCl = ( ! is.null(unitSpSz) && prod(dim(unitSpSz))))
-
-#    gestionMSGaide.f("etapeselected", env = baseEnv)
-
-#    infoLoading.f(button = TRUE, WinRaise = W.main)
   }else{
-#    infoLoading.f(msg = mltext("selectionOnRef.info.4"))
-#    infoLoading.f(button = TRUE, WinRaise = W.main)
     print(mltext("selectionOnRef.info.4"))
   }
   return(list(obs = obs, unitobs = unitobs, refesp = refesp))
@@ -864,23 +674,6 @@ chooseUnitobsField.f <- function(unitobs, obs){
 
   runLog.f(msg = c("Choix d'un Facteur dans le référentiel des unités d'observation :"))
 
-#  Done <- tcltk::tclVar("0")                 # Variable de statut d'exécution.
-#
-#  W.select <- tcltk::tktoplevel()
-#  tcltk::tkwm.title(W.select, "Sélection du facteur de groupement des unités d'observation")
-#
-#  SCR <- tcltk::tkscrollbar(W.select, repeatinterval = 5,
-#                     command = function(...)tcltk::tkyview(LI.fields, ...))
-#
-#  LI.fields <- tcltk::tklistbox(W.select, height = 20, width = 50, selectmode = "single",
-#                         yscrollcommand = function(...)tcltk::tkset(SCR, ...),
-#                         background = "white")
-#
-#  tcltk::tkgrid(tcltk::tklabel(W.select, text = "Liste des facteurs de groupement"))
-#  tcltk::tkgrid(LI.fields, SCR)
-#  tcltk::tkgrid.configure(SCR, rowspan = 4, sticky = "ensw")
-#  tcltk::tkgrid.configure(LI.fields, rowspan = 4, sticky = "ensw")
-
   # Réduction aux facteurs contenant de l'information : [yr: 30/09/2010]
   # sélection des lignes correspondant aux obs :
   uobstmp <- unitobs[is.element(unitobs$observation.unit, obs$observation.unit), ]
@@ -898,36 +691,6 @@ chooseUnitobsField.f <- function(unitobs, obs){
 
   factunitobs <- svDialogs::dlg_list(liste_choix, multiple = FALSE,
     title = mltext("chooseUnitobsField.title"))$res
-
-#  # Frame pour les boutons :
-#  F.button <- tcltk::tkframe(W.select)
-#
-#  # Bouton OK :
-#  B.OK <- tcltk::tkbutton(F.button, text = "OK",
-#                   command = function()
-#                   {
-#                     assign("factunitobs",
-#                            facts[as.numeric(tcltk::tkcurselection(LI.fields))+1],
-#                            parent.env(environment()))
-#
-#                     tcltk::tclvalue(Done) <- 1
-#                   })
-#
-#  # Bouton d'annulation :
-#  B.Cancel <- tcltk::tkbutton(F.button, text = "Annuler",
-#                       command = function(){tcltk::tclvalue(Done) <- 2})
-#
-#  tcltk::tkgrid(B.OK, tcltk::tklabel(F.button, text = "\t"), B.Cancel, padx = 10)
-#  tcltk::tkgrid(F.button, pady = 5, ## sticky = "we",
-#         columnspan = 2)
-#
-#  tcltk::tkbind(W.select, "<Destroy>", function(){tcltk::tclvalue(Done) <- 2})
-#
-#  winSmartPlace.f(W.select)
-#  tcltk::tkfocus(LI.fields)
-#
-#  # Attente d'une action de l'utilisateur :
-#  tcltk::tkwait.variable(Done)
 
   # On retourne la sélection :
   if (exists("factunitobs") && length(factunitobs)){

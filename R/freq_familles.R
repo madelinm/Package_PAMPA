@@ -390,7 +390,6 @@ barplotOccurrenceFamille.f <- function(factGraph, factGraphSel, fact, factSel, f
         mainTitle <- NULL
       }
 
-
       ordre <- order(heights[,i], decreasing = TRUE)
       heights_ordered <- heights[ordre, i]
       heights_ordered <- as.matrix(heights_ordered)
@@ -413,35 +412,9 @@ barplotOccurrenceFamille.f <- function(factGraph, factGraphSel, fact, factSel, f
 
       if (getOption("P.axesLabels") & ncol(heights) > 1){
         mtext(
-#          Capitalize.f(varNames[tail(fact, 1), "nom"]),
           names(heights[1,])[i],
           side = 1, line = 2.3, cex = cex)
       }else{}
-
-#      if (getOption("P.NbObs")){
-#        # Nombre d'"observations" :
-#        nbObs <- with(tmpDataMod,
-#          tapply(pres.abs,
-#            lapply(fact, function(y)eval(parse(text = y))),
-#            function(x){
-#              length(na.omit(x))
-#        }))
-#
-#        if (!is.matrix(nbObs)){   # cas où nbObs n'est pas une matrice (pas de facteur sélectionné)
-#          nbObs <- as.matrix(nbObs)
-#        }
-#
-#        # Nombres sur l'axe supérieur :
-#        mtext(nbObs[,i], side = 3, at = barPlotTmp, las = 2, col = getOption("P.NbObsCol"), adj = -0.2)
-#
-#        legend(x = "topleft",
-#          legend = substitute(expression(part1 == part2),
-#            list(part1 = mltext("barplotOccurrence.leg.1", language = getOption("P.lang")),
-#              part2 = mltext("barplotOccurrence.leg.2", language = getOption("P.lang")))),
-#          cex = 0.9, col = getOption("P.NbObsCol"), text.col = getOption("P.NbObsCol"), merge = FALSE)
-#
-#      }else{}
-
     }
     # ###################################################
     # Fermeture de graphiques et sauvegarde de fichiers :
@@ -1332,14 +1305,6 @@ barplotOccurrenceFamille.f <- function(factGraph, factGraphSel, fact, factSel, f
 #   on.exit(if (exists("filename") &&
 #     tryCatch(isOpen(File),
 #       error = function(e)return(FALSE))) close(File))
-#
-#   # Informations générales sur les données :
-# #  printGeneralDataInfo.f(dataEnv = dataEnv, baseEnv = baseEnv, File = File)
-#
-#   # Informations sur les métriques et facteurs du graphique :
-# #  printSelectionInfo.f(metrique = metrique, factGraph = factGraph, factGraphSel = factGraphSel,
-# #    listFact = listFact, listFactSel = listFactSel, File = File,
-# #    agregLevel = agregLevel, type = type)
 #
 #   # Statistiques :
 #   if (class(Data) == "list"){

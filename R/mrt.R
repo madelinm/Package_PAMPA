@@ -277,8 +277,6 @@ WP2MRT.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSe
   ## ----------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 11 mai 2011, 10:09
 
-#  pampaProfilingStart.f()
-
   # Nettoyage des facteurs (l'interface de sélection produit des valeurs vides) :
   listFactSel <- listFactSel[unlist(listFact) != ""]
   listFactSel <- listFactSel[length(listFactSel):1]
@@ -401,14 +399,10 @@ WP2MRT.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSe
     # MRT!
     tmpMRT <- rpart:::rpart(exprMRT, data = tmpDataMod)
 
-    # rpart:::plot.rpart(tmpMRT, main = mainTitle)
-    # rpart:::text.rpart(tmpMRT, use.n = TRUE, pretty = 1, all = TRUE, xpd = NA, fancy = TRUE)
-
     rpart:::plot.rpart(tmpMRT, main = mainTitle, margin = 0.00)
     par(xpd = NA)
     rpart:::text.rpart(tmpMRT, use.n = TRUE, pretty = 1, all = TRUE, xpd = NA,
       fancy = TRUE, adj = c(0.5, 0.75))
-    # text.rpart.new(tmpMRT, use.n = TRUE, pretty = 0, all = TRUE, xpd = NA)
 
     # Écriture des résultats formatés dans un fichier :
     tryCatch(
@@ -475,8 +469,6 @@ WP2MRT.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSe
   {
     savePlot(graphFile, type = "wmf", device = dev.cur())
   }else{}
-
-#  pampaProfilingEnd.f()
 }
 
 
@@ -1036,8 +1028,6 @@ sortiesMRT.f <- function(objMRT, formule, metrique, factAna, modSel, listFact, l
   # Sauvegarde des données :
   filename <- summary(resFile)$description
 
-  # close(resFile)                      # Maintenant seulement on peut fermer ce fichier.
-
   if (getOption("P.saveData") &&  ! isTRUE(sufixe == "(red)")) {
     writeData.f(filename = filename, Data = Data, cols = NULL)
   }else{}
@@ -1400,8 +1390,6 @@ WP2MRT.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, listFa
   ## ----------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 10 mai 2011, 14:24
 
-#  pampaProfilingStart.f()
-
   # Nettoyage des facteurs (l'interface de sélection produit des valeurs vides) :
   listFactSel <- listFactSel[unlist(listFact) != ""]
   listFactSel <- listFactSel[length(listFactSel):1]
@@ -1572,8 +1560,6 @@ WP2MRT.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, listFa
       savePlot(graphFile, type = "wmf", device = dev.cur())
     }else{}
   }
-
-#  pampaProfilingEnd.f()
 }
 
 
@@ -1593,11 +1579,6 @@ WP2MRT.unitobs.f <- function(metrique, factGraph, factGraphSel, listFact, listFa
 #   ## Output: une data.frame agrégée.
 #   ## ----------------------------------------------------------------------
 #   ## Author: Yves Reecht, Date: 18 oct. 2010, 15:47
-#
-#   # Récupération des données
-#
-#   # Informations (l'étape peut être longue) :
-# #  WinInfo <- agregation.info.f()
 #
 #   # traitements selon le type de métrique :
 #   casMetrique <- c("number" = "sum",

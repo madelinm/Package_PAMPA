@@ -101,6 +101,7 @@ load_files.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv){
   # Faire plus de vérifications ?
 
   if (is.na(filePathes["results"])){
+    browser()
     filePathes["results"] <- ifelse(as.logical(length(grep("Data/$|Data$", filePathes["ws"]))),
       sub("Data/$|Data$", "Results/", filePathes["ws"]),
       ifelse(as.logical(length(grep("/$", filePathes["ws"]))),
@@ -152,16 +153,11 @@ load_files.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv){
   table_especes <- table_especes[order(table_especes$family),]
 
   fileNm <- paste(filePathes["results"], "TableEspeces",
-#    ifelse(getOption("P.selection"), "_selection", ""),
      ".csv", sep = "")
   tryCatch(write.csv(table_especes,
     file = fileNm,
     quote = TRUE, row.names = FALSE),
     error = function(e){
-#      infoLoading.f(msg = paste(
-#        "Impossible d'écrire le fichier ", fileNm,
-#        ".\nIl est possible qu'il soit ouvert par une autre application",
-#        sep = ""), icon = "warning")
       warning(paste("Impossible d'écrire le fichier ", fileNm,
         ".\nIl est possible qu'il soit ouvert par une autre application", sep = ""),
         call. = FALSE, immediate. = TRUE)
@@ -239,62 +235,22 @@ loadData.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv = .GlobalEnv){
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date:  2 déc. 2011, 10:59
 
-#  # Le profilage de la fonction est activé si l'option adéquate est sur TRUE :
-#  pampaProfilingStart.f()
-#
   runLog.f(msg = c("--------------------------------------------------------------------------------",
     mltext("loadData.info.0")))
-#
-#
-#  add.logFrame.f(msgID = "dataLoadingNew", env = baseEnv,
-#                   filePathes = filePathes)
 
   # Réinitialisation de l'indicateur de sélection :
   options(P.selection = FALSE)
-
-  # Informations de chargement (initialisation) :
-  # [!!!] travaille dans l'environnement global pour l'instant. À terme, modifier
-  # + fonctions associées pour travailler dans .baseEnv [!!!]  [yr: 5/12/2011]
-#  infoGeneral.f(msg = mltext("loadData.info.1"),
-#    waitCursor = TRUE,
-#    font = tcltk::tkfont.create(weight = "bold", size = 9), foreground = "darkred")
-#
-#  initInnerTkProgressBar.f(initial = 0, max = 22, width = 450)
-
 
   ## ##################################################
   # Chargement des fichiers :
 
   # Fichier d'unités d'observations :
-#  stepInnerProgressBar.f(n = 0, msg = mltext("loadData.info.2"))
-
   refUnitobs <- loadUnitobs.f(pathUnitobs = filePathes["unitobs"])
-
-#  ## Éventuelle reconfiguration de la barre de progression du chargement en fonction du type d'unitobs :
-#  switch(getOption("P.obsType"),
-#    "SVR" = {},                    # rien à faire.
-#    "LIT" = {
-#      reconfigureInnerProgressBar.f(max = 12)
-#    },                           # Pour le benthos on ne calcule pas les métriques / classe de taille.
-#    {
-#      reconfigureInnerProgressBar.f(max = 13) # Dans tous les autres cas : 12
-#    })
 
   # Info sur les AMP du jeu actuel :
   options(P.MPA = as.character(unique(refUnitobs[ , getOption("P.MPAfield")])))
 
-#  ## Information sur l'(les) AMP sélectionnées et le type d'observations analysées :
-#  tcltk::tkconfigure(get("ResumerAMPetType", envir = baseEnv),
-#    text = paste(ifelse(length(getOption("P.MPA")) < 2,
-#      mltext("loadData.info.3s"),
-#      mltext("loadData.info.3p")),
-#      paste(getOption("P.MPA"), collapse = ", "),
-#      mltext("loadData.info.4"),
-#      getOption("P.obsType"), sep = ""))
-
   # Fichier de référentiel spatial :
-#  stepInnerProgressBar.f(n = 1, msg = mltext("loadData.info.5"))
-
   refSpatial <- loadRefspa.f(pathRefspa = filePathes["refspa"])
 
   # [OBSIND]
@@ -308,15 +264,10 @@ loadData.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv = .GlobalEnv){
   if (!is.null(refSpatial)){
     assign(".unitobsSmall", refUnitobs, envir = dataEnv) # pour lien manuel.
     refUnitobs <- mergeSpaUnitobs.f(unitobs = refUnitobs, refspa = refSpatial)
-#    tcltk::tkentryconfigure(get("outils", envir = .baseEnv), 3, state = "normal")
 
-  }else{
-#    tcltk::tkentryconfigure(get("outils", envir = baseEnv), 3, state = "disabled")
   }
 
   # Fichier d'observations :
-#  stepInnerProgressBar.f(n = 1, msg = mltext("loadData.info.6"))
-
   tabObs <- loadObservations.f(pathObs = filePathes["obs"], dminMax)
 
   # Correspondance avec les nouvelles unités d'observations dans le cas "OBSIND" :
@@ -332,70 +283,12 @@ loadData.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv = .GlobalEnv){
   tabObs <- checkUnitobs.in.obs.f(obs = tabObs, unitobs = refUnitobs)
 
   # Fichier du référentiel espèces :
-#  stepInnerProgressBar.f(n = 1, msg = mltext("loadData.info.7"))
-
   refEspeces <- loadRefEspeces.f(pathRefesp = filePathes["refesp"],
     pathRefesp.local = filePathes["locrefesp"], baseEnv = baseEnv)
 
-#  # Interaction avec l'interface :
-#  tcltk::tkconfigure(get("ResumerEspaceTravail", envir = baseEnv), # [!!!] déplacer vers la fin  [yr: 13/12/2011]
-#    text = paste(mltext("loadData.info.WD"), filePathes["ws"]))
-#
-#  return(list(obs = tabObs, unitobs = refUnitobs, refesp = refEspeces, refspa = refSpatial))
-#
-#  ## ##################################################
-#  ## Calcul des tables de métriques :
-#
-#  pampaProfilingEnd.f()
-
+  ## ##################################################
+  ## Calcul des tables de métriques :
   Data <- list(obs = tabObs, unitobs = refUnitobs, refesp = refEspeces, refspa = refSpatial)
-
-#  assign("obs", tabObs, envir = .dataEnv)
-#  assign("unitobs", refUnitobs, envir = .dataEnv)
-#  assign("refesp", refEspeces, envir = .dataEnv)
-#  assign("refspa", refSpatial, envir = .dataEnv)
-#   listInEnv.f(list = Data, env = dataEnv)
-#
-#   # Calcul des tables de métriques :
-#   metrics <- calcTables.f(obs = Data$obs, unitobs = Data$unitobs, refesp = Data$refesp, dataEnv = dataEnv)
-#
-#   # Assignement des tables de métriques dans l'environnement adéquat :
-#   listInEnv.f(list = metrics, env = dataEnv)
-#
-#   # Sauvegarde pour restauration ultérieure :
-#   assign("backup", c(metrics,
-#     list(obs = Data$obs),
-#     tryCatch(list(".NombresSVR" = get(".NombresSVR", envir = dataEnv),
-#       ".DensitesSVR" = get(".DensitesSVR", envir = dataEnv)),
-#       error = function(e){NULL})),
-#     envir = dataEnv)
-#
-#   exportMetrics.f(unitSpSz = metrics$unitSpSz, unitSp = metrics$unitSp, unit = metrics$unit,
-#     obs = Data$obs, unitobs = Data$unitobs, refesp = Data$refesp,
-#     filePathes = filePathes, baseEnv = baseEnv)
-#
-#   # Exportation de la table des espèces
-#   code_esp_obs <- tabObs[,"species.code"]
-#   table_especes <- refEspeces[which(refEspeces$species.code %in% code_esp_obs),
-#     c('family', 'genus', 'scient.name')]
-#   table_especes <- table_especes[order(table_especes$family),]
-#
-#   fileNm <- paste(filePathes["results"], "TableEspeces",
-# #    ifelse(getOption("P.selection"), "_selection", ""),
-#      ".csv", sep = "")
-#   tryCatch(write.csv(table_especes,
-#     file = fileNm,
-#     quote = TRUE, row.names = FALSE),
-#     error = function(e){
-# #      infoLoading.f(msg = paste(
-# #        "Impossible d'écrire le fichier ", fileNm,
-# #        ".\nIl est possible qu'il soit ouvert par une autre application",
-# #        sep = ""), icon = "warning")
-#       warning(paste("Impossible d'écrire le fichier ", fileNm,
-#         ".\nIl est possible qu'il soit ouvert par une autre application", sep = ""),
-#         call. = FALSE, immediate. = TRUE)
-# #      errorLog.f(error = e, niv = -4)
-#     })
 
   return(Data)
 }
@@ -475,33 +368,15 @@ checkType.unitobs.f <- function(unitobs){
   ## Author: Yves Reecht, Date: 13 déc. 2011, 11:16
 
   if (length(unique(unitobs$observation.type)) > 1){
-#  tcltk::tkmessageBox(message = paste(mltext("checkType.unitobs.msg.1"),
-#    mltext("checkType.unitobs.msg.2"), sep = ""),
-#    icon = "warning", type = "ok")
-
     print(paste(
       mltext("checkType.unitobs.msg.1"),
       mltext("checkType.unitobs.msg.2"),
       sep = ""))
 
-    while (is.null(selectType <- chooseInList.f(modList = unitobs[ ,"observation.type"],
-      fieldName = "observation.type", selectMode = "single", ordered = TRUE)))
-    {}
-
-#    message(paste(mltext("checkType.unitobs.msg.3"), selectType))
     print(paste(mltext("checkType.unitobs.msg.3"), selectType))
 
-# Suppression des niveaux de facteur inutilisés :
+    # Suppression des niveaux de facteur inutilisés :
     unitobs <- dropLevels.f(subset(unitobs, unitobs$observation.type == selectType))
-
-# assign("obs", obs, envir = .GlobalEnv)
-# assign("unitobs", unitobs, envir = .GlobalEnv)
-
-# ## Reconfiguration des infos sur l'AMP sélectionnée et le type d'observations analysées :
-# tcltk::tkconfigure(ResumerAMPetType,
-#   text = paste("Aire Marine Protégée : ", unique(unitobs$AMP), " ; type d'observation : ",
-#   unique(unitobs$observation.type), sep = ""))
-
   }
 
   options(P.obsType = unique(as.character(unitobs$observation.type)))
@@ -518,46 +393,6 @@ chooseInList.f <- function(modList, fieldName, selectMode, ordered){
   ## Arguments:
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 12 janv. 2012, 18:00
-
-#  W.fact <- tcltk::tktoplevel(width = 80)
-#  tcltk::tkwm.title(W.fact, paste("Sélection des valeurs de", fieldName, sep = ""))
-#
-#  tl <- tklistbox(W.fact, height = 20, width = 50, selectmode = selectMode,
-#    yscrollcommand = function(...)tkset(scr, ...), background = "white")
-#
-#  tcltk::tkgrid(tcltk::tklabel(W.fact, text = paste("Liste des valeurs de", "\"", fieldName,
-#    "\" :\n",
-#    ifelse(selectMode == "single",
-#      "Une seule sélection possible.",
-#      "Plusieurs sélections possibles"), sep = "")))
-#
-#  tcltk::tkgrid(tl, scr)
-#  tcltk::tkgrid.configure(scr, rowspan = 4, sticky = "ensw")
-#  tcltk::tkgrid.configure(tl, rowspan = 4, sticky = "ensw")
-#
-#  if (ordered){
-#    maliste <- sort(as.character(unique(modList)))
-#  }
-#
-#  ## On remplit la liste de choix :
-#  for (i in seq(along = maliste)){
-#    tkinsert(tl, "end", maliste[i])
-#  }
-#
-#  OnOK <- function (){
-#    assign("selectfact",
-#      eval(maliste[as.numeric(tkcurselection(tl))+1], envir = parent.env(environment())),
-#      envir = parent.env(environment()))
-#
-#    tcltk::tkdestroy(W.fact)
-#  }
-#
-#  OK.but <-tcltk::tkbutton(W.fact, text = "OK", command = OnOK)
-#  tcltk::tkgrid(OK.but, pady = 5)
-#
-#  tcltk::tkfocus(tl)
-#
-#  tcltk::tkwait.window(W.fact)
 
   # création de la liste de choix :
   if (ordered){
@@ -742,8 +577,6 @@ reorderFactors.f <- function(Data, which, type, warnings = FALSE){
       {
         # On affiche la nature de l'erreur (comme un warning) si besoin :
         if (warnings){
-#          warning(mltext("warn.field.not.reordered.1"), which[i],
-#            mltext("warn.field.not.reordered.2"), e)
           print(mltext("warn.field.not.reordered.1"), which[i],
             mltext("warn.field.not.reordered.2"))
         }else{}
@@ -766,16 +599,10 @@ loadRefspa.f <- function(pathRefspa, baseEnv = .GlobalEnv){
 
   if (missing(pathRefspa) || is.null(pathRefspa) || is.na(pathRefspa) ||
     length(pathRefspa) == 0 || ! file.exists(pathRefspa)){
-#    infoLoading.f(msg = mltext("loadRefspa.info.1"), icon = "warning")
     print(mltext("loadRefspa.info.1"))
 
     # Si type d'observation == "OBSIND", un shapefile est requis :
     if(getOption("P.obsType") == "OBSIND"){
-#      infoLoading.f(msg = paste(
-#        mltext("loadRefspa.info.2"),
-#        mltext("loadRefspa.info.3"),
-#        sep = ""), icon = "error")
-
       print(paste(
         mltext("loadRefspa.info.2"),
         mltext("loadRefspa.info.3"),
@@ -801,10 +628,6 @@ loadRefspa.f <- function(pathRefspa, baseEnv = .GlobalEnv){
     }else{
       # Si type d'observation == "OBSIND", un shapefile est requis :
       if(getOption("P.obsType") == "OBSIND"){
-#        infoLoading.f(msg = paste(
-#          mltext("loadRefspa.info.2"),
-#          mltext("loadRefspa.info.3"),
-#          sep = ""),icon = "error")
         print(paste(
           mltext("loadRefspa.info.2"),
           mltext("loadRefspa.info.3"),
@@ -1051,10 +874,6 @@ mergeSpaUnitobs.f <- function(unitobs, refspa, type = "auto"){
     res <- unitobs
 
     if (type[1] == "auto"){
-#      infoLoading.f(msg = paste(
-#        mltext("mergeSpaUnitobs.info.1"),
-#        mltext("mergeSpaUnitobs.info.2"),
-#        sep = ""),icon = "warning")
       print(paste(
         mltext("mergeSpaUnitobs.info.1"),
         mltext("mergeSpaUnitobs.info.2"),
@@ -1078,19 +897,11 @@ mergeSpaUnitobs.f <- function(unitobs, refspa, type = "auto"){
 
     if (type[1] == "auto"){
       if (isPoly){
-#        infoLoading.f(msg = paste(
-#          mltext("mergeSpaUnitobs.info.3"),
-#          mltext("mergeSpaUnitobs.info.4"),
-#          sep = ""), icon = "info")
         print(paste(
           mltext("mergeSpaUnitobs.info.3"),
           mltext("mergeSpaUnitobs.info.4"),
           sep = ""))
       }else{
-#        infoLoading.f(msg = paste(
-#          mltext("mergeSpaUnitobs.info.5"),
-#          mltext("mergeSpaUnitobs.info.6"),
-#          sep = ""), icon = "info")
         print(paste(
           mltext("mergeSpaUnitobs.info.5"),
           mltext("mergeSpaUnitobs.info.6"),
@@ -1172,7 +983,6 @@ selectLink.interface.f <- function(unitobs, refspa,
 
   runLog.f(msg = c(mltext("logmsg.link.unitobs.refspa")))
 
-# .BGcolor <- "#FFFBCF"
   .BGcolor <- "#F7F5CE"
 
   # Fenêtre principale :
@@ -1206,8 +1016,6 @@ selectLink.interface.f <- function(unitobs, refspa,
     font = tcltk::tkfont.create(weight = "bold", size = 10),
     foreground = "black",
     background = .BGcolor)
-
-  # F.help <- tcltk::tkframe(WinLink, borderwidth = 2, relief = "groove", background = .BGcolor)
 
   L.help1 <- tcltk::tklabel(F.help,
     text = paste(
@@ -1375,11 +1183,6 @@ loadObservations.f <- function(pathObs, dminMax = 5){
           "size.class", "weight", "number", "min.distance", "max.distance")
       },
       {
-#        infoLoading.f(msg = paste(
-#          mltext("loadObservations.info.1"),
-#          mltext("loadObservations.info.2"),
-#          sep = ""), icon = "error")
-
         print(paste(
           mltext("loadObservations.info.1"),
           mltext("loadObservations.info.2"),
@@ -1389,11 +1192,6 @@ loadObservations.f <- function(pathObs, dminMax = 5){
     })
 
     obs$rotation <- as.numeric(obs$rotation)
-
-#    dminMax <- NULL
-#    while (is.null(dminMax)){
-#      dminMax <- selectionObs.SVR.f()
-#    }
 
     # On ne tient pas compte des observations à une distance > dminMax
     # (pas de subset car tendance à faire disparaître des unitobs des analyses) :
@@ -1458,20 +1256,6 @@ obsFormatting.TRATO.f <- function(obs){
     pl <- sum(tmp) > 1
 
     # Message d'avertissement :
-
-#    infoLoading.f(msg = paste(
-#      ifelse(pl,
-#        mltext("obsFormatting.TRATO.info.1p"),
-#        mltext("obsFormatting.TRATO.info.1s")),
-#      sum(tmp),
-#      ifelse(pl,
-#        mltext("obsFormatting.TRATO.info.2p"),
-#        mltext("obsFormatting.TRATO.info.2s")),
-#      ifelse(pl,
-#        mltext("obsFormatting.TRATO.info.3p"),
-#        mltext("obsFormatting.TRATO.info.3s")),
-#      sep = ""), icon = "warning")
-
     print(paste(
       ifelse(pl,
         mltext("obsFormatting.TRATO.info.1p"),
@@ -1493,115 +1277,6 @@ obsFormatting.TRATO.f <- function(obs){
   return(obs)
 }
 
-
-# selectionObs.SVR.f <- function(){
-#
-#   ## Purpose: Définir le seuil de Min.Distance (en m) au-dessus duquel les
-#   ##          observations ne sont pas prises en compte.
-#   ## ---------------------------------------------------------------------------
-#   ## Arguments: aucun
-#   ## ---------------------------------------------------------------------------
-#   ## Author: Yves Reecht, Date:  8 nov. 2010, 10:29
-#
-#   onOK.selectionObs.SVR.f <- function(){
-#
-#     ## Purpose: Action lorsque le bouton de choix de seuil pour les SVR est
-#     ##          cliqué.
-#     ## ----------------------------------------------------------------------
-#     ## Arguments: aucun
-#     ## ----------------------------------------------------------------------
-#     ## Author: Yves Reecht, Date:  8 nov. 2010, 12:01
-#
-#     if (tcltk::tclvalue(Suppr) == "1"){
-#       if (!is.na(as.numeric(tcltk::tclvalue(Level)))){
-#         tcltk::tclvalue(Done) <- "1"
-#       }else{
-#         tcltk::tclvalue(Done) <- "2"
-#       }
-#     }else{
-#       tcltk::tclvalue(Level) <- Inf
-#       tcltk::tclvalue(Done) <- "1"
-#     }
-#   }
-#
-#   dminDefault <- 5                    # 5m par défaut.
-#
-#   Done <- tcltk::tclVar("0")
-#   Suppr <- tcltk::tclVar("1")                # Seuil utilisé par défaut.
-#   Level <- tcltk::tclVar(dminDefault)        # tclVar pour le seuil (initialisée au défaut).
-#
-#   WinSVR <- tcltk::tktoplevel()
-#   tcltk::tkwm.title(WinSVR, mltext("selectionObs.SVR.title"))
-#
-#   FrameInfo <- tcltk::tkframe(WinSVR, borderwidth = 2, relief = "groove")
-#
-#   CB.supprObs <- tcltk::tkcheckbutton(WinSVR, variable = Suppr)
-#   E.supprLevel <- tcltk::tkentry(WinSVR, width = 3, textvariable = Level)
-#
-#   FrameBT <- tcltk::tkframe(WinSVR)
-#   BT.OK <- tcltk::tkbutton(FrameBT, text = "   OK   ",
-#     command = onOK.selectionObs.SVR.f)
-#
-#   tcltk::tkbind(WinSVR, "<Destroy>", function(){
-#     tcltk::tclvalue(Done) <- "3"   # En cas de destruction de fenêtre.
-#   })
-#   tcltk::tkbind(E.supprLevel, "<Return>", onOK.selectionObs.SVR.f)
-#
-#   # # Placement des éléments graphiques :
-#   # tcltk::tkgrid(tcltk::tklabel(WinSVR, text = ""))
-#
-#   # tcltk::tkgrid(FrameInfo, column = 2, columnspan = 2, sticky = "we")
-#   # tcltk::tkgrid(tcltk::tklabel(FrameInfo,
-#   #   text = paste("Information\n\n Types d'interpolations : ",
-#   #     ifelse(getOption("PAMPA.SVR.interp") == "extended",
-#   #       "étendues !",
-#   #       "simples !"), "\n", sep = ""), justify = "left"), sticky = "w")
-#
-#   tcltk::tkgrid(tcltk::tklabel(WinSVR, text = ""))
-#
-#   tcltk::tkgrid(tcltk::tklabel(WinSVR, text = "\t"),
-#     CB.supprObs,
-#     tcltk::tklabel(WinSVR, text = mltext("selectionObs.SVR.Dmin")),
-#     E.supprLevel,
-#     tcltk::tklabel(WinSVR, text = "m ?\t "))
-#
-#   tcltk::tkgrid(tcltk::tklabel(FrameBT, text = "\n\t"),
-#     BT.OK,
-#     tcltk::tklabel(FrameBT, text = "\t\n"))
-#   tcltk::tkgrid(FrameBT, column = 0, columnspan = 5)
-#
-#   tcltk::tkfocus(E.supprLevel)
-#
-#   #  winSmartPlace.f(WinSVR, xoffset = -200, yoffset = -50)
-#
-#   repeat{
-#     tcltk::tkwait.variable(Done)      # attente d'une modification de statut.
-#
-#     switch(tcltk::tclvalue(Done),
-#       "1" = {                    # Statut OK :
-#         tcltk::tkdestroy(WinSVR)
-#         return(as.numeric(tcltk::tclvalue(Level)))
-#       },
-#       "2" = {                    # Le seuil n'est pas numérique :
-# #        tcltk::tkmessageBox(message = mltext("selectionObs.SVR.Dmin.war"),
-# #          icon = "error")
-#         print(mltext("selectionObs.SVR.Dmin.war"))
-#         tcltk::tclvalue(Done) <- "0"
-#         tcltk::tkfocus(E.supprLevel)
-#         next()
-#       },
-#       "3" = {                    # Destruction de la fenêtre :
-#         return(NULL)
-#       })
-#   }
-#
-#   tcltk::tkdestroy(WinSVR)
-# }
-
-
-
-
-
 checkUnitobs.in.obs.f <- function(obs, unitobs){
 
   ## Purpose: Vérifie que toutes les observations correspondent à des
@@ -1612,20 +1287,8 @@ checkUnitobs.in.obs.f <- function(obs, unitobs){
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 13 déc. 2011, 11:34
 
-  ## obs$observation.type <- unitobs$observation.type[match(obs$observation.unit,
-  ## unitobs$observation.unit), drop = TRUE]
-
   if ( ! all(idxTmp <- is.element(obs$observation.unit, unitobs$observation.unit))){
     # Ajout du message pour le chargement :
-    #    infoLoading.f(msg = paste(
-    #      mltext("checkUnitobs.in.obs.info.1"),
-    #      sum( ! idxTmp),
-    #      mltext("checkUnitobs.in.obs.info.2"),
-    #      nrow(obs),
-    #      mltext("checkUnitobs.in.obs.info.3"),
-    #      mltext("checkUnitobs.in.obs.info.4"),
-    #      mltext("checkUnitobs.in.obs.info.5"),
-    #      sep = ""), icon = "warning")
     print(paste(
       mltext("checkUnitobs.in.obs.info.1"),
       sum( ! idxTmp),
@@ -1645,7 +1308,6 @@ checkUnitobs.in.obs.f <- function(obs, unitobs){
 
 loadRefEspeces.f <- function (pathRefesp, pathRefesp.local = NA, baseEnv = .GlobalEnv){
 
-  # rm(especes)
   runLog.f(msg = c(mltext("loadRefEspeces.info")))
 
   # Importation des caracteristiques des especes
@@ -1661,7 +1323,6 @@ loadRefEspeces.f <- function (pathRefesp, pathRefesp.local = NA, baseEnv = .Glob
       especes <- loadRefEspeces.new.f(refesp = especes, pathRefesp.local = pathRefesp.local)
     },
     {
-#      gestionMSGerreur.f("nbChampEsp", env = baseEnv)
       print(paste(
         mltext("error.nbChampEsp.1"),
         mltext("error.nbChampEsp.2"),
@@ -1676,9 +1337,6 @@ loadRefEspeces.f <- function (pathRefesp, pathRefesp.local = NA, baseEnv = .Glob
 
   especes <- cbind(especes, correspCatBenthique[
     as.character(especes$benthic.categ), , drop = FALSE])
-
-  # Pour vérif :
-  # na.omit(especes[as.integer(runif(50,min = 1, max = 3553)), c("benthic.categ", "CategB_general", "CategB_groupe")])
 
   # Suppression de la ligne en NA
   especes <- subset(especes, !is.na(especes$species.code))
@@ -1741,11 +1399,6 @@ loadRefEspece.old.f <- function(refesp){
     refesp[refesp == "-999"] <- NA
   }
 
-#  infoLoading.f(msg = paste(
-#    mltext("loadRefEspece.old.info.1"),
-#    mltext("loadRefEspece.old.info.2"),
-#    sep = ""), icon = "warning")
-
   print(paste(
     mltext("loadRefEspece.old.info.1"),
     mltext("loadRefEspece.old.info.2"),
@@ -1788,7 +1441,6 @@ loadRefEspeces.new.f <- function(refesp, pathRefesp.local){
 
     # Le référentiel local a 13 colonnes obligatoires :
     if (ncol(refesp.local) < 14){
-#      infoLoading.f(msg = mltext("loadRefEspeces.new.error"), icon = "warning")
       print(mltext("loadRefEspeces.new.error"))
     }else{
       # S'il est correct...
@@ -1807,7 +1459,6 @@ loadRefEspeces.new.f <- function(refesp, pathRefesp.local){
         by = "species.code", exclude = "scient.name")
     }
   }else{
-#    infoLoading.f(msg = paste(mltext("loadRefEspeces.new.no.local")), icon = "warning")
     print(mltext("loadRefEspeces.new.no.local"))
   }
 
@@ -1864,8 +1515,6 @@ calcTables.f <- function(obs, unitobs, refesp, dataEnv){
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 15 déc. 2011, 10:33
 
-#  pampaProfilingStart.f()
-
   runLog.f(msg = c(mltext("logmsg.calcTables")))
 
   # Métriques par classe de taille par espèce par unité d'observation :
@@ -1876,8 +1525,6 @@ calcTables.f <- function(obs, unitobs, refesp, dataEnv){
 
   # Métriques par unité d'observation (dont biodiversité) :
   unit <- calc.unit.f(unitSp = unitSp, obs = obs, refesp = refesp, unitobs = unitobs, dataEnv = dataEnv)
-
-#  pampaProfilingEnd.f()
 
   return(list(unitSpSz = unitSpSz, unitSp = unitSp, unit = unit))
 }
@@ -1896,11 +1543,6 @@ calc.unitSpSz.f <- function(obs, unitobs, refesp, dataEnv){
   ## Author: Yves Reecht, Date: 16 déc. 2011, 11:51
 
   runLog.f(msg = c(mltext("logmsg.calc.unitSpSz")))
-
-#  pampaProfilingStart.f()
-#
-#  # Informations :
-#  stepInnerProgressBar.f(n = 2, msg = mltext("calc.unitSpSz.info.1"))
 
   # Définition des types d'observation nécessitant les mêmes méthodes de calcul :
   casObsType <- c("SVR" = "SVR",
@@ -1964,8 +1606,6 @@ calc.unitSpSz.f <- function(obs, unitobs, refesp, dataEnv){
       "year" = NULL, "protection.status" = NULL, stringsAsFactors = TRUE)
   }
 
-#  pampaProfilingEnd.f()
-
   return(unitSpSz)
 }
 
@@ -1982,24 +1622,12 @@ calc.tables.SVR.f <- function(obs, dataEnv,
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 21 déc. 2011, 14:33
 
-#  stepInnerProgressBar.f(n = 1, msg = mltext("calc.tables.SVR.info.1"))
-
   # Calcul des statistiques de nombres :
   statRotations <- statRotations.f(facteurs = factors,
     obs = obs, dataEnv = dataEnv)
 
   # Moyenne pour les vidéos rotatives (habituellement 3 rotation) :
   nbr <- statRotations[["nombresMean"]]
-
-#  switch(is.element("size.class", factors),
-#    "TRUE" = stepInnerProgressBar.f(n = 7, msg = paste(
-#      mltext("calc.tables.SVR.info.2"),
-#      mltext("calc.tables.SVR.info.3"),
-#      sep = "")),
-#    "FALSE" = stepInnerProgressBar.f(n = 7, msg = paste(
-#      mltext("calc.tables.SVR.info.2"),
-#      mltext("calc.tables.SVR.info.4"),
-#      sep = "")))
 
   switch(is.element("size.class", factors),
     "TRUE" = print(paste(
@@ -2173,7 +1801,6 @@ calc.numbers.f <- function(nbr, nbName = "number"){
   ## Author: Yves Reecht, Date: 19 déc. 2011, 13:46
 
   res <- as.data.frame(as.table(nbr), responseName = nbName, stringsAsFactor = TRUE)
-  # res$unitobs <- res$observation.unit # Pour compatibilité uniquement !!!
 
   if (is.element("size.class", colnames(res))){
     res$size.class[res$size.class == ""] <- NA
@@ -2327,15 +1954,6 @@ calc.density.SVR.f <- function(Data, obs, metric = "density",
 
     Data <- cbind(Data, res)
     Data$r <- NULL
-
-    # density <- Data[ , nbMetric[metric]] /
-    #     # Surface : vecteur recyclé autant de fois qu'il y a de classes de taille
-    #     #           si Data  en contient.
-    #     (pi * (as.vector(t(tapply(obs[ , "min.distance"],
-    #                               as.list(obs[ , factors, drop = FALSE]),
-    #                               max, na.rm = TRUE))))^2)
-
-    # Seconde méthode désactivée car certaines fois t() requis, d'autres fois pas.
 
     return(Data)
   }else{
@@ -2710,9 +2328,6 @@ calc.biomass.f <- function(Data, unitobs){
           as.numeric(unitobs[idx , "sampling.rate"]))))
   }else{
     # alerte que les calculs de biomasse sont impossibles
-#    infoLoading.f(msg = paste(mltext("calc.biomass.info.1"),
-#      mltext("calc.biomass.info.2"), sep = ""),
-#      icon = "warning")
     print(paste(
       mltext("calc.biomass.info.1"),
       mltext("calc.biomass.info.2"),
@@ -2860,11 +2475,8 @@ calc.unitSp.f <- function(unitSpSz, obs, unitobs, dataEnv){
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 21 déc. 2011, 10:04
 
-#  ## Informations :
-#  stepInnerProgressBar.f(n = 1, msg = mltext("calc.unitSp.info.1"))
+  ## Informations :
   print(mltext("calc.unitSp.info.1"))
-
-#  pampaProfilingStart.f()
 
   if (FALSE)  # (! is.null(unitSpSz) && nrow(unitSpSz))
   {
@@ -2934,8 +2546,6 @@ calc.unitSp.f <- function(unitSpSz, obs, unitobs, dataEnv){
         NULL
       })
   }
-
-#  pampaProfilingEnd.f()
 
   return(unitSp)
 }
@@ -3045,9 +2655,7 @@ agregations.generic.f <- function(Data, metrics, factors, listFact = NULL, unitS
 
   # Informations (l'étape peut être longue) :
   if (info){
-#    WinInfo <- agregation.info.f()
     print(mltext("agregation.info.f.info.1"))
-#    print(mltext("agregation.info.f.info.2"))
   }
 
   # traitements selon le type de métrique :
@@ -3212,9 +2820,6 @@ agregations.generic.f <- function(Data, metrics, factors, listFact = NULL, unitS
       }
     }, simplify = FALSE),
     stringsAsFactor = TRUE)
-
-  ## Fermeture de la fenêtre d'information
-  #  if (info) close.info.f(WinInfo)
 
   # Vérification des facteurs supplémentaires agrégés.
   # Il ne doit pas y avoir d'élément nul (la fonction précédente renvoie NULL
@@ -3567,10 +3172,7 @@ calc.unit.f <- function(unitSp, obs, refesp, unitobs, dataEnv){
   ## Author: Yves Reecht, Date: 21 déc. 2011, 10:08
 
   #  # Informations :
-#  stepInnerProgressBar.f(n = 1, msg = mltext("calc.unit.info.1"))
   print(mltext("calc.unit.info.1"))
-
-#  pampaProfilingStart.f()
 
   casObsType <- c("SVR" = "SVR",
     "EMB" = "Fishing", "DEB" = "Fishing", "PSCI" = "Fishing", "PecRec" = "Fishing",
@@ -3581,7 +3183,6 @@ calc.unit.f <- function(unitSp, obs, refesp, unitobs, dataEnv){
     "PFUVC" = "Fixe",
     "TRATO" = "TTracks")
 
-  #
   if ( ! is.null(unitSp) && nrow(unitSp)){
     unit <- switch(casObsType[getOption("P.obsType")],
       "SVR" = {
@@ -3772,9 +3373,6 @@ calcBiodiv.f <- function(Data, refesp, MPA, unitobs = "observation.unit",
     return(Data)
 
     if (printInfo){
-#      infoLoading.f(msg = paste(mltext("calcBiodiv.f.info.1")# ,
-#        # "\n   La table de contingence n'a pas été calculée."
-#      ), icon = "warning")
       print(mltext("calcBiodiv.f.info.1"))
     }else{}
 
@@ -3786,17 +3384,6 @@ calcBiodiv.f <- function(Data, refesp, MPA, unitobs = "observation.unit",
   if (printInfo){
     if (nlevels(DataTmp[ , code.especes]) > nlevels(Data[ , code.especes])){
       nsup <- nlevels(DataTmp[ , code.especes]) - nlevels(Data[ , code.especes])
-#      infoLoading.f(msg = paste(
-#        nsup, " \"species.code\" ",
-#        ifelse(nsup > 1 ,
-#          mltext("calcBiodiv.f.info.2.p"),
-#          mltext("calcBiodiv.f.info.2.s")),
-#        mltext("calcBiodiv.f.info.3"),
-#        ifelse(nsup > 1,
-#          mltext("calcBiodiv.f.info.4.p"),
-#          mltext("calcBiodiv.f.info.4.s")),
-#        mltext("calcBiodiv.f.info.5"),
-#        sep = ""))
 
       print(paste(
         nsup, " \"species.code\" ",
@@ -4191,16 +3778,6 @@ exportMetrics.f <- function(unitSpSz, unitSp, unit, obs, unitobs, refesp,
   assign("DataUnitobs", unitobs, envir = .GlobalEnv)
   assign("DataRefesp", refesp, envir = .GlobalEnv)
 
-#  infoLoading.f(msg = paste(
-#    mltext("infoExport.1"),
-#    ifelse(! is.null(unitSpSz) && prod(dim(unitSpSz)),
-#      mltext("infoExport.2"),
-#      ""),
-#    mltext("infoExport.3"),
-#    mltext("infoExport.4"),
-#    mltext("infoExport.5"),
-#    sep = ""), icon = "info")
-
   print(paste(
     mltext("infoExport.1"),
     ifelse(! is.null(unitSpSz) && prod(dim(unitSpSz)),
@@ -4223,10 +3800,6 @@ exportMetrics.f <- function(unitSpSz, unitSp, unit, obs, unitobs, refesp,
       file = fileNm,
       row.names = FALSE),
       error = function(e){
-#        infoLoading.f(msg = paste(
-#          "Impossible d'écrire le fichier ", fileNm,
-#          ".\nIl est possible qu'il soit ouvert par une autre application",
-#          sep = ""), icon = "warning")
         warning(paste("Impossible d'écrire le fichier ", fileNm,
           ".\nIl est possible qu'il soit ouvert par une autre application", sep = ""),
           call. = FALSE, immediate. = TRUE)
@@ -4243,9 +3816,6 @@ exportMetrics.f <- function(unitSpSz, unitSp, unit, obs, unitobs, refesp,
     file = fileNm,
     row.names = FALSE),
     error = function(e){
-#      infoLoading.f(msg = paste("Impossible d'écrire le fichier ", fileNm,
-#        ".\nIl est possible qu'il soit ouvert par une autre application",
-#        sep = ""), icon = "warning")
       warning(paste("Impossible d'écrire le fichier ", fileNm,
         ".\nIl est possible qu'il soit ouvert par une autre application", sep = ""),
         call. = FALSE, immediate. = TRUE)
@@ -4261,9 +3831,6 @@ exportMetrics.f <- function(unitSpSz, unitSp, unit, obs, unitobs, refesp,
     file = fileNm,
     row.names = FALSE),
     error = function(e){
-#      infoLoading.f(msg = paste(mltext("infoExport.6"), fileNm,
-#        mltext("infoExport.7"),
-#        sep = ""), icon = "warning")
       warning(paste("Impossible d'écrire le fichier ", fileNm,
         ".\nIl est possible qu'il soit ouvert par une autre application", sep = ""),
         call. = FALSE, immediate. = TRUE)
@@ -4356,14 +3923,12 @@ calcWeight.f <- function(Data){
   ## ---------------------------------------------------------------------------
   ## Author: Yves Reecht, Date: 16 déc. 2011, 11:34
 
-#  stepInnerProgressBar.f(n = 1, msg = mltext("calcWeight.info.1"))
   print(mltext("calcWeight.info.1"))
 
   # Réassemblage de la liste des obs par cas d'étude avec les poids estimés.
   Data$obs <- do.call(rbind,
     lapply(unique(Data$unitobs[ , getOption("P.MPAfield")]),
       function(i, obs, unitobs, refesp) {
-#        stepInnerProgressBar.f(n = 0, msg = paste(mltext("calcWeight.info.2"), i))
         print(mltext("calcWeight.info.2"))
         # Sélection des observations du cas d'étude i :
         obs <- obs[is.element(obs$observation.unit,
@@ -4487,10 +4052,6 @@ calcWeightMPA.f <- function(Data, refesp, MPA,
 
     nbObsType["poids.moy"] <- sum(!is.na(res)) - tmpNb # nombre de poids ajoutés.
   }
-  else{}
-
-  # Récapitulatif :
-#  summarize.calcWeight.f(x = nbObsType, MPA = MPA)
 
   # Stockage et retour des données :
   Data[ , "weight"] <- res
