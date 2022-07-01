@@ -373,7 +373,11 @@ barplotOccurrenceFamille.f <- function(factGraph, factGraphSel, fact, factSel, f
             function(x){
               length(na.omit(x))
             }))
-        nbObs <- sum(nbObs[,i])
+        if (ncol(heights) == 1){
+          nbObs <- sum(nbObs)
+        } else {
+          nbObs <- sum(nbObs[,i])
+        }
 
         mainTitle <- graphTitle.f(metrique = metrique,
           modGraphSel = modGraphSel,
