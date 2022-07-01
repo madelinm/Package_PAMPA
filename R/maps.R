@@ -34,7 +34,6 @@
 #' regroupement selectionne(s) seront prises en compte.
 
 
-#' @import maptools
 #' @import leafpop
 #' @import leaflet
 

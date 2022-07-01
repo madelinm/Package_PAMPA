@@ -1,7 +1,7 @@
 #' Cette fonction permet de faire une permanova.
 
 
-#' @import vegan
+#' @importFrom vegan vegdist adonis2
 #' @import dplyr
 
 

@@ -13,11 +13,6 @@
 #' spatial.
 
 
-#' @importFrom svDialogs dlg_list
-#' @import tcltk
-#' @import R.utils
-
-
 #' @title Selection des donnees
 #'
 #' @description Selection des donnees selon un champs du referentiel espece ou un
@@ -58,6 +53,8 @@ selection.f <- function(field, dataEnv, baseEnv){
     print("'unitobs' ou 'refesp' uniquement !")
   }
 }
+
+#' @importFrom R.utils extract
 
 selectionOnRefesp.f <- function(dataEnv, baseEnv){
 
@@ -203,6 +200,7 @@ selectionOnRefesp.f <- function(dataEnv, baseEnv){
   return(list(obs = obs, unitobs = unitobs, refesp = refesp))
 }
 
+#' @importFrom svDialogs dlg_list
 
 selectionEsp.f <- function(refesp, obs){
 
@@ -251,6 +249,7 @@ selectionEsp.f <- function(refesp, obs){
       obs = obs))
   }else{}
 }
+
 
 
 chooseRefespField.f <- function(refesp, obs){
@@ -350,6 +349,7 @@ chooseRefespField.f <- function(refesp, obs){
   }
 }
 
+#' @importFrom svDialogs dlg_list
 
 selectModWindow.f <- function(champ, data, selectmode = "multiple", sort = TRUE,
   preselect = NULL, title = NULL, label = NULL){
@@ -665,6 +665,7 @@ selectModWindow.f <- function(champ, data, selectmode = "multiple", sort = TRUE,
 #  return(Data)
 #}
 
+#' @importFrom R.utils extract
 
 selectionOnUnitobs.f <- function(dataEnv, baseEnv){
 
@@ -852,6 +853,7 @@ selectionUnitobs.f <- function(unitobs, obs){
   }else{}
 }
 
+#' @importFrom svDialogs dlg_list
 
 chooseUnitobsField.f <- function(unitobs, obs){
 

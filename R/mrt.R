@@ -255,6 +255,8 @@ mrt.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact, 
 #' @param dataEnv environnement de stockage des données
 #' @param baseEnv environnement parent
 #'
+#' @import rpart
+#'
 #' @noRd
 
 WP2MRT.esp.f <- function(metrique, factGraph, factGraphSel, listFact, listFactSel, tableMetrique,
@@ -1135,6 +1137,7 @@ resFileMRT.f <- function(metrique, factAna, modSel, listFact, dataEnv,
   }
 }
 
+#' @import rpart
 
 print.rpart.ml <- function (x, minlength = 0, spaces = 2, cp, digits = getOption("digits"), ...){
 
@@ -1375,6 +1378,8 @@ summary.rpart.ml <- function (object, cp = 0, digits = getOption("digits"), file
 #' @param tableMetrique chr, nom de la table de métriques
 #' @param dataEnv environnement de stockage des données
 #' @param baseEnv environnement parent
+#'
+#' @import rpart
 #'
 #' @noRd
 

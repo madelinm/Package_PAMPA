@@ -23,9 +23,6 @@
 #' regroupement selectionne(s) seront prises en compte.
 
 
-#' @import gamlss.dist
-#' @import gamlss
-#' @import multcomp
 #' @import tcltk
 
 
@@ -550,6 +547,7 @@ modeleLineaireWP2.esp.f <- function(metrique, factAna, factAnaSel, listFact, lis
 #   return(restmp)
 # }
 
+#' @import tcltk
 
 choixDistri.f <- function(metrique, Data){
 
@@ -771,6 +769,8 @@ choixDistri.f <- function(metrique, Data){
 
 }
 
+#' @importFrom gamlss.dist  as.gamlss.family
+#' @importFrom gamlss gamlss
 
 plotDist.f <- function(y, family, metrique, env = NULL, ...){
 
@@ -928,6 +928,8 @@ calcLM.f <- function(loiChoisie, formule, metrique, Data){
   )
   return(res)
 }
+
+#' @importFrom   grDevices dev.set dev.off
 
 
 sortiesLM.f <- function(objLM, formule, metrique, factAna, modSel, listFact, listFactSel, Data,
@@ -1621,6 +1623,7 @@ valPreditesLM.f <- function(objLM, Data, listFact, resFile){
 
 }
 
+#' @importFrom multcomp glht
 
 compMultiplesLM.f <- function(objLM, Data, fact1, fact2, resFile, exclude, Log = FALSE){
 

@@ -1928,7 +1928,6 @@ selectModalites.f <- function(tableMetrique, facts = NULL, selections = NULL,
 #  }
 }
 
-
 updateFactGraph.f <- function(nomTable, env){
 
   ## Purpose: MàJ des champs dans la combobox de choix du facteur de

@@ -19,14 +19,6 @@
 #' differentes tables de donnees, sous forme d'une liste nommee.
 
 
-#' @importFrom svDialogs dlg_list
-#' @import tcltk
-#' @import sp
-#' @import maptools
-#' @import geosphere
-#' @import rgdal
-
-
 #' @title Importation des donnees et calculs des poids
 #'
 #' @description Chargement des donnees depuis les chemins des fichiers et calcul des poids.
@@ -516,6 +508,7 @@ checkType.unitobs.f <- function(unitobs){
   return(unitobs)
 }
 
+#' @importFrom svDialogs dlg_list
 
 chooseInList.f <- function(modList, fieldName, selectMode, ordered){
 
@@ -844,6 +837,10 @@ loadRefspa.f <- function(pathRefspa, baseEnv = .GlobalEnv){
   }
 }
 
+#' @importFrom rgdal readOGR
+#' @importFrom sp CRS spTransform
+#' @importFrom maptools spCbind
+#' @importFrom geosphere areaPolygon
 
 loadShapefile.f <- function(directory, layer){
 
@@ -931,6 +928,7 @@ unitobsNew.OBSIND.create.f <- function(unitobs, refspa, dataEnv){
   return(unitobsNew)
 }
 
+#' @importFrom sp SpatialPointsDataFrame over
 
 overlayUnitobs.f <- function(unitobs, refspa){
 
@@ -1155,6 +1153,7 @@ selectLink.f <- function(unitobs, refspa, type = "auto"){
   return(links)
 }
 
+#' @import tcltk
 
 selectLink.interface.f <- function(unitobs, refspa,
   defaultLinks = c(unitobs = getOption("P.linkUnitobs"),
@@ -3993,6 +3992,7 @@ presAbs.f <- function(nombres, logical = FALSE){
   }
 }
 
+#' @importFrom vegan taxondive
 
 calcBiodivTaxo.f <- function(Data, refesp, unitobs = "observation.unit",
   code.especes = "species.code", nombres = "number",
@@ -4082,7 +4082,7 @@ calcBiodivTaxo.f <- function(Data, refesp, unitobs = "observation.unit",
         }))){
         # Function finds indices of taxonomic diversity and distinctiness, which are averaged
         # taxonomic distances among species or individuals in the community...
-        divTaxo <- taxondive(contingence, taxdis)
+        divTaxo <- vegan::taxondive(contingence, taxdis)
 
         # mise de divTaxo sous forme de data.frame :
         df.biodivTaxo <- as.data.frame(divTaxo[names(retained.indices)], stringsAsFactor = TRUE)

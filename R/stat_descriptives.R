@@ -2,7 +2,7 @@
 
 
 #' @import maptools
-#' @import rgeos
+#' @importFrom rgeos gSimplify
 #' @import leafpop
 #' @import dplyr
 
