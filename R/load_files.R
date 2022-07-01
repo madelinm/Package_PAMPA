@@ -839,7 +839,7 @@ loadRefspa.f <- function(pathRefspa, baseEnv = .GlobalEnv){
 }
 
 #' @importFrom rgdal readOGR
-#' @importFrom sp CRS spTransform
+#' @importFrom sp CRS spTransform coordinates
 #' @importFrom maptools spCbind
 #' @importFrom geosphere areaPolygon
 
@@ -869,7 +869,7 @@ loadShapefile.f <- function(directory, layer){
         row.names = row.names(refspa@data), stringsAsFactors = TRUE))
 
   # Add centroids :
-  tmpCentr <- as.data.frame(coordinates(refspa), row.names = row.names(refspa@data),
+  tmpCentr <- as.data.frame(sp::coordinates(refspa), row.names = row.names(refspa@data),
     stringsAsFactor = TRUE)
 
   colnames(tmpCentr) <- paste("SITE.centr", c("X", "Y"), sep = "")
@@ -3993,7 +3993,7 @@ presAbs.f <- function(nombres, logical = FALSE){
   }
 }
 
-#' @importFrom vegan taxondive
+#' @importFrom vegan taxondive taxa2dist
 
 calcBiodivTaxo.f <- function(Data, refesp, unitobs = "observation.unit",
   code.especes = "species.code", nombres = "number",
@@ -4076,7 +4076,7 @@ calcBiodivTaxo.f <- function(Data, refesp, unitobs = "observation.unit",
       }
 
       # calcul des distances taxonomiques entre les especes
-      if (!is.null(taxdis <- tryCatch(taxa2dist(sp.taxon, varstep = TRUE, check = TRUE),
+      if (!is.null(taxdis <- tryCatch(vegan::taxa2dist(sp.taxon, varstep = TRUE, check = TRUE),
         error = function(e){
           errorLog.f(error = e, niv = -3)
           return(NULL)
