@@ -2778,7 +2778,7 @@ calc.nestingSuccess.f <- function(obs, Data,
   # Nombre de pontes (sûres + supposées) :
   pontes <- as.vector(tapply(
     subset(obs, grepl(paste0("^", "oui", "\\??$"),
-      obs$ponte))[ , "number"],
+      obs$ponte))[ , nbName],
     as.list(subset(obs, grepl(paste0("^", "oui", "\\??$"),
       obs$ponte))[ , factors]),
     FUN = function(x){
@@ -2797,7 +2797,7 @@ calc.nestingSuccess.f <- function(obs, Data,
   traces.lisibles <- as.vector(tapply(subset(obs,
     grepl(paste0("^(", mltext("KW.yes"), "|",
       mltext("KW.no"), ")\\??$"), # "^(yes|no)\\??$"
-      obs$ponte))[ , "number"],
+      obs$ponte))[ , nbName],
       as.list(subset(obs,
         grepl(paste0("^(", mltext("KW.yes"), "|",
           mltext("KW.no"), ")\\??$"),
@@ -4408,6 +4408,10 @@ calcWeightMPA.f <- function(Data, refesp, MPA,
   # Identification des différents cas :
   casSite <- c("BA" = "Med", "BO" = "Med", "CB" = "Med", "CR" = "Med", "STM" = "Med",
     "MAY" = "MAY", "RUN" = "MAY")
+
+  if (getOption("P.obsType") == "TRATO"){
+    vars["nb"] <- "tracks.number"
+  }
 
   # L'AMP est mise au format désiré (on ne traite qu'un élément à la fois) :
   MPA <- as.character(MPA[1])
