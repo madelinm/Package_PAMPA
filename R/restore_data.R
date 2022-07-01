@@ -39,37 +39,3 @@ restoreData.f <- function(dataEnv, baseEnv){
 
   return(get("backup", envir = dataEnv))
 }
-
-
-#listInEnv.f <- function(list, env){
-#
-#  ## Purpose: Copie les éléments d'une liste (nommée) dans un environnement
-#  ##          (avec comme nom d'élément son nom dans la liste).
-#  ## ---------------------------------------------------------------------------
-#  ## Arguments: list : la liste à copier.
-#  ##            env : l'environnement dans lequel enregistrer les
-#  ##                  éléments.
-#  ## ---------------------------------------------------------------------------
-#  ## Author: Yves Reecht, Date:  4 janv. 2012, 15:38
-#
-#  if (is.null(names(list))){
-#    listNames <- paste("obj", seq(length.out = length(list)), sep = "")
-#
-#    warning("Unnamed list: the elements have been named \"obj1\", \"obj2\", etc.")
-#  }else{
-#    listNames <- names(list)
-#  }
-#  invisible(sapply(list,
-#    function(x, xN, env){
-#      # Numéro d'itération :
-#      i <- sys.call()[[2]][[3]]
-#
-#      if (is.symbol(x = i)){ # for compatibility R > 3.1
-#        i <- eval(i, sys.frame(-1))
-#      }
-#      # Assignement :
-#      assign(x = xN[i], value = x, envir = env)
-#    },
-#    xN = listNames, env = env))
-#}
-
