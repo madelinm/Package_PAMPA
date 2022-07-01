@@ -16,11 +16,11 @@ freq_occurrence_familles.f(
 )
 }
 \arguments{
-\item{factGraphSel}{chr, selection de modalites du facteur de separation des graphiques}
+\item{factGraphSel}{chr, selection de modalites du premier facteur explicatif}
 
-\item{fact}{chr, facteur de regroupement}
+\item{fact}{chr, second facteur explicatif (facultatif)}
 
-\item{factSel}{chr, modalites selectionnees pour le facteur de regroupement}
+\item{factSel}{chr, modalites selectionnees pour le second facteur explicatif}
 
 \item{families}{chr, familles a prendre en compte}
 
@@ -30,7 +30,7 @@ freq_occurrence_familles.f(
 
 \item{baseEnv}{environnement parent}
 
-\item{factGaph}{chr, facteur de separation des graphs}
+\item{factGaph}{chr, premier facteur explicatif}
 }
 \description{
 Creation d'un barplot de frequences d'occurence pour les familles

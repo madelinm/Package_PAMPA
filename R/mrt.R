@@ -241,18 +241,18 @@ mrt.f <- function(agregation, metrique, factGraph, factGraphSel = NA, listFact, 
 }
 
 
-#' @title Arbres de régression multivariée (données agrégées par espèces)
+#' @title Arbres de regression multivariee (donnees agregees par especes)
 #'
-#' @description Cette fonction permet de faire des arbres de régression multivariée des données
-#' agrégées par espèces
+#' @description Cette fonction permet de faire des arbres de regression multivariee des donnees
+#' agregees par especes
 #'
-#' @param metrique chr, métrique choisie
-#' @param factGraph chr, facteur de séparation des graphiques
-#' @param factGraphSel chr, sélection des modalité pour le facteur de séparation des graphiques
+#' @param metrique chr, metrique choisie
+#' @param factGraph chr, facteur de separation des graphiques
+#' @param factGraphSel chr, selection des modalite pour le facteur de separation des graphiques
 #' @param listFact chr, facteur(s) de regroupement
-#' @param listFactSel list, modalités sélectionnées pour le(s) facteur(s) de regroupement
-#' @param tableMetrique chr, nom de la table de métriques
-#' @param dataEnv environnement de stockage des données
+#' @param listFactSel list, modalites selectionnees pour le(s) facteur(s) de regroupement
+#' @param tableMetrique chr, nom de la table de metriques
+#' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
 #' @import rpart
@@ -1365,18 +1365,18 @@ summary.rpart.ml <- function (object, cp = 0, digits = getOption("digits"), file
 }
 
 
-#' @title Arbre de régression multivariée (données agrégées par unités d'observation)
+#' @title Arbre de regression multivariee (donnees agregees par unites d'observation)
 #'
-#' @description Cette fonction permet de faire des arbres de régression multivariée pour des données
-#' agrégées par unités d'observation
+#' @description Cette fonction permet de faire des arbres de regression multivariee pour des donnees
+#' agregees par unites d'observation
 #'
-#' @param metrique chr, métrique choisie
-#' @param factGraph chr, facteur de sélection des espèces
-#' @param factGraphSel chr, sélection de modalités pour le facteur de sélection des espèces
+#' @param metrique chr, metrique choisie
+#' @param factGraph chr, facteur de selection des especes
+#' @param factGraphSel chr, selection de modalites pour le facteur de selection des especes
 #' @param listFact chr, facteur(s) de regroupement
-#' @param listFactSel list, modalité sélectionnées pour le(s) facteur(s) de regroupement
-#' @param tableMetrique chr, nom de la table de métriques
-#' @param dataEnv environnement de stockage des données
+#' @param listFactSel list, modalite selectionnees pour le(s) facteur(s) de regroupement
+#' @param tableMetrique chr, nom de la table de metriques
+#' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
 #' @import rpart

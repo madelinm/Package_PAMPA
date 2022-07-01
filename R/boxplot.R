@@ -242,17 +242,17 @@ boxplot_pampa.f <- function(agregation, metrique, factGraph =  NULL, factGraphSe
 }
 
 
-#' @title Boxplot (données agrégées par espèces)
+#' @title Boxplot (donnees agregees par especes)
 #'
-#' @description Cette fonction permet la création du boxplot pour les données agrégées par espèces
+#' @description Cette fonction permet la creation du boxplot pour les donnees agregees par especes
 #'
-#' @param metrique : chr, métrique choisie
-#' @param factGraph : chr, facteur de séparation des graphiques
-#' @param factGraphSel : chr, sélection de modalité du facteur de séparation des graphiques
+#' @param metrique : chr, metrique choisie
+#' @param factGraph : chr, facteur de separation des graphiques
+#' @param factGraphSel : chr, selection de modalite du facteur de separation des graphiques
 #' @param listFact : chr, facteur(s) de regroupement
-#' @param listFactSel : list, modalités sélectionnées pour le(s) facteur(s) de regroupement
-#' @param tableMetrique : chr,  nom de la table de métrique
-#' @param dataEnv : environnement de stockage des données
+#' @param listFactSel : list, modalites selectionnees pour le(s) facteur(s) de regroupement
+#' @param tableMetrique : chr,  nom de la table de metrique
+#' @param dataEnv : environnement de stockage des donnees
 #' @param baseEnv : environnement parent
 #'
 #' @noRd
@@ -2188,18 +2188,18 @@ UnitobsFields.aliases <- function(dataEnv, ordered = FALSE, tableMetrique = ""){
 }
 
 
-#' @title Boxplot (données agrégées par unités d'observation)
+#' @title Boxplot (donnees agregees par unites d'observation)
 #'
-#' @description Cette fonction permet la création de boxplot pour les données agrégées par groupes
-#' d'espèces
+#' @description Cette fonction permet la creation de boxplot pour les donnees agregees par groupes
+#' d'especes
 #'
-#' @param metrique : chr, métrique choisie
-#' @param factGraph : chr, facteur de sélection des espèces
-#' @param factGraphSel : chr, sélection de modalités pour le facteur de sélection des espèces
+#' @param metrique : chr, metrique choisie
+#' @param factGraph : chr, facteur de selection des especes
+#' @param factGraphSel : chr, selection de modalites pour le facteur de selection des especes
 #' @param listFact : chr, facteur(s) de regroupement
-#' @param listFactSel : list, modalités sélectionnées pour le(s) facteur(s) de regroupement
-#' @param tableMetrique : chr, nom de la table de métriques
-#' @param dataEnv : environnement de stockage des données
+#' @param listFactSel : list, modalites selectionnees pour le(s) facteur(s) de regroupement
+#' @param tableMetrique : chr, nom de la table de metriques
+#' @param dataEnv : environnement de stockage des donnees
 #' @param baseEnv : environnement parent
 #'
 #' @noRd

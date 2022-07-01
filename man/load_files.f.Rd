@@ -40,13 +40,14 @@ vecteur nomme).
 
 Le referentiel espece local et le referentiel statial sont facultatifs.
 
-Le chemin du dossier "results" est facultatif egalement. S'il n'est pas renseigne, les donnees
-seront enregistrees dans un dossier nomme 'results' dans le dossier de travail.
+Le chemin du dossier "Results" est facultatif egalement. S'il n'est pas renseigne, les donnees
+seront enregistrees dans un dossier nomme 'Results' dans le dossier de travail.
 Elle prend egalement en entree deux environnements, celui ou stocker les donnees, et
 l'environnement parent. Ces environnements peuvent tous les deux correspondre a l'environnement
 global (.GlobalEnv).
 
-Le dossier de travail doit etre le dossier de stockage des donnees.
+Le dossier de travail doit etre le dossier de stockage des donnees. Il s'agit d'un dossier
+contenant un dossier nomme 'Data' ou sont stockees les donnees.
 
 Cette fonction charge les donnees a partir des chemins de fichiers donnes. Elle calcule ensuite
 les poids pour chaque AMP. Puis, elle calcule les tables de metriques, qu'elle enregistre dans

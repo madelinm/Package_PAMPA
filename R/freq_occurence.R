@@ -197,15 +197,15 @@ freq_occurrence.f <- function(agregation, factGraph = NULL, factGraphSel = NA, l
 }
 
 
-#' @title Fréquences d'occurrence (données agrégées par espèces)
+#' @title Frequences d'occurrence (donnees agregees par especes)
 #'
-#' @description Cette fonction permet la création du barplot des fréquences d'occurrence.
+#' @description Cette fonction permet la creation du barplot des frequences d'occurrence.
 #'
-#' @param factGraph chr, facteur de séparation des graphiques
-#' @param factGraphSel chr, sélection de modalité du facteur de séparation des graphiques
+#' @param factGraph chr, facteur de separation des graphiques
+#' @param factGraphSel chr, selection de modalite du facteur de separation des graphiques
 #' @param listFact chr, facteur(s) de regroupement
-#' @param listFactSel list, modalités sélectionnées pour le(s) facteur(s) de regroupement
-#' @param dataEnv environnement de stockage des données
+#' @param listFactSel list, modalites selectionnees pour le(s) facteur(s) de regroupement
+#' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
 #' @noRd
@@ -1413,16 +1413,16 @@ barplotOccurrence.f <- function(factGraph, factGraphSel, listFact, listFactSel, 
 # }
 
 
-#' @title Fréquences d'occurrence (données agrégées par unités d'observation)
+#' @title Frequences d'occurrence (donnees agregees par unites d'observation)
 #'
-#' @description Cette fonction permet de tracer le graphique des fréquences d'occurrences
-#' pour les données agrégées par unités d'observation
+#' @description Cette fonction permet de tracer le graphique des frequences d'occurrences
+#' pour les donnees agregees par unites d'observation
 #'
-#' @param factGraph chr, facteur de séparation des graphiques
-#' @param factGraphSel chr, sélection de modalité du facteur de séparation des graphiques
+#' @param factGraph chr, facteur de separation des graphiques
+#' @param factGraphSel chr, selection de modalite du facteur de separation des graphiques
 #' @param listFact chr, facteur(s) de regroupement
-#' @param listFactSel list, modalités sélectionnées pour le(s) facteur(s) de regroupement
-#' @param dataEnv environnement de stockage des données
+#' @param listFactSel list, modalites selectionnees pour le(s) facteur(s) de regroupement
+#' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
 #' @noRd

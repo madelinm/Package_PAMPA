@@ -37,7 +37,7 @@
 #'
 #' data <- PAMPA::load_files.f(filePathes, dminMax = 5, .dataEnv, .baseEnv)
 #'
-#' selection.f('unitobs', .dataEnv, .baseEnv)
+#' data_sel <- PAMPA::selection.f('unitobs', .dataEnv, .baseEnv)
 #'
 #' @export
 

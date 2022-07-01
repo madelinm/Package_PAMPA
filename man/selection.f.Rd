@@ -48,6 +48,6 @@ filePathes <- c(unitobs = unitobs_path, obs = obs_path, refesp =  refesp_path, w
 
 data <- PAMPA::load_files.f(filePathes, dminMax = 5, .dataEnv, .baseEnv)
 
-selection.f('unitobs', .dataEnv, .baseEnv)
+data_sel <- PAMPA::selection.f('unitobs', .dataEnv, .baseEnv)
 
 }

@@ -16,10 +16,10 @@
 #'
 #' @description Creation d'un barplot de frequences d'occurence pour les familles
 #'
-#' @param factGaph chr, facteur de separation des graphs
-#' @param factGraphSel chr, selection de modalites du facteur de separation des graphiques
-#' @param fact chr, facteur de regroupement
-#' @param factSel chr, modalites selectionnees pour le facteur de regroupement
+#' @param factGaph chr, premier facteur explicatif
+#' @param factGraphSel chr, selection de modalites du premier facteur explicatif
+#' @param fact chr, second facteur explicatif (facultatif)
+#' @param factSel chr, modalites selectionnees pour le second facteur explicatif
 #' @param families chr, familles a prendre en compte
 #' @param new_window bool, affichage du graphique dans une nouvelle fenetre ?
 #' @param dataEnv environnement de stockage des donnees
@@ -177,10 +177,10 @@ freq_occurrence_familles.f <- function(factGraph, factGraphSel = NA, fact, factS
 #'
 #' @description Creation d'un barplot de frequences d'occurence pour les familles
 #'
-#' @param factGaph chr, facteur de separation des graphs
-#' @param factGraphSel chr, selection de modalites du facteur de separation des graphiques
-#' @param fact chr, facteur de regroupement
-#' @param factSel chr, modalites selectionnees pour le facteur de regroupement
+#' @param factGaph chr, premier facteur explicatif
+#' @param factGraphSel chr, selection de modalites du premier facteur explicatif
+#' @param fact chr, second facteur explicatif (facultatif)
+#' @param factSel chr, modalites selectionnees pour le second facteur explicatif
 #' @param families vector
 #' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent

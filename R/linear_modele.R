@@ -262,17 +262,17 @@ lm.f <- function(agregation, metrique, factAna, factAnaSel = NA, listFact, listF
 }
 
 
-#' @title Modèle linéaire (données agrégées par espèces)
+#' @title Modele lineaire (donnees agregees par especes)
 #'
-#' @description Cette fonction permet de calculer des modèles linéaires sur les données agrégées
-#' par espèces
+#' @description Cette fonction permet de calculer des modeles lineaires sur les donnees agregees
+#' par especes
 #'
-#' @param metrique chr, métrique choisie
-#' @param factAna chr, facteur de séparation des graphiques
-#' @param factAnaSel chr, sélection de modalités pour le factuer de sélection des graphiques
+#' @param metrique chr, metrique choisie
+#' @param factAna chr, facteur de separation des graphiques
+#' @param factAnaSel chr, selection de modalites pour le factuer de selection des graphiques
 #' @param listFact chr, facteur(s) de regroupement
-#' @param listFactSel list, modalités sélectionnées pour le(s) facteur(s) de regroupement
-#' @param dataEnv environnement de stockage des donnnées
+#' @param listFactSel list, modalites selectionnees pour le(s) facteur(s) de regroupement
+#' @param dataEnv environnement de stockage des donnnees
 #' @param baseEnv environnement parent
 #'
 #' @noRd
@@ -2731,18 +2731,18 @@ supprimeObs.f <- function(residus){
 }
 
 
-#' @title Modèle linéaire (données agrégées par unités d'observation)
+#' @title Modele lineaire (donnees agregees par unites d'observation)
 #'
-#' @description Cette fonction permet de faire des modèles linéaires sur des données agrégées
-#' par unités d'observation
+#' @description Cette fonction permet de faire des modeles lineaires sur des donnees agregees
+#' par unites d'observation
 #'
-#' @param metrique chr, métrique choisie
-#' @param factAna chr, facteur de séparation des graphiques
-#' @param factAnaSel chr, sélection de modalités pour le facteur de séparation des graphiques
+#' @param metrique chr, metrique choisie
+#' @param factAna chr, facteur de separation des graphiques
+#' @param factAnaSel chr, selection de modalites pour le facteur de separation des graphiques
 #' @param listFact chr, facteur(s) de regroupement
-#' @param listFactSel chr, modalités sélectionnées pour le(s) facteur(s) de regroupement
-#' @param tableMetrique chr, nom de la table de métrique
-#' @param dataEnv environnement de stockage des données
+#' @param listFactSel chr, modalites selectionnees pour le(s) facteur(s) de regroupement
+#' @param tableMetrique chr, nom de la table de metrique
+#' @param dataEnv environnement de stockage des donnees
 #' @param baseEnv environnement parent
 #'
 #' @noRd
