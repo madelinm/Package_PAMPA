@@ -101,7 +101,6 @@ load_files.f <- function(filePathes, dminMax = 5, dataEnv, baseEnv){
   # Faire plus de vérifications ?
 
   if (is.na(filePathes["results"])){
-    browser()
     filePathes["results"] <- ifelse(as.logical(length(grep("Data/$|Data$", filePathes["ws"]))),
       sub("Data/$|Data$", "Results/", filePathes["ws"]),
       ifelse(as.logical(length(grep("/$", filePathes["ws"]))),
